@@ -1,0 +1,42 @@
+{
+  "deathTouch": {
+    "name": [
+      "Death Touch",
+      "Toucher mortel"
+    ],
+    "description": [
+      "When this card damages another card, that card perishes",
+      "Quand j'inflige des dégâts à une autre carte, elle périt"
+    ]
+  },
+  "leader": {
+    "name": [
+      "Leader",
+      "Leader"
+    ],
+    "description": [
+      "Adjacent cards have 1 additional power",
+      "Les cartes adjacentes ont 1 d'attaque supplémentaire"
+    ]
+  },
+  "airborne": {
+    "name": [
+      "Airborne",
+      "Volant"
+    ],
+    "description": [
+      "This card deals direct damage instead of attacking the opposing card",
+      "J'inflige des dégats directs au lieu d'attaquer la carte opposée"
+    ]
+  },
+  "damBuilder": {
+    "name": [
+      "Dam Builder",
+      "Batisseur"
+    ],
+    "description": [
+      "When played, creates 2 \"Dam\"s and play them adjacent to this card",
+      "Quand je suis jouée, je crée 2 \"Barrages\" adjacent à moi"
+    ]
+  }
+}
