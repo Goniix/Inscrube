@@ -15,32 +15,22 @@ var card_illustrator: String
 var card_art_path: String
 
 #FRAME CONSTS
-static var frames_path:Dictionary = {
-	"Beast": [
-		"res://spr/frames/frame_common_beast.png",
-		"res://spr/frames/frame_uncommon_beast.png",
-		"res://spr/frames/frame_rare_beast.png"
-		]
-}
 static var rarity_to_frame_id: Dictionary = {
-	"Common" = 0,
-	"Uncommon" = 1,
-	"Rare" = 2,
-	"Talking" =2
+	"COMMON" = 0,
+	"UNCOMMON" = 1,
+	"RARE" = 2,
+	"TALKING" =2
 }
 #BG CONSTS
-static var bg_path:Dictionary = {
-	"Beast": [
-		"res://spr/bg/bg_common_beast.png",
-		"res://spr/bg/bg_rare_beast.png"
-		]
-}
+
 static var rarity_to_bg_id: Dictionary = {
-	"Common" = 0,
-	"Uncommon" = 0,
-	"Rare" = 1,
-	"Talking" = 1
+	"COMMON" = 0,
+	"UNCOMMON" = 0,
+	"RARE" = 1,
+	"TALKING" = 1
 }
+#COST CONSTS
+
 
 func load_data(data: Dictionary,id: String):
 	card_id = id
@@ -58,26 +48,65 @@ func load_data(data: Dictionary,id: String):
 	update_frame()
 	update_art()
 	update_name()
+	update_rarity()
+	update_cost()
 
 func update_name():
 	$Name.text = card_name
 
 func update_frame():
-	$Frame.texture = load(frames_path[card_faction][rarity_to_frame_id[card_rarity]])
+	$Frame.texture = Game.frames_data[card_faction][rarity_to_frame_id[card_rarity]]
 	
 func update_background():
-	$Background.texture = load(bg_path[card_faction][rarity_to_bg_id[card_rarity]])
+	$Background.texture = Game.bg_data[card_faction][rarity_to_bg_id[card_rarity]]
 	
 func update_art():
-	$Art.texture = load(Game.artData[card_id])
+	$Art.texture = Game.art_data[card_id]
 
 func update_rarity():
-	pass
-
+	var res = tr("RARITY").format({"rarity":tr(card_rarity),"faction":tr(card_faction)})
+	for elem in card_subclass:
+		res+=tr(elem)+" "
+	$Rarity.text = res
+	
+func update_cost():
+	for key in card_cost.keys():
+		if (card_cost[key] > 0):
+			var sub_container = HBoxContainer.new()
+			sub_container.alignment = BoxContainer.ALIGNMENT_END
+			
+			if card_cost[key] > 4:
+				sub_container.add_theme_constant_override("separation",10)
+				
+				var stringed_number = str(card_cost[key])
+				for char in stringed_number:
+					var number_icon: TextureRect = TextureRect.new()
+					number_icon.texture = Game.cost_data["numbers"][int(char)]
+					number_icon.custom_minimum_size= Vector2(50,80)
+					sub_container.add_child(number_icon)
+				
+				var x_icon: TextureRect = TextureRect.new()
+				x_icon.texture = Game.cost_data["x"]
+				x_icon.custom_minimum_size= Vector2(50,80)
+				sub_container.add_child(x_icon)
+				
+				var cost_icon: TextureRect = TextureRect.new()
+				cost_icon.texture = Game.cost_data[key]
+				cost_icon.custom_minimum_size= Vector2(50,80)
+				sub_container.add_child(cost_icon)
+			else:
+				sub_container.add_theme_constant_override("separation",-10)
+				
+				for icon in range(card_cost[key]):
+					var cost_icon: TextureRect = TextureRect.new()
+					cost_icon.texture = Game.cost_data[key]
+					cost_icon.custom_minimum_size= Vector2(50,80)
+					sub_container.add_child(cost_icon)
+					
+			$CostContainer.add_child(sub_container)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

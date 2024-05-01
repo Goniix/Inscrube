@@ -2,14 +2,46 @@ class_name Game
 extends Node
 
 static var cardScene : PackedScene = load("res://scenes/card.tscn")
+
 static var cardData : Dictionary = {}
-static var artData: Dictionary = {
-	"adder":"res://spr/art/Adder.png"
+static var art_data: Dictionary = {
+	"adder": preload("res://spr/art/Adder.png")
 }
+static var frames_data:Dictionary = {
+	"BEAST": [
+		 preload("res://spr/frames/frame_common_beast.png"),
+		 preload("res://spr/frames/frame_uncommon_beast.png"),
+		 preload("res://spr/frames/frame_rare_beast.png")
+		]
+}
+static var bg_data:Dictionary = {
+	"BEAST": [
+		 preload("res://spr/bg/bg_common_beast.png"),
+		 preload("res://spr/bg/bg_rare_beast.png")
+		]
+}
+static var cost_data: Dictionary = {
+	"x": preload("res://spr/cost/x.png"),
+	"numbers" : [
+		preload("res://spr/cost/0.png"),
+		preload("res://spr/cost/1.png"),
+		preload("res://spr/cost/2.png"),
+		preload("res://spr/cost/3.png"),
+		preload("res://spr/cost/4.png"),
+		preload("res://spr/cost/5.png"),
+		preload("res://spr/cost/6.png"),
+		preload("res://spr/cost/7.png"),
+		preload("res://spr/cost/8.png"),
+		preload("res://spr/cost/9.png")
+	],
+	"blood": preload("res://spr/cost/blood.png"),
+	"bone": preload("res://spr/cost/bone.png")
+	
+}
+
 static var language = 0
 
-
-func loadAllCards(recursive:bool=true):
+static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data/"]
 	for elem in cardsDirs:
 		var dir = DirAccess.open(elem)
@@ -50,7 +82,7 @@ func _init():
 	loadAllCards(true)
 	
 	new_card = cardScene.instantiate()
-	new_card.position = Vector2(0,200)
+	new_card.position = Vector2(0,0)
 	new_card.load_data(cardData["adder"],"adder")
 	new_card.scale = Vector2(0.3,0.3)
 	add_child(new_card)

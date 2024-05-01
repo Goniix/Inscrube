@@ -3,14 +3,15 @@
   "sigils": [
     "deathTouch"
   ],
-  "rarity": "Common",
-  "faction": "Beast",
+  "rarity": "COMMON",
+  "faction": "BEAST",
   "subclass": [
-    "reptile"
+    "REPTILE"
   ],
   "cost": {
     "blood": 2,
-    "bone": 0
+    "bone": 0,
+    "energy": 0
   },
   "life": 2,
   "power": {
