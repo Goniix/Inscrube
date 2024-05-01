@@ -50,6 +50,7 @@ func load_data(data: Dictionary,id: String):
 	update_name()
 	update_rarity()
 	update_cost()
+	update_stats()
 
 func update_name():
 	$Name.text = card_name
@@ -104,6 +105,15 @@ func update_cost():
 					sub_container.add_child(cost_icon)
 					
 			$CostContainer.add_child(sub_container)
+
+func update_stats():
+	$Health.text = str(card_health)
+	if card_power["alt"] != null:
+		$Power.text = "A"
+	else:
+		$Power.text = str(card_power["value"])
+	
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

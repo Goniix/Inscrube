@@ -5,37 +5,37 @@ static var cardScene : PackedScene = load("res://scenes/card.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
-	"adder": preload("res://spr/art/Adder.png")
+	"adder": preload("res://assets/art/Adder.png")
 }
 static var frames_data:Dictionary = {
 	"BEAST": [
-		 preload("res://spr/frames/frame_common_beast.png"),
-		 preload("res://spr/frames/frame_uncommon_beast.png"),
-		 preload("res://spr/frames/frame_rare_beast.png")
+		 preload("res://assets/frames/frame_common_beast.png"),
+		 preload("res://assets/frames/frame_uncommon_beast.png"),
+		 preload("res://assets/frames/frame_rare_beast.png")
 		]
 }
 static var bg_data:Dictionary = {
 	"BEAST": [
-		 preload("res://spr/bg/bg_common_beast.png"),
-		 preload("res://spr/bg/bg_rare_beast.png")
+		 preload("res://assets/bg/bg_common_beast.png"),
+		 preload("res://assets/bg/bg_rare_beast.png")
 		]
 }
 static var cost_data: Dictionary = {
-	"x": preload("res://spr/cost/x.png"),
+	"x": preload("res://assets/cost/x.png"),
 	"numbers" : [
-		preload("res://spr/cost/0.png"),
-		preload("res://spr/cost/1.png"),
-		preload("res://spr/cost/2.png"),
-		preload("res://spr/cost/3.png"),
-		preload("res://spr/cost/4.png"),
-		preload("res://spr/cost/5.png"),
-		preload("res://spr/cost/6.png"),
-		preload("res://spr/cost/7.png"),
-		preload("res://spr/cost/8.png"),
-		preload("res://spr/cost/9.png")
+		preload("res://assets/cost/0.png"),
+		preload("res://assets/cost/1.png"),
+		preload("res://assets/cost/2.png"),
+		preload("res://assets/cost/3.png"),
+		preload("res://assets/cost/4.png"),
+		preload("res://assets/cost/5.png"),
+		preload("res://assets/cost/6.png"),
+		preload("res://assets/cost/7.png"),
+		preload("res://assets/cost/8.png"),
+		preload("res://assets/cost/9.png")
 	],
-	"blood": preload("res://spr/cost/blood.png"),
-	"bone": preload("res://spr/cost/bone.png")
+	"blood": preload("res://assets/cost/blood.png"),
+	"bone": preload("res://assets/cost/bone.png")
 	
 }
 
@@ -89,5 +89,6 @@ func _init():
 
 	
 func _process(delta):
-	new_card.scale.x = fmod(new_card.scale.x +0.1 * delta,0.5)
-	new_card.scale.y = fmod(new_card.scale.y +0.1 * delta,0.5)
+	#new_card.scale.x = fmod(new_card.scale.x +0.1 * delta,0.5)
+	#new_card.scale.y = fmod(new_card.scale.y +0.1 * delta,0.5)
+	pass

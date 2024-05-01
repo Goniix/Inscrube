@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://n3pvl32hu31p"]
 
 [ext_resource type="Script" path="res://scenes/card.gd" id="1_i4ppf"]
-[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://spr/frames/zerror.png" id="3_5rxua"]
-[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://spr/bg/zerror.png" id="3_l635c"]
-[ext_resource type="FontFile" uid="uid://b27n6vrtjrt7f" path="res://spr/fonts/Cambria.ttf" id="3_lohff"]
-[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://spr/art/zerror.png" id="4_mq33s"]
+[ext_resource type="Texture2D" path="res://spr/bg/zerror.png" id="3_l635c"]
+[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_pw6dg"]
+[ext_resource type="Texture2D" path="res://spr/art/zerror.png" id="4_mq33s"]
+[ext_resource type="FontFile" uid="uid://b27n6vrtjrt7f" path="res://assets/fonts/Cambria.ttf" id="5_msflp"]
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -29,7 +29,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(10, 10)
-texture = ExtResource("3_5rxua")
+texture = ExtResource("3_pw6dg")
 
 [node name="Art" type="TextureRect" parent="."]
 layout_mode = 0
@@ -57,14 +57,14 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -430.0
 offset_top = 80.0
-offset_right = 296.0
+offset_right = 216.0
 offset_bottom = 222.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("3_lohff")
+theme_override_fonts/font = ExtResource("5_msflp")
 theme_override_font_sizes/font_size = 90
 text = "Default
 "
@@ -83,7 +83,45 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.407843, 0.321569, 0.298039, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("3_lohff")
+theme_override_fonts/font = ExtResource("5_msflp")
 theme_override_font_sizes/font_size = 35
 text = "Default
 "
+
+[node name="Health" type="Label" parent="."]
+texture_filter = 6
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 352.0
+offset_top = 1304.0
+offset_right = 402.0
+offset_bottom = 1446.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("5_msflp")
+theme_override_font_sizes/font_size = 90
+text = "0"
+
+[node name="Power" type="Label" parent="."]
+texture_filter = 6
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -408.0
+offset_top = 1302.0
+offset_right = -358.0
+offset_bottom = 1444.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("5_msflp")
+theme_override_font_sizes/font_size = 90
+text = "0"
