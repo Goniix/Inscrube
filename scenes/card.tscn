@@ -1,17 +1,19 @@
 [gd_scene load_steps=2 format=3 uid="uid://n3pvl32hu31p"]
 
-[ext_resource type="Texture2D" uid="uid://cth7cruwajkyl" path="res://spr/frames/zerror.png" id="1_b0vi1"]
+[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://spr/frames/zerror.png" id="1_b0vi1"]
 
 [node name="Card" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 112.0
-offset_bottom = 156.0
+offset_right = 102.0
+offset_bottom = 146.0
 scale = Vector2(2, 2)
 size_flags_horizontal = 0
 size_flags_vertical = 4
 metadata/_edit_group_ = true
 
-[node name="Background" type="Sprite2D" parent="."]
-position = Vector2(56, 78)
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 texture = ExtResource("1_b0vi1")

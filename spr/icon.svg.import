@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ip60tomc7u3j"
-path="res://.godot/imported/frame_uncommon_undead_full.png-6620c3adcc8c79713221900fde4d11f1.ctex"
+uid="uid://d4jj15l3sq1vd"
+path="res://.godot/imported/icon.svg-662b5bb5ffb418b14ef46e6a2c2e6a23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://spr/frames/frame_uncommon_undead_full.png"
-dest_files=["res://.godot/imported/frame_uncommon_undead_full.png-6620c3adcc8c79713221900fde4d11f1.ctex"]
+source_file="res://spr/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-662b5bb5ffb418b14ef46e6a2c2e6a23.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
