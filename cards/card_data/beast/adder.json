@@ -1,0 +1,22 @@
+{
+  "name": "ADDER",
+  "sigils": [
+    "deathTouch"
+  ],
+  "rarity": "Common",
+  "faction": "Beast",
+  "subclass": [
+    "reptile"
+  ],
+  "cost": {
+    "blood": 2,
+    "bone": 0
+  },
+  "life": 2,
+  "power": {
+    "value": 2,
+    "alt": null
+  },
+  "illustrator": "Pixel Profligate",
+  "art_path": "res://spr/art/Adder.png"
+}
