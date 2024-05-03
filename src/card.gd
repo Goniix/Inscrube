@@ -18,6 +18,8 @@ var card_art_path: String
 var draggable = false
 var is_in_dropable = false
 var body_ref
+var offset: Vector2
+var initialPos: Vector2
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -131,28 +133,53 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
-
+	if draggable:
+		if Input.is_action_just_pressed("leftClick"):
+			initialPos = global_position
+			offset = get_global_mouse_position() - global_position
+			Game.is_dragging = true
+		if Input.is_action_pressed("leftClick"):
+			global_position = get_global_mouse_position()
+		elif Input.is_action_just_released("leftClick"):
+			Game.is_dragging = false
+			
+			var scale_tween = create_tween()
+			scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+			
+			var tween = get_tree().create_tween()
+			if is_in_dropable:
+				print(body_ref.position)
+				tween.tween_property(self,"position",body_ref.position,0.2).set_ease(Tween.EASE_OUT)
+			else:
+				tween.tween_property(self,"global_position",initialPos,0.2).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
 		draggable = true
-		scale = Vector2(0.3,0.3)
+		var scale_tween = create_tween()
+		scale_tween.tween_property(self,"scale",Vector2(0.25,0.25),0.05).set_ease(Tween.EASE_OUT)
 
 
 func _on_area_2d_mouse_exited():
 	if not Game.is_dragging:
 		draggable = false
-		scale = Vector2(0.22,0.22)
+		var scale_tween = create_tween()
+		scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):
 		is_in_dropable = true
+		#body.get_node("Sprite").modulate = Color.WHITE
+		var color_tween = create_tween()
+		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.WHITE,0.2)
 		body_ref = body
 
 
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("slot"):
 		is_in_dropable = false
+		var color_tween = create_tween()
+		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.BLACK,0.2)
+		#body.get_node("Sprite").modulate = Color.BLACK
 		body_ref = null

@@ -1,10 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=9 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
-[ext_resource type="PackedScene" uid="uid://d0yob3q63e8w8" path="res://scenes/box.tscn" id="3_btmip"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="4_caxdh"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="4_egrnp"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="5_2vkrc"]
+
+[sub_resource type="Curve2D" id="Curve2D_nrd8v"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 0)
+}
+point_count = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nxjqi"]
 shader = ExtResource("4_caxdh")
@@ -25,15 +31,18 @@ offset_bottom = 1080.0
 texture = ExtResource("2_vvpvs")
 stretch_mode = 6
 
-[node name="PlayerSlots" parent="." instance=ExtResource("3_btmip")]
-position = Vector2(960, 700)
-size = Vector2(650, 280)
+[node name="SlotsLayer" type="Node" parent="."]
 
-[node name="OpponentSlots" parent="." instance=ExtResource("3_btmip")]
-position = Vector2(960, 380)
-size = Vector2(650, 280)
+[node name="CardSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
+position = Vector2(283, 580)
 
-[node name="CardLayer" type="Node2D" parent="."]
+[node name="CardLayer" type="Node" parent="."]
+
+[node name="SlotsPath" type="Path2D" parent="."]
+position = Vector2(635, 540)
+curve = SubResource("Curve2D_nrd8v")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="SlotsPath"]
 
 [node name="CRT" type="ColorRect" parent="."]
 visible = false
@@ -45,6 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Vignette" type="ColorRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_yhj8r")
 anchors_preset = 15
 anchor_right = 1.0
