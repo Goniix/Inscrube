@@ -125,6 +125,12 @@ func update_stats():
 func update_credits():
 	$Credit.text = "Art: "+card_illustrator+"\nScrybe: "+card_scrybe
 
+func at_least_one_is_slot(list:Array):
+	for body in list:
+		if body.is_in_group("slot"):
+			return true
+	return false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -132,6 +138,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	if draggable:
 		if Input.is_action_just_pressed("leftClick"):
 			initialPos = global_position
@@ -139,6 +146,18 @@ func _process(delta):
 			Game.is_dragging = true
 		if Input.is_action_pressed("leftClick"):
 			global_position = get_global_mouse_position()
+			for elem in $CollisionArea.get_overlapping_bodies():
+				if position.distance_to(elem.position) < position.distance_to(body_ref.position):
+					body_ref = elem
+			
+			for elem in $CollisionArea.get_overlapping_bodies():
+				if elem != body_ref:
+					var color_tween = create_tween()
+					color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.BLACK,0.2)
+				else:
+					var color_tween = create_tween()
+					color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.WHITE,0.2)
+
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
 			
@@ -147,7 +166,6 @@ func _process(delta):
 			
 			var tween = get_tree().create_tween()
 			if is_in_dropable:
-				print(body_ref.position)
 				tween.tween_property(self,"position",body_ref.position,0.2).set_ease(Tween.EASE_OUT)
 			else:
 				tween.tween_property(self,"global_position",initialPos,0.2).set_ease(Tween.EASE_OUT)
@@ -167,6 +185,7 @@ func _on_area_2d_mouse_exited():
 
 
 func _on_area_2d_body_entered(body):
+	print("entred:"+str(body))
 	if body.is_in_group("slot"):
 		is_in_dropable = true
 		var color_tween = create_tween()
@@ -175,8 +194,10 @@ func _on_area_2d_body_entered(body):
 
 
 func _on_area_2d_body_exited(body):
+	print("exited:"+str(body))
 	if body.is_in_group("slot"):
-		is_in_dropable = false
+		if not at_least_one_is_slot($CollisionArea.get_overlapping_bodies()):
+			is_in_dropable = false
+			body_ref = null
 		var color_tween = create_tween()
 		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.BLACK,0.2)
-		body_ref = null
