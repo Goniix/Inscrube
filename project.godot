@@ -13,12 +13,13 @@ config_version=5
 config/name="Inscrybe"
 run/main_scene="res://scenes/Game.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
-config/icon="res://spr/icon.svg"
+config/icon="res://assets/icon.png"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [dotnet]
@@ -34,3 +35,4 @@ locale/translations=PackedStringArray("res://src/locales/cards.en.translation", 
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

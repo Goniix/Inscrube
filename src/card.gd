@@ -12,7 +12,12 @@ var card_cost: Dictionary
 var card_health: int
 var card_power: Dictionary
 var card_illustrator: String
+var card_scrybe: String
 var card_art_path: String
+
+var draggable = false
+var is_in_dropable = false
+var body_ref
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -43,6 +48,7 @@ func load_data(data: Dictionary,id: String):
 	card_health = data["life"]
 	card_power = data["power"]
 	card_illustrator = data["illustrator"]
+	card_scrybe = data["scrybe"]
 	card_art_path = data["art_path"]
 	update_background()
 	update_frame()
@@ -51,6 +57,7 @@ func load_data(data: Dictionary,id: String):
 	update_rarity()
 	update_cost()
 	update_stats()
+	update_credits()
 
 func update_name():
 	$Name.text = card_name
@@ -80,9 +87,9 @@ func update_cost():
 				sub_container.add_theme_constant_override("separation",10)
 				
 				var stringed_number = str(card_cost[key])
-				for char in stringed_number:
+				for charElem in stringed_number:
 					var number_icon: TextureRect = TextureRect.new()
-					number_icon.texture = Game.cost_data["numbers"][int(char)]
+					number_icon.texture = Game.cost_data["numbers"][int(charElem)]
 					number_icon.custom_minimum_size= Vector2(50,80)
 					sub_container.add_child(number_icon)
 				
@@ -112,11 +119,15 @@ func update_stats():
 		$Power.text = "A"
 	else:
 		$Power.text = str(card_power["value"])
-	
-	
+
+func update_credits():
+	$Credit.text = "Art: "+card_illustrator+"\nScrybe: "+card_scrybe
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
+	scale = Vector2(0.22,0.22)
+	print($Area2D.input_pickable)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

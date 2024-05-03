@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dgoirrem8tp3s"]
+
+[ext_resource type="FontFile" uid="uid://ci0wa3bialet0" path="res://assets/fonts/Cambria-Italic.ttf" id="1_5s2ea"]
+
+[resource]
+Label/colors/font_color = Color(0.407843, 0.321569, 0.298039, 1)
+Label/font_sizes/font_size = 50
+Label/fonts/font = ExtResource("1_5s2ea")

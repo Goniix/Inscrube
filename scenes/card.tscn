@@ -1,22 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://n3pvl32hu31p"]
+[gd_scene load_steps=9 format=3 uid="uid://n3pvl32hu31p"]
 
-[ext_resource type="Script" path="res://scenes/card.gd" id="1_i4ppf"]
-[ext_resource type="Texture2D" path="res://spr/bg/zerror.png" id="3_l635c"]
+[ext_resource type="Script" path="res://src/card.gd" id="1_kk43u"]
+[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="3_l635c"]
 [ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_pw6dg"]
-[ext_resource type="Texture2D" path="res://spr/art/zerror.png" id="4_mq33s"]
-[ext_resource type="FontFile" uid="uid://b27n6vrtjrt7f" path="res://assets/fonts/Cambria.ttf" id="5_msflp"]
+[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="4_mq33s"]
+[ext_resource type="Theme" uid="uid://dihx0jdpbk4bh" path="res://assets/themes/LargeLabel.tres" id="5_35tpj"]
+[ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="6_hvw4q"]
+[ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="7_1xwl1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bvok"]
+size = Vector2(1040, 1480)
 
 [node name="Card" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1040.0
-offset_bottom = 1480.0
-size_flags_horizontal = 0
-size_flags_vertical = 4
-script = ExtResource("1_i4ppf")
+script = ExtResource("1_kk43u")
 
 [node name="Background" type="TextureRect" parent="."]
-layout_mode = 0
 offset_left = 90.0
 offset_top = 230.0
 offset_right = 176.0
@@ -25,14 +25,12 @@ scale = Vector2(10, 10)
 texture = ExtResource("3_l635c")
 
 [node name="Frame" type="TextureRect" parent="."]
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(10, 10)
 texture = ExtResource("3_pw6dg")
 
 [node name="Art" type="TextureRect" parent="."]
-layout_mode = 0
 offset_left = 90.0
 offset_top = 230.0
 offset_right = 176.0
@@ -41,7 +39,6 @@ scale = Vector2(10, 10)
 texture = ExtResource("4_mq33s")
 
 [node name="CostContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
 offset_left = 350.0
 offset_top = 100.0
 offset_right = 960.0
@@ -55,19 +52,34 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -430.0
+offset_left = 90.0
 offset_top = 80.0
-offset_right = 216.0
-offset_bottom = 222.0
+offset_right = 736.0
+offset_bottom = 186.0
 grow_horizontal = 2
+theme = ExtResource("5_35tpj")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("5_msflp")
-theme_override_font_sizes/font_size = 90
 text = "Default
 "
+
+[node name="Credit" type="Label" parent="."]
+texture_filter = 6
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 200.0
+offset_top = 1320.0
+offset_right = 840.0
+offset_bottom = 1410.0
+grow_horizontal = 2
+theme = ExtResource("6_hvw4q")
+text = "Default
+"
+horizontal_alignment = 1
 
 [node name="Rarity" type="Label" parent="."]
 texture_filter = 6
@@ -75,18 +87,15 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -400.0
-offset_top = 1260.0
-offset_right = 410.0
-offset_bottom = 1302.0
+offset_left = 120.0
+offset_top = 1240.0
+offset_right = 930.0
+offset_bottom = 1300.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.407843, 0.321569, 0.298039, 1)
-theme_override_constants/shadow_offset_x = 5
-theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("5_msflp")
-theme_override_font_sizes/font_size = 35
+theme = ExtResource("7_1xwl1")
 text = "Default
 "
+vertical_alignment = 2
 
 [node name="Health" type="Label" parent="."]
 texture_filter = 6
@@ -94,17 +103,16 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 352.0
+offset_left = 873.0
 offset_top = 1304.0
-offset_right = 402.0
+offset_right = 926.0
 offset_bottom = 1446.0
 grow_horizontal = 2
+theme = ExtResource("5_35tpj")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("5_msflp")
-theme_override_font_sizes/font_size = 90
 text = "0"
 
 [node name="Power" type="Label" parent="."]
@@ -113,15 +121,25 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -408.0
-offset_top = 1302.0
-offset_right = -358.0
-offset_bottom = 1444.0
+offset_left = 113.0
+offset_top = 1304.0
+offset_right = 166.0
+offset_bottom = 1446.0
 grow_horizontal = 2
+theme = ExtResource("5_35tpj")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/font = ExtResource("5_msflp")
-theme_override_font_sizes/font_size = 90
 text = "0"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(520, 740)
+shape = SubResource("RectangleShape2D_2bvok")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

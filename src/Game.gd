@@ -1,7 +1,8 @@
 class_name Game
 extends Node
 
-static var cardScene : PackedScene = load("res://scenes/card.tscn")
+static var cardScene : PackedScene = preload("res://scenes/card.tscn")
+static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
@@ -41,6 +42,8 @@ static var cost_data: Dictionary = {
 
 static var language = 0
 
+static var is_dragging = false
+
 static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data/"]
 	for elem in cardsDirs:
@@ -77,18 +80,31 @@ func dir_contents(path):
 		print("An error occurred when trying to access the path.")
 
 
-var new_card
-func _init():
-	loadAllCards(true)
-	
-	new_card = cardScene.instantiate()
-	new_card.position = Vector2(0,0)
-	new_card.load_data(cardData["adder"],"adder")
-	new_card.scale = Vector2(0.3,0.3)
-	add_child(new_card)
 
+
+func _init():
+	Game.loadAllCards(true)
+	
+func _ready():
+	var new_card
+	new_card = cardScene.instantiate()
+	new_card.position = Vector2(300,400)
+	new_card.load_data(cardData["adder"],"adder")
+	
+	$CardLayer.add_child(new_card)
+	
+	
+	for i in range(4):
+		var player_slot = slotScene.instantiate()
+		var opponent_slot = slotScene.instantiate()
+		player_slot.scale = Vector2(1.5,1.5)
+		opponent_slot.scale = Vector2(1.5,1.5)
+		opponent_slot.rotation = PI
+		$PlayerSlots.add_child(player_slot)
+		$OpponentSlots.add_child(opponent_slot)
+	
+	$PlayerSlots.update_child_pos()
+	$OpponentSlots.update_child_pos()
 	
 func _process(delta):
-	#new_card.scale.x = fmod(new_card.scale.x +0.1 * delta,0.5)
-	#new_card.scale.y = fmod(new_card.scale.y +0.1 * delta,0.5)
 	pass

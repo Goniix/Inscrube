@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0yob3q63e8w8"]
+
+[ext_resource type="Script" path="res://src/box.gd" id="1_vj3eh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc6gs"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="Box" type="Node2D"]
+script = ExtResource("1_vj3eh")
+
+[node name="Display" type="PanelContainer" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uc6gs")

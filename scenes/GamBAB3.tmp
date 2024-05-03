@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://dxa8iwdognc3s"]
+
+[ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
+[ext_resource type="Script" path="res://scenes/box.gd" id="3_vlsvw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iurs4"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[node name="Main" type="Node"]
+script = ExtResource("2_6g747")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_vvpvs")
+stretch_mode = 6
+
+[node name="CardLayer" type="Node2D" parent="."]
+
+[node name="PlayerSlotsContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = 60.0
+offset_right = 460.0
+offset_bottom = 340.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 150
+alignment = 1
+
+[node name="OpponantSlotsContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -475.0
+offset_top = -340.0
+offset_right = 475.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OpponentSlots" type="Node2D" parent="."]
+position = Vector2(960, 340)
+script = ExtResource("3_vlsvw")
+size = Vector2(920, 280)
+box_origin = null
+
+[node name="PanelContainer" type="PanelContainer" parent="OpponentSlots"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_iurs4")
+
+[node name="PlayerSlots" type="Node2D" parent="."]
+position = Vector2(960, 740)
+script = ExtResource("3_vlsvw")
+size = Vector2(920, 280)
+box_origin = null
