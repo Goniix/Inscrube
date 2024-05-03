@@ -1,5 +1,5 @@
 class_name Card
-extends Control
+extends Node2D
 
 var card_id: String
 var card_name: String
@@ -132,3 +132,27 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func _on_area_2d_mouse_entered():
+	if not Game.is_dragging:
+		draggable = true
+		scale = Vector2(0.3,0.3)
+
+
+func _on_area_2d_mouse_exited():
+	if not Game.is_dragging:
+		draggable = false
+		scale = Vector2(0.22,0.22)
+
+
+func _on_area_2d_body_entered(body):
+	if body.is_in_group("slot"):
+		is_in_dropable = true
+		body_ref = body
+
+
+func _on_area_2d_body_exited(body):
+	if body.is_in_group("slot"):
+		is_in_dropable = false
+		body_ref = null

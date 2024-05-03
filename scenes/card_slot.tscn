@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ynyuh"]
 size = Vector2(154, 226)
 
-[node name="CardSlot" type="StaticBody2D"]
+[node name="CardSlot" type="StaticBody2D" groups=["slot"]]
 scale = Vector2(1.2, 1.2)
 metadata/_edit_group_ = true
 
