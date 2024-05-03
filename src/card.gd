@@ -148,20 +148,25 @@ func _process(delta):
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
 		if Input.is_action_pressed("leftClick"):
-			global_position = get_global_mouse_position()
+			global_position = get_global_mouse_position() - offset
 			
 			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot)
-			for elem in slot_elems:
-				if position.distance_to(elem.position) < position.distance_to(body_ref.position):
-					body_ref = elem
-			
-			for elem in slot_elems:
-				if elem != body_ref:
-					var color_tween = create_tween()
-					color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.BLACK,0.2)
-				else:
-					var color_tween = create_tween()
-					color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.WHITE,0.2)
+			if len(slot_elems)>0:
+				is_in_dropable = true
+				for elem in slot_elems:
+					if position.distance_to(elem.position) < position.distance_to(body_ref.position):
+						body_ref = elem
+				
+				for elem in slot_elems:
+					if elem != body_ref:
+						
+						var color_tween = create_tween()
+						color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.BLACK,0.2)
+					else:
+						var color_tween = create_tween()
+						color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.WHITE,0.2)
+			else:
+				is_in_dropable = false
 
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
@@ -171,10 +176,11 @@ func _process(delta):
 			
 			var tween = get_tree().create_tween()
 			if is_in_dropable:
-				tween.tween_property(self,"position",body_ref.position,0.2).set_ease(Tween.EASE_OUT)
+				tween.tween_property(self,"position", body_ref.position,0.2).set_ease(Tween.EASE_OUT)
+				tween.parallel().tween_property(self,"rotation", body_ref.rotation,0.2).set_ease(Tween.EASE_OUT)
 			else:
 				tween.tween_property(self,"global_position",initialPos,0.2).set_ease(Tween.EASE_OUT)
-
+			
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
 		draggable = true
@@ -191,16 +197,15 @@ func _on_area_2d_mouse_exited():
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):
-		is_in_dropable = true
-		var color_tween = create_tween()
-		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.WHITE,0.2)
+		#is_in_dropable = true
+		#var color_tween = create_tween()
+		#color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.WHITE,0.2)
 		body_ref = body
-
 
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("slot"):
-		if not at_least_one_is_slot($CollisionArea.get_overlapping_bodies()):
-			is_in_dropable = false
-			body_ref = null
+		#if not at_least_one_is_slot($CollisionArea.get_overlapping_bodies()):
+			#is_in_dropable = false
+			#body_ref = null
 		var color_tween = create_tween()
 		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.BLACK,0.2)
