@@ -129,7 +129,6 @@ func update_credits():
 func _ready():
 	pass # Replace with function body.
 	scale = Vector2(0.22,0.22)
-	print($Area2D.input_pickable)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -170,7 +169,6 @@ func _on_area_2d_mouse_exited():
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):
 		is_in_dropable = true
-		#body.get_node("Sprite").modulate = Color.WHITE
 		var color_tween = create_tween()
 		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.WHITE,0.2)
 		body_ref = body
@@ -181,5 +179,4 @@ func _on_area_2d_body_exited(body):
 		is_in_dropable = false
 		var color_tween = create_tween()
 		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.BLACK,0.2)
-		#body.get_node("Sprite").modulate = Color.BLACK
 		body_ref = null
