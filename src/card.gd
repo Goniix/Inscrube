@@ -131,6 +131,9 @@ func at_least_one_is_slot(list:Array):
 			return true
 	return false
 
+func is_slot(elem):
+	return elem.is_in_group("slot")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -146,11 +149,13 @@ func _process(delta):
 			Game.is_dragging = true
 		if Input.is_action_pressed("leftClick"):
 			global_position = get_global_mouse_position()
-			for elem in $CollisionArea.get_overlapping_bodies():
+			
+			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot)
+			for elem in slot_elems:
 				if position.distance_to(elem.position) < position.distance_to(body_ref.position):
 					body_ref = elem
 			
-			for elem in $CollisionArea.get_overlapping_bodies():
+			for elem in slot_elems:
 				if elem != body_ref:
 					var color_tween = create_tween()
 					color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.BLACK,0.2)
@@ -185,7 +190,6 @@ func _on_area_2d_mouse_exited():
 
 
 func _on_area_2d_body_entered(body):
-	print("entred:"+str(body))
 	if body.is_in_group("slot"):
 		is_in_dropable = true
 		var color_tween = create_tween()
@@ -194,7 +198,6 @@ func _on_area_2d_body_entered(body):
 
 
 func _on_area_2d_body_exited(body):
-	print("exited:"+str(body))
 	if body.is_in_group("slot"):
 		if not at_least_one_is_slot($CollisionArea.get_overlapping_bodies()):
 			is_in_dropable = false
