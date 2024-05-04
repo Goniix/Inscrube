@@ -1,0 +1,21 @@
+{
+  "name": "SQUIRREL",
+  "sigils": [],
+  "rarity": "SIDE_DECK",
+  "faction": "BEAST",
+  "subclass": [
+    "VERMIN"
+  ],
+  "cost": {
+    "blood": 0,
+    "bone": 0,
+    "energy": 0
+  },
+  "life": 1,
+  "power": {
+    "value": 0,
+    "alt": null
+  },
+  "illustrator": "Pixel Profligate",
+  "scrybe": "Answearing Machine"
+}

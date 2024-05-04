@@ -13,7 +13,6 @@ var card_health: int
 var card_power: Dictionary
 var card_illustrator: String
 var card_scrybe: String
-var card_art_path: String
 
 var draggable = false
 var is_in_dropable = false
@@ -23,6 +22,7 @@ var attached_to: Slot = null
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
+	"SIDE_DECK" = 0,
 	"COMMON" = 0,
 	"UNCOMMON" = 1,
 	"RARE" = 2,
@@ -31,6 +31,7 @@ static var rarity_to_frame_id: Dictionary = {
 #BG CONSTS
 
 static var rarity_to_bg_id: Dictionary = {
+	"SIDE_DECK" = 0,
 	"COMMON" = 0,
 	"UNCOMMON" = 0,
 	"RARE" = 1,
@@ -39,19 +40,18 @@ static var rarity_to_bg_id: Dictionary = {
 #COST CONSTS
 
 
-func load_data(data: Dictionary,id: String):
+func load_data(id: String):
 	card_id = id
-	card_name = data["name"]
-	card_sigils = data["sigils"]
-	card_rarity = data["rarity"]
-	card_faction = data["faction"]
-	card_subclass = data["subclass"]
-	card_cost = data["cost"]
-	card_health = data["life"]
-	card_power = data["power"]
-	card_illustrator = data["illustrator"]
-	card_scrybe = data["scrybe"]
-	card_art_path = data["art_path"]
+	card_name = Game.cardData[id]["name"]
+	card_sigils = Game.cardData[id]["sigils"]
+	card_rarity = Game.cardData[id]["rarity"]
+	card_faction = Game.cardData[id]["faction"]
+	card_subclass = Game.cardData[id]["subclass"]
+	card_cost = Game.cardData[id]["cost"]
+	card_health = Game.cardData[id]["life"]
+	card_power = Game.cardData[id]["power"]
+	card_illustrator = Game.cardData[id]["illustrator"]
+	card_scrybe = Game.cardData[id]["scrybe"]
 	update_background()
 	update_frame()
 	update_art()
@@ -134,14 +134,18 @@ func at_least_one_is_slot(list:Array):
 func is_slot(elem):
 	return elem.is_in_group("slot")
 
-func is_mine(elem):
+func is_available(elem):
+	var cards_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
+	for card in cards_list:
+		if elem == card.attached_to:
+			return false
 	return elem.droppable
 
 func attach_card(slot_body):
 	#slot_body.attached_card = self
 	attached_to = slot_body
 	var tween = create_tween()
-	tween.tween_property(self,"position", slot_body.position,0.2).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self,"position", slot_body.position,0.1).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
 
 # Called when the node enters the scene tree for the first time.
@@ -156,6 +160,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("leftClick"):
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
+			get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
 			
 			if rotation!=0:
 				var tween = create_tween()
@@ -164,7 +169,7 @@ func _process(delta):
 		if Input.is_action_pressed("leftClick"):
 			global_position = get_global_mouse_position() - offset
 			
-			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_mine)
+			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
 			if len(slot_elems)>0:
 				is_in_dropable = true
 				for elem in slot_elems:
@@ -185,12 +190,8 @@ func _process(delta):
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
 			
-			#var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
-			#var slots_list = slots_node.get_children()
-			
 			if is_in_dropable:
 				attach_card(body_ref)
-				
 			else:
 				attach_card(attached_to)
 			

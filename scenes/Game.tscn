@@ -30,11 +30,15 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("2_vvpvs")
 stretch_mode = 6
+metadata/_edit_lock_ = true
 
 [node name="SlotsLayer" type="Node" parent="."]
 
 [node name="TestSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
-position = Vector2(283, 580)
+position = Vector2(288, 364)
+
+[node name="TestSlot2" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
+position = Vector2(283, 851)
 
 [node name="CardLayer" type="Node" parent="."]
 
@@ -52,6 +56,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="Vignette" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_yhj8r")
@@ -61,3 +66,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+metadata/_edit_lock_ = true

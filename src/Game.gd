@@ -6,7 +6,8 @@ static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
-	"adder": preload("res://assets/art/Adder.png")
+	"adder": preload("res://assets/art/Adder.png"),
+	"squirrel": preload("res://assets/art/Squirrel.png")
 }
 static var frames_data:Dictionary = {
 	"BEAST": [
@@ -86,12 +87,17 @@ func _init():
 	Game.loadAllCards(true)
 	
 func _ready():
-	var new_card
-	new_card = cardScene.instantiate()
-	new_card.position = Vector2(300,400)
-	new_card.load_data(cardData["adder"],"adder")
+	
+	var new_card = cardScene.instantiate()
+	new_card.load_data("adder")
 	$CardLayer.add_child(new_card)
 	new_card.attach_card($SlotsLayer/TestSlot)
+	
+	var squi = cardScene.instantiate()
+	squi.load_data("squirrel")
+	$CardLayer.add_child(squi)
+	squi.attach_card($SlotsLayer/TestSlot2)
+	
 	
 	
 	for i in range(4):
@@ -101,7 +107,6 @@ func _ready():
 		player_slot.scale = Vector2(1.5,1.5)
 		player_slot.slot_index = i
 		player_slot.slot_type = Slot.SLOT_TYPE.PLAYER
-		player_slot.get_node("Sprite").modulate = Color.BLACK
 		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
 		$SlotsLayer.add_child(player_slot)
 		
@@ -111,9 +116,5 @@ func _ready():
 		opponent_slot.slot_index = i
 		opponent_slot.slot_type = Slot.SLOT_TYPE.OPPONENT
 		opponent_slot.droppable = false
-		opponent_slot.get_node("Sprite").modulate = Color.BLACK
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)
-
-func _process(delta):
-	pass
