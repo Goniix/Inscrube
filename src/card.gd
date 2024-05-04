@@ -19,6 +19,7 @@ var draggable = false
 var is_in_dropable = false
 var body_ref
 var offset: Vector2
+var attached_to: Slot = null
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -137,7 +138,8 @@ func is_mine(elem):
 	return elem.droppable
 
 func attach_card(slot_body):
-	slot_body.attached_card = self
+	#slot_body.attached_card = self
+	attached_to = slot_body
 	var tween = create_tween()
 	tween.tween_property(self,"position", slot_body.position,0.2).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
@@ -152,7 +154,6 @@ func _process(delta):
 	
 	if draggable:
 		if Input.is_action_just_pressed("leftClick"):
-			#initialPos = global_position
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
 			
@@ -183,23 +184,17 @@ func _process(delta):
 
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
-			var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
-			var slots_list = slots_node.get_children()
 			
-			var tween = get_tree().create_tween()
+			#var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
+			#var slots_list = slots_node.get_children()
+			
 			if is_in_dropable:
-				for slot in slots_list:
-					if slot.attached_card == self:
-						slot.attached_card = null
 				attach_card(body_ref)
 				
 			else:
-				var attached_to = null
-				for slot in slots_list:
-					if slot.attached_card == self:
-						attached_to = slot
 				attach_card(attached_to)
 			
+			var tween = get_tree().create_tween()
 			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 			
 func _on_area_2d_mouse_entered():
