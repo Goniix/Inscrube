@@ -90,8 +90,8 @@ func _ready():
 	new_card = cardScene.instantiate()
 	new_card.position = Vector2(300,400)
 	new_card.load_data(cardData["adder"],"adder")
-	
 	$CardLayer.add_child(new_card)
+	new_card.attach_card($SlotsLayer/TestSlot)
 	
 	
 	for i in range(4):

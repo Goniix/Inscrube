@@ -19,7 +19,6 @@ var draggable = false
 var is_in_dropable = false
 var body_ref
 var offset: Vector2
-var initialPos: Vector2
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -140,8 +139,8 @@ func is_mine(elem):
 func attach_card(slot_body):
 	slot_body.attached_card = self
 	var tween = create_tween()
-	tween.tween_property(self,"position", body_ref.position,0.2).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(self,"rotation", body_ref.rotation,0.2).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self,"position", slot_body.position,0.2).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -153,7 +152,7 @@ func _process(delta):
 	
 	if draggable:
 		if Input.is_action_just_pressed("leftClick"):
-			initialPos = global_position
+			#initialPos = global_position
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
 			
@@ -184,21 +183,24 @@ func _process(delta):
 
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
+			var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
+			var slots_list = slots_node.get_children()
 			
 			var tween = get_tree().create_tween()
 			if is_in_dropable:
-				var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
-				var slots_list = slots_node.get_children()
 				for slot in slots_list:
 					if slot.attached_card == self:
 						slot.attached_card = null
 				attach_card(body_ref)
 				
 			else:
-				tween.tween_property(self,"global_position",initialPos,0.2).set_ease(Tween.EASE_OUT)
+				var attached_to = null
+				for slot in slots_list:
+					if slot.attached_card == self:
+						attached_to = slot
+				attach_card(attached_to)
 			
-			var scale_tween = create_tween()
-			scale_tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 			
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
