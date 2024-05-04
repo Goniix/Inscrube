@@ -110,6 +110,7 @@ func _ready():
 		opponent_slot.rotation = PI
 		opponent_slot.slot_index = i
 		opponent_slot.slot_type = Slot.SLOT_TYPE.OPPONENT
+		opponent_slot.droppable = false
 		opponent_slot.get_node("Sprite").modulate = Color.BLACK
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)

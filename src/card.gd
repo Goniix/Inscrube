@@ -1,3 +1,4 @@
+class_name Card
 extends Node2D
 
 var card_id: String
@@ -133,6 +134,15 @@ func at_least_one_is_slot(list:Array):
 func is_slot(elem):
 	return elem.is_in_group("slot")
 
+func is_mine(elem):
+	return elem.droppable
+
+func attach_card(slot_body):
+	slot_body.attached_card = self
+	var tween = create_tween()
+	tween.tween_property(self,"position", body_ref.position,0.2).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(self,"rotation", body_ref.rotation,0.2).set_ease(Tween.EASE_OUT)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -146,10 +156,15 @@ func _process(delta):
 			initialPos = global_position
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
+			
+			if rotation!=0:
+				var tween = create_tween()
+				tween.parallel().tween_property(self,"rotation", 0,0.2).set_ease(Tween.EASE_OUT)
+			
 		if Input.is_action_pressed("leftClick"):
 			global_position = get_global_mouse_position() - offset
 			
-			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot)
+			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_mine)
 			if len(slot_elems)>0:
 				is_in_dropable = true
 				for elem in slot_elems:
@@ -170,15 +185,20 @@ func _process(delta):
 		elif Input.is_action_just_released("leftClick"):
 			Game.is_dragging = false
 			
-			var scale_tween = create_tween()
-			scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
-			
 			var tween = get_tree().create_tween()
 			if is_in_dropable:
-				tween.tween_property(self,"position", body_ref.position,0.2).set_ease(Tween.EASE_OUT)
-				tween.parallel().tween_property(self,"rotation", body_ref.rotation,0.2).set_ease(Tween.EASE_OUT)
+				var slots_node = get_tree().root.get_child(0).get_node("SlotsLayer")
+				var slots_list = slots_node.get_children()
+				for slot in slots_list:
+					if slot.attached_card == self:
+						slot.attached_card = null
+				attach_card(body_ref)
+				
 			else:
 				tween.tween_property(self,"global_position",initialPos,0.2).set_ease(Tween.EASE_OUT)
+			
+			var scale_tween = create_tween()
+			scale_tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 			
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:

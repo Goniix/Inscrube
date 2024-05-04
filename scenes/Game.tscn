@@ -33,7 +33,7 @@ stretch_mode = 6
 
 [node name="SlotsLayer" type="Node" parent="."]
 
-[node name="CardSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
+[node name="TestSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
 position = Vector2(283, 580)
 
 [node name="CardLayer" type="Node" parent="."]
