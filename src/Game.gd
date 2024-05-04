@@ -95,22 +95,24 @@ func _ready():
 	
 	
 	for i in range(4):
+		$SlotsPath/PathFollow2D.progress_ratio = i/3.0
+		
 		var player_slot = slotScene.instantiate()
-		var opponent_slot = slotScene.instantiate()
 		player_slot.scale = Vector2(1.5,1.5)
+		player_slot.slot_index = i
+		player_slot.slot_type = Slot.SLOT_TYPE.PLAYER
 		player_slot.get_node("Sprite").modulate = Color.BLACK
-		opponent_slot.get_node("Sprite").modulate = Color.BLACK
+		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
+		$SlotsLayer.add_child(player_slot)
+		
+		var opponent_slot = slotScene.instantiate()
 		opponent_slot.scale = Vector2(1.5,1.5)
 		opponent_slot.rotation = PI
-		
-		$SlotsPath/PathFollow2D.progress_ratio = i/3.0
-		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
+		opponent_slot.slot_index = i
+		opponent_slot.slot_type = Slot.SLOT_TYPE.OPPONENT
+		opponent_slot.get_node("Sprite").modulate = Color.BLACK
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
-		$SlotsLayer.add_child(player_slot)
 		$SlotsLayer.add_child(opponent_slot)
-	
-	#$PlayerSlots.update_child_pos()
-	#$OpponentSlots.update_child_pos()
-	
+
 func _process(delta):
 	pass
