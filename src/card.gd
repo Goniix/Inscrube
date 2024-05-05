@@ -139,7 +139,7 @@ func is_available(elem):
 	for card in cards_list:
 		if elem == card.attached_to:
 			return false
-	return elem.droppable
+	return elem.allow_drop
 
 func attach_card(slot_body):
 	#slot_body.attached_card = self
@@ -176,14 +176,10 @@ func _process(delta):
 					if position.distance_to(elem.position) < position.distance_to(body_ref.position):
 						body_ref = elem
 				
-				for elem in slot_elems:
-					if elem != body_ref:
-						
-						var color_tween = create_tween()
-						color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.BLACK,0.2)
-					else:
-						var color_tween = create_tween()
-						color_tween.tween_property(elem.get_node("Sprite"),"modulate",Color.WHITE,0.2)
+				#for elem in slot_elems:
+					#var slot_state = elem.STATES.HOVERED if elem == body_ref else elem.STATES.HOVERED_SECONDARY
+					#elem.change_state(slot_state)
+					
 			else:
 				is_in_dropable = false
 
@@ -200,9 +196,10 @@ func _process(delta):
 			
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
-		draggable = true
-		var scale_tween = create_tween()
-		scale_tween.tween_property(self,"scale",Vector2(0.25,0.25),0.05).set_ease(Tween.EASE_OUT)
+		if attached_to != null and attached_to.allow_pick:
+			draggable = true
+			var scale_tween = create_tween()
+			scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
 
 func _on_area_2d_mouse_exited():
@@ -214,15 +211,11 @@ func _on_area_2d_mouse_exited():
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):
-		#is_in_dropable = true
-		#var color_tween = create_tween()
-		#color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.WHITE,0.2)
 		body_ref = body
 
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("slot"):
-		#if not at_least_one_is_slot($CollisionArea.get_overlapping_bodies()):
-			#is_in_dropable = false
-			#body_ref = null
-		var color_tween = create_tween()
-		color_tween.tween_property(body.get_node("Sprite"),"modulate",Color.BLACK,0.2)
+		body.card_exited(self)
+		
+func _on_tween_end():
+	print("tween finished")

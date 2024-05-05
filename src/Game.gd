@@ -108,6 +108,7 @@ func _ready():
 		player_slot.slot_index = i
 		player_slot.slot_type = Slot.SLOT_TYPE.PLAYER
 		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
+		#player_slot.allow_pick = false
 		$SlotsLayer.add_child(player_slot)
 		
 		var opponent_slot = slotScene.instantiate()
@@ -115,6 +116,6 @@ func _ready():
 		opponent_slot.rotation = PI
 		opponent_slot.slot_index = i
 		opponent_slot.slot_type = Slot.SLOT_TYPE.OPPONENT
-		opponent_slot.droppable = false
+		opponent_slot.allow_drop = false
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)
