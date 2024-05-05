@@ -175,10 +175,6 @@ func _process(delta):
 				for elem in slot_elems:
 					if position.distance_to(elem.position) < position.distance_to(body_ref.position):
 						body_ref = elem
-				
-				#for elem in slot_elems:
-					#var slot_state = elem.STATES.HOVERED if elem == body_ref else elem.STATES.HOVERED_SECONDARY
-					#elem.change_state(slot_state)
 					
 			else:
 				is_in_dropable = false
@@ -216,6 +212,3 @@ func _on_area_2d_body_entered(body):
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("slot"):
 		body.card_exited(self)
-		
-func _on_tween_end():
-	print("tween finished")
