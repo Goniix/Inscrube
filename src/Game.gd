@@ -91,12 +91,14 @@ func _ready():
 	var new_card = cardScene.instantiate()
 	new_card.load_data("adder")
 	$CardLayer.add_child(new_card)
-	new_card.attach_card($SlotsLayer/TestSlot)
+	#new_card.attach_card($SlotsLayer/TestSlot)
+	new_card.attach_card($Hand)
 	
 	var squi = cardScene.instantiate()
 	squi.load_data("squirrel")
 	$CardLayer.add_child(squi)
-	squi.attach_card($SlotsLayer/TestSlot2)
+	#squi.attach_card($SlotsLayer/TestSlot2)
+	squi.attach_card($Hand)
 	
 	
 	

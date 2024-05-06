@@ -18,7 +18,7 @@ var draggable = false
 var is_in_dropable = false
 var body_ref
 var offset: Vector2
-var attached_to: Slot = null
+var attached_to = null
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -142,11 +142,16 @@ func is_available(elem):
 	return elem.allow_drop
 
 func attach_card(slot_body):
-	#slot_body.attached_card = self
 	attached_to = slot_body
-	var tween = create_tween()
-	tween.tween_property(self,"position", slot_body.position,0.1).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
+	if slot_body is Slot:
+		var tween = create_tween()
+		tween.tween_property(self,"position", slot_body.position,0.1).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
+	elif slot_body is Hand:
+		var hand_ref = get_tree().root.get_child(0).get_node("Hand")
+		if not hand_ref.attached_cards.has(self):
+			hand_ref.add_card(self)
+		hand_ref.refresh_cards_pos()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -189,7 +194,7 @@ func _process(delta):
 			
 			var tween = get_tree().create_tween()
 			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
-			
+
 func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
 		if attached_to != null and attached_to.allow_pick:
@@ -197,13 +202,11 @@ func _on_area_2d_mouse_entered():
 			var scale_tween = create_tween()
 			scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
-
 func _on_area_2d_mouse_exited():
 	if not Game.is_dragging:
 		draggable = false
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
-
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):

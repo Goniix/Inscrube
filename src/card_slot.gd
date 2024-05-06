@@ -31,7 +31,7 @@ func force_color_change():
 
 func change_state(target_state: STATES):
 	if(target_state != state):
-		print(slot_name()+" changed state to "+str(target_state))
+		#print(slot_name()+" changed state to "+str(target_state))
 		state = target_state
 
 func card_exited(card: Card):
@@ -76,4 +76,5 @@ func _process(delta):
 			color_tween.finished.connect(_color_change_end.bind(get_state_color()))
 			
 func _color_change_end(target_color):
-	print(slot_name()+" finished changing to "+str(target_color))
+	pass
+	#print(slot_name()+" finished changing to "+str(target_color))

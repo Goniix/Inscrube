@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=10 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/hand.tscn" id="4_41c2r"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="4_caxdh"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="4_egrnp"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="5_2vkrc"]
@@ -41,6 +42,9 @@ position = Vector2(288, 364)
 position = Vector2(283, 851)
 
 [node name="CardLayer" type="Node" parent="."]
+
+[node name="Hand" parent="." instance=ExtResource("4_41c2r")]
+position = Vector2(1310, 897)
 
 [node name="SlotsPath" type="Path2D" parent="."]
 position = Vector2(635, 540)
