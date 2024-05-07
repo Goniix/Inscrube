@@ -94,11 +94,12 @@ func _ready():
 	#new_card.attach_card($SlotsLayer/TestSlot)
 	new_card.attach_card($Hand)
 	
-	var squi = cardScene.instantiate()
-	squi.load_data("squirrel")
-	$CardLayer.add_child(squi)
-	#squi.attach_card($SlotsLayer/TestSlot2)
-	squi.attach_card($Hand)
+	#for i in range(5):
+		#var squi = cardScene.instantiate()
+		#squi.load_data("squirrel")
+		#$CardLayer.add_child(squi)
+		##squi.attach_card($SlotsLayer/TestSlot2)
+		#squi.attach_card($Hand)
 	
 	
 	
@@ -121,3 +122,11 @@ func _ready():
 		opponent_slot.allow_drop = false
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)
+
+func _process(delta):
+	if(Input.is_action_just_pressed("Debug1")):
+		var squi = cardScene.instantiate()
+		squi.load_data("squirrel")
+		$CardLayer.add_child(squi)
+		#squi.attach_card($SlotsLayer/TestSlot2)
+		squi.attach_card($Hand)

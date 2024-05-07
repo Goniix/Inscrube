@@ -141,17 +141,23 @@ func is_available(elem):
 			return false
 	return elem.allow_drop
 
-func attach_card(slot_body):
-	attached_to = slot_body
-	if slot_body is Slot:
+func attach_card(new_slot_body):
+	if attached_to is Hand:
+		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
+		attached_to.remove_card(self)
+		
+	
+	if new_slot_body is Slot:
 		var tween = create_tween()
-		tween.tween_property(self,"position", slot_body.position,0.1).set_ease(Tween.EASE_OUT)
-		tween.parallel().tween_property(self,"rotation", slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
-	elif slot_body is Hand:
-		var hand_ref = get_tree().root.get_child(0).get_node("Hand")
-		if not hand_ref.attached_cards.has(self):
-			hand_ref.add_card(self)
-		hand_ref.refresh_cards_pos()
+		tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
+	elif new_slot_body is Hand:
+		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
+		if not new_slot_body.attached_cards.has(self):
+			new_slot_body.add_card(self)
+		new_slot_body.refresh_cards_pos()
+		
+	attached_to = new_slot_body
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
