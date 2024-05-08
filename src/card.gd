@@ -167,7 +167,12 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	if draggable:
+	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
+	if tween_vector != scale:
+		var scale_tween = create_tween()
+		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
+	
+	if draggable and Game.hovered_card == self:
 		if Input.is_action_just_pressed("leftClick"):
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
@@ -205,14 +210,14 @@ func _on_area_2d_mouse_entered():
 	if not Game.is_dragging:
 		if attached_to != null and attached_to.allow_pick:
 			draggable = true
-			var scale_tween = create_tween()
-			scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
+			#var scale_tween = create_tween()
+			#scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_exited():
 	if not Game.is_dragging:
 		draggable = false
-		var scale_tween = create_tween()
-		scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+		#var scale_tween = create_tween()
+		#scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("slot"):

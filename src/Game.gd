@@ -45,6 +45,8 @@ static var language = 0
 
 static var is_dragging = false
 
+static var hovered_card = null
+
 static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data/"]
 	for elem in cardsDirs:
@@ -59,7 +61,7 @@ static func loadAllCards(recursive:bool=true):
 					var json_parsed:Dictionary = JSON.parse_string(jsonFile.get_as_text())
 					var card_name:String = file_name.replace(".json","")
 					cardData[card_name] = json_parsed
-					print("loaded card \""+card_name+"\" : "+file_path)
+					print_rich("loaded card [b]"+card_name+"[/b] : [color=YELLOW]"+file_path)
 				elif recursive :
 					cardsDirs.append(file_path+"/")
 				file_name = dir.get_next()
@@ -134,5 +136,12 @@ func _process(delta):
 	var hovered_cards = []
 	for card in $CardLayer.get_children():
 		if(card.draggable):
-			print(str(card)+"drag")
+			hovered_cards.append(card)
+	
+	if len(hovered_cards) == 0:
+		hovered_card = null
+	else:
+		for card in hovered_cards:
+			if hovered_card == null or card.position.distance_to(get_viewport().get_mouse_position()):
+				hovered_card = card
 	
