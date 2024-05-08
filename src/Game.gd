@@ -130,3 +130,9 @@ func _process(delta):
 		$CardLayer.add_child(squi)
 		#squi.attach_card($SlotsLayer/TestSlot2)
 		squi.attach_card($Hand)
+		
+	var hovered_cards = []
+	for card in $CardLayer.get_children():
+		if(card.draggable):
+			print(str(card)+"drag")
+	
