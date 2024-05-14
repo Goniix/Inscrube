@@ -142,7 +142,7 @@ func is_available(elem):
 	return elem.allow_drop
 
 func attach_card(new_slot_body):
-	if attached_to is Hand:
+	if attached_to is Hand and not new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		attached_to.remove_card(self)
 		
@@ -167,6 +167,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	#if draggable :
+		#modulate = Color.GREEN
+	#else:
+		#modulate = Color.REBECCA_PURPLE
+	
 	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
@@ -176,7 +181,8 @@ func _process(delta):
 		if Input.is_action_just_pressed("leftClick"):
 			offset = get_global_mouse_position() - global_position
 			Game.is_dragging = true
-			get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
+			#get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
+			set_z_index(10)
 			
 			if rotation!=0:
 				var tween = create_tween()
@@ -196,7 +202,8 @@ func _process(delta):
 				is_in_dropable = false
 
 		elif Input.is_action_just_released("leftClick"):
-			Game.is_dragging = false
+			get_tree().root.get_child(0).card_dropped.emit(self)
+			set_z_index(2)
 			
 			if is_in_dropable:
 				attach_card(body_ref)

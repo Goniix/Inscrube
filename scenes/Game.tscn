@@ -71,3 +71,5 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 metadata/_edit_lock_ = true
+
+[connection signal="card_dropped" from="." to="." method="_on_card_dropped"]

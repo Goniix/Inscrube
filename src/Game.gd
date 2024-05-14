@@ -1,6 +1,8 @@
 class_name Game
 extends Node
 
+signal card_dropped(card:Card)
+
 static var cardScene : PackedScene = preload("res://scenes/card.tscn")
 static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
 
@@ -48,7 +50,7 @@ static var is_dragging = false
 static var hovered_card = null
 
 static func loadAllCards(recursive:bool=true):
-	var cardsDirs = ["res://cards/card_data/"]
+	var cardsDirs = ["res://cards/card_data"]
 	for elem in cardsDirs:
 		var dir = DirAccess.open(elem)
 		if dir:
@@ -63,7 +65,7 @@ static func loadAllCards(recursive:bool=true):
 					cardData[card_name] = json_parsed
 					print_rich("loaded card [b]"+card_name+"[/b] : [color=YELLOW]"+file_path)
 				elif recursive :
-					cardsDirs.append(file_path+"/")
+					cardsDirs.append(file_path)
 				file_name = dir.get_next()
 		else:
 			print("An error occurred when trying to access the path.")
@@ -144,4 +146,8 @@ func _process(delta):
 		for card in hovered_cards:
 			if hovered_card == null or card.position.distance_to(get_viewport().get_mouse_position()):
 				hovered_card = card
-	
+				
+func _on_card_dropped(card):
+	is_dragging = false
+	for elem in $CardLayer.get_children():
+		elem.draggable = false 
