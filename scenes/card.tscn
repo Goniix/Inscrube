@@ -139,7 +139,7 @@ position = Vector2(520, 740)
 shape = SubResource("RectangleShape2D_2bvok")
 debug_color = Color(0.963767, 0, 0.496767, 0.42)
 
-[node name="SelectionArea" type="Area2D" parent="."]
+[node name="SelectionArea" type="Area2D" parent="." groups=["card"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea"]
 shape = SubResource("RectangleShape2D_i7641")

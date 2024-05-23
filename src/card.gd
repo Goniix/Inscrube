@@ -15,10 +15,14 @@ var card_illustrator: String
 var card_scrybe: String
 
 var draggable = false
+var hovered = false
 var is_in_dropable = false
 var body_ref
 var offset: Vector2
 var attached_to = null
+var drop_pointer = null
+var gameRoot = null
+
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -163,19 +167,25 @@ func attach_card(new_slot_body):
 func _ready():
 	pass # Replace with function body.
 	scale = Vector2(0.22,0.22)
+	gameRoot = get_tree().root.get_child(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-	#if draggable :
-		#modulate = Color.GREEN
-	#else:
-		#modulate = Color.REBECCA_PURPLE
+	if Game.colorDebug:
+		if draggable :
+			modulate = Color.GREEN
+		else:
+			modulate = Color.REBECCA_PURPLE
 	
 	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
+		
+	if drop_pointer != null:
+		for elempnt in gameRoot.get_node("DebugNode").get_children():
+			print(elempnt.get_overlapping_areas().filter(func(elem): return elem.is_in_group("card")))
+		drop_pointer = null 
 	
 	if draggable and Game.hovered_card == self:
 		if Input.is_action_just_pressed("leftClick"):
@@ -188,7 +198,7 @@ func _process(delta):
 				var tween = create_tween()
 				tween.parallel().tween_property(self,"rotation", 0,0.2).set_ease(Tween.EASE_OUT)
 			
-		if Input.is_action_pressed("leftClick"):
+		if Input.is_action_pressed("leftClick") and Game.is_dragging:
 			global_position = get_global_mouse_position() - offset
 			
 			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
@@ -201,8 +211,21 @@ func _process(delta):
 			else:
 				is_in_dropable = false
 
-		elif Input.is_action_just_released("leftClick"):
-			get_tree().root.get_child(0).card_dropped.emit(self)
+		elif Input.is_action_just_released("leftClick") and Game.is_dragging:
+			
+			
+			Game.is_dragging = false
+			for elem in gameRoot.get_node("CardLayer").get_children():
+				elem.draggable = elem in Game.hovered_card_list
+			
+			#if drop_pointer == null:
+				#drop_pointer = Game.pointerScene.instantiate()
+				#gameRoot.get_node("DebugNode").add_child(drop_pointer);
+				#drop_pointer.position = Vector2(1632,679)
+			
+			print(Game.hovered_card_list)
+				
+			
 			set_z_index(2)
 			
 			if is_in_dropable:
@@ -214,6 +237,7 @@ func _process(delta):
 			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_entered():
+	hovered = true
 	if not Game.is_dragging:
 		if attached_to != null and attached_to.allow_pick:
 			draggable = true
@@ -221,6 +245,7 @@ func _on_area_2d_mouse_entered():
 			#scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_exited():
+	hovered = false 
 	if not Game.is_dragging:
 		draggable = false
 		#var scale_tween = create_tween()

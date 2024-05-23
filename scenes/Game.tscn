@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=11 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="4_caxdh"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="4_egrnp"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="5_2vkrc"]
+[ext_resource type="PackedScene" uid="uid://boxdxeyolykw3" path="res://scenes/SacrificeToken.tscn" id="7_f6api"]
 
 [sub_resource type="Curve2D" id="Curve2D_nrd8v"]
 _data = {
@@ -51,6 +52,11 @@ position = Vector2(635, 540)
 curve = SubResource("Curve2D_nrd8v")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="SlotsPath"]
+
+[node name="SacrificeToken" parent="." instance=ExtResource("7_f6api")]
+position = Vector2(1632, 638)
+
+[node name="DebugNode" type="Node" parent="."]
 
 [node name="CRT" type="ColorRect" parent="."]
 visible = false

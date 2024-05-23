@@ -7,11 +7,12 @@ var slot_type: SLOT_TYPE
 
 var allow_drop: bool = true
 var allow_pick: bool = true
+var allow_sacrifice: bool = true
 
 enum STATES {IDLE,LIGHTED,HOVERED,ATTACHED}
 var state: STATES = STATES.IDLE
 
-var color_tween
+var color_tween: Tween
 
 func get_state_color():
 	var res

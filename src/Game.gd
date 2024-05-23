@@ -5,6 +5,7 @@ signal card_dropped(card:Card)
 
 static var cardScene : PackedScene = preload("res://scenes/card.tscn")
 static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
+static var pointerScene : PackedScene = preload("res://scenes/spacial_pointer.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
@@ -48,6 +49,9 @@ static var language = 0
 static var is_dragging = false
 
 static var hovered_card = null
+static var hovered_card_list = []
+
+const colorDebug = false;
 
 static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data"]
@@ -135,19 +139,17 @@ func _process(delta):
 		#squi.attach_card($SlotsLayer/TestSlot2)
 		squi.attach_card($Hand)
 		
-	var hovered_cards = []
+	var draggable_card_list = []
+	hovered_card_list = []
 	for card in $CardLayer.get_children():
+		if(card.hovered):
+			hovered_card_list.append(card)			
 		if(card.draggable):
-			hovered_cards.append(card)
+			draggable_card_list.append(card)
 	
-	if len(hovered_cards) == 0:
+	if len(draggable_card_list) == 0:
 		hovered_card = null
 	else:
-		for card in hovered_cards:
+		for card in draggable_card_list:
 			if hovered_card == null or card.position.distance_to(get_viewport().get_mouse_position()):
 				hovered_card = card
-				
-func _on_card_dropped(card):
-	is_dragging = false
-	for elem in $CardLayer.get_children():
-		elem.draggable = false 
