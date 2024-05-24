@@ -17,27 +17,17 @@ size = Vector2(1040, 1480)
 [node name="Card" type="Node2D"]
 script = ExtResource("1_kk43u")
 
-[node name="Background" type="TextureRect" parent="."]
-offset_left = -430.0
-offset_top = -510.0
-offset_right = -344.0
-offset_bottom = -451.0
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(0, -216)
 scale = Vector2(10, 10)
 texture = ExtResource("3_l635c")
 
-[node name="Frame" type="TextureRect" parent="."]
-offset_left = -520.0
-offset_top = -740.0
-offset_right = -416.0
-offset_bottom = -592.0
+[node name="Frame" type="Sprite2D" parent="."]
 scale = Vector2(10, 10)
 texture = ExtResource("3_pw6dg")
 
-[node name="Art" type="TextureRect" parent="."]
-offset_left = -430.0
-offset_top = -510.0
-offset_right = -344.0
-offset_bottom = -451.0
+[node name="Art" type="Sprite2D" parent="."]
+position = Vector2(0, -216)
 scale = Vector2(10, 10)
 texture = ExtResource("4_mq33s")
 

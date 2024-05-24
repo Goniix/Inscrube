@@ -50,7 +50,7 @@ static var is_dragging = false
 static var hovered_card = null
 static var hovered_card_list = []
 
-const colorDebug = true;
+const colorDebug = false;
 
 static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data"]
