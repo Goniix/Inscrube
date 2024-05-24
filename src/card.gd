@@ -149,9 +149,12 @@ func is_available(elem):
 func attach_card(new_slot_body):
 	if attached_to is Hand and not new_slot_body is Hand:
 		attached_to.remove_card(self)
-		
+	
+	elif attached_to is Slot:
+		attached_to.attached_card = null
 	
 	if new_slot_body is Slot:
+		new_slot_body.attached_card = self		
 		if(rotation_tween!=null and rotation_tween.is_running()):
 			rotation_tween.kill()
 			

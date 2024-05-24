@@ -8,6 +8,7 @@ var slot_type: SLOT_TYPE
 var allow_drop: bool = true
 var allow_pick: bool = true
 var allow_sacrifice: bool = true
+var attached_card : Card = null
 
 var sacrifice_mark_ref: Node2D = null;
 
