@@ -35,11 +35,17 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_just_pressed("leftClick") and hovered:
-		gameRoot.giveDebugSquirrel()
+		#gameRoot.giveDebugSquirrel()
 		if is_activated():
 			state = STATES.IDLE
 		else:
 			state = STATES.ACTIVATED
+			
+		for slot in gameRoot.get_node("SlotsLayer").get_children():
+			if(slot.sacrifice_mark_ref != null):
+				slot.sacrifice_mark_ref.color_tween = create_tween()
+				slot.sacrifice_mark_ref.color_tween.tween_property(slot.sacrifice_mark_ref,"modulate",Color(1,1,1,1 if (state == STATES.ACTIVATED) else 0),0.2) 
+				
 	
 	if color_tween == null or !color_tween.is_running():
 		if $SacrificeIcon.modulate != get_state_color($SacrificeIcon.name):

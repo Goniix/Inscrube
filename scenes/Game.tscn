@@ -43,6 +43,8 @@ rotation = 3.14159
 [node name="TestSlot2" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
 position = Vector2(283, 851)
 
+[node name="SacrificeMarkLayer" type="Node" parent="."]
+
 [node name="CardLayer" type="Node" parent="."]
 
 [node name="Hand" parent="." instance=ExtResource("4_41c2r")]
@@ -56,8 +58,6 @@ curve = SubResource("Curve2D_nrd8v")
 
 [node name="SacrificeToken" parent="." instance=ExtResource("7_f6api")]
 position = Vector2(1632, 638)
-
-[node name="DebugNode" type="Node" parent="."]
 
 [node name="CRT" type="ColorRect" parent="."]
 visible = false

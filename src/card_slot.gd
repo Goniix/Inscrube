@@ -9,6 +9,8 @@ var allow_drop: bool = true
 var allow_pick: bool = true
 var allow_sacrifice: bool = true
 
+var sacrifice_mark_ref: Node2D = null;
+
 enum STATES {IDLE,LIGHTED,HOVERED,ATTACHED}
 var state: STATES = STATES.IDLE
 

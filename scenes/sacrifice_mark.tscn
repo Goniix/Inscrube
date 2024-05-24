@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://buuoxwwe0mmdm"]
+
+[ext_resource type="Script" path="res://scenes/sacrifice_mark.gd" id="1_aikls"]
+[ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="1_dqe76"]
+
+[node name="SacrificeMark" type="Node2D"]
+script = ExtResource("1_aikls")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_dqe76")

@@ -5,6 +5,7 @@ signal card_dropped(card:Card)
 
 static var cardScene : PackedScene = preload("res://scenes/card.tscn")
 static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
+static var sacrificeMarkScene : PackedScene = preload("res://scenes/sacrifice_mark.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
@@ -122,7 +123,11 @@ func _ready():
 		player_slot.slot_index = i
 		player_slot.slot_type = Slot.SLOT_TYPE.PLAYER
 		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
+		player_slot.sacrifice_mark_ref = sacrificeMarkScene.instantiate()
+		player_slot.sacrifice_mark_ref.position = player_slot.position
+		player_slot.sacrifice_mark_ref.modulate = Color(1,1,1,0)
 		#player_slot.allow_pick = false
+		$SacrificeMarkLayer.add_child(player_slot.sacrifice_mark_ref)
 		$SlotsLayer.add_child(player_slot)
 		
 		var opponent_slot = slotScene.instantiate()
@@ -135,7 +140,6 @@ func _ready():
 		$SlotsLayer.add_child(opponent_slot)
 
 func _process(delta):
-	print(hovered_card)
 	if(Input.is_action_just_pressed("Debug1")):
 		giveDebugSquirrel()
 		
