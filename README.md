@@ -1,2 +1,2 @@
 # Inscrybe
-This is a recrationnal project aimmming to recreate the TabletpSimulator game InscryptionAugmented from AnsweringMachine
+This is a recrationnal project aimmming to recreate the TabletopSimulator game InscryptionAugmented from AnsweringMachine
