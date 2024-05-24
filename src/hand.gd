@@ -22,6 +22,9 @@ func refresh_cards_pos():
 	#print(str(len(attached_cards))+" cartes dans la main")
 	var i = 0
 	for card_elem in attached_cards:
+		if(card_elem.rotation_tween!=null and card_elem.rotation_tween.is_running()):
+			card_elem.rotation_tween.kill()
+		
 		var tween = create_tween()
 		var path_data = get_card_position(card_elem)
 		tween.tween_property(card_elem,"position", path_data[0], 0.1).set_ease(Tween.EASE_OUT)

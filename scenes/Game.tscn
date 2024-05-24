@@ -38,6 +38,7 @@ metadata/_edit_lock_ = true
 
 [node name="TestSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
 position = Vector2(288, 364)
+rotation = 3.14159
 
 [node name="TestSlot2" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
 position = Vector2(283, 851)

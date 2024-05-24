@@ -3,6 +3,7 @@ extends Node2D
 var color_tween: Tween
 var state : STATES = STATES.IDLE
 var hovered: bool = false
+var gameRoot = null
 
 enum STATES {IDLE,ACTIVATED}
 
@@ -28,16 +29,17 @@ func is_activated():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	gameRoot = get_tree().root.get_child(0)
 	$Token.modulate = Color.BLACK
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_just_pressed("leftClick") and hovered:
+		gameRoot.giveDebugSquirrel()
 		if is_activated():
 			state = STATES.IDLE
 		else:
 			state = STATES.ACTIVATED
-			gameRoot.giveDebugSquirrel()
 	
 	if color_tween == null or !color_tween.is_running():
 		if $SacrificeIcon.modulate != get_state_color($SacrificeIcon.name):

@@ -135,6 +135,7 @@ func _ready():
 		$SlotsLayer.add_child(opponent_slot)
 
 func _process(delta):
+	print(hovered_card)
 	if(Input.is_action_just_pressed("Debug1")):
 		giveDebugSquirrel()
 		

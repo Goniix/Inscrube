@@ -20,9 +20,10 @@ var is_in_dropable = false
 var body_ref
 var offset: Vector2
 var attached_to = null
-var drop_pointer = null
 var gameRoot = null
 
+var rotation_tween = null;
+var position_tween = null;
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -147,14 +148,19 @@ func is_available(elem):
 
 func attach_card(new_slot_body):
 	if attached_to is Hand and not new_slot_body is Hand:
-		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		attached_to.remove_card(self)
 		
 	
 	if new_slot_body is Slot:
-		var tween = create_tween()
-		tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
-		tween.parallel().tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
+		if(rotation_tween!=null and rotation_tween.is_running()):
+			rotation_tween.kill()
+			
+		if(new_slot_body.rotation != self.rotation):
+			rotation_tween = create_tween()
+			rotation_tween.tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
+			
+		position_tween = create_tween()
+		position_tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		if not new_slot_body.attached_cards.has(self):
@@ -181,11 +187,6 @@ func _process(delta):
 	if tween_vector != scale:
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
-		
-	if drop_pointer != null:
-		for elempnt in gameRoot.get_node("DebugNode").get_children():
-			print(elempnt.get_overlapping_areas().filter(func(elem): return elem.is_in_group("card")))
-		drop_pointer = null 
 	
 	if draggable and Game.hovered_card == self:
 		if Input.is_action_just_pressed("leftClick"):
@@ -195,8 +196,8 @@ func _process(delta):
 			set_z_index(10)
 			
 			if rotation!=0:
-				var tween = create_tween()
-				tween.parallel().tween_property(self,"rotation", 0,0.2).set_ease(Tween.EASE_OUT)
+				rotation_tween = create_tween()
+				rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
 			
 		if Input.is_action_pressed("leftClick") and Game.is_dragging:
 			global_position = get_global_mouse_position() - offset
