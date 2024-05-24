@@ -212,19 +212,9 @@ func _process(delta):
 				is_in_dropable = false
 
 		elif Input.is_action_just_released("leftClick") and Game.is_dragging:
-			
-			
 			Game.is_dragging = false
 			for elem in gameRoot.get_node("CardLayer").get_children():
 				elem.draggable = elem in Game.hovered_card_list
-			
-			#if drop_pointer == null:
-				#drop_pointer = Game.pointerScene.instantiate()
-				#gameRoot.get_node("DebugNode").add_child(drop_pointer);
-				#drop_pointer.position = Vector2(1632,679)
-			
-			print(Game.hovered_card_list)
-				
 			
 			set_z_index(2)
 			

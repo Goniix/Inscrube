@@ -5,7 +5,6 @@ signal card_dropped(card:Card)
 
 static var cardScene : PackedScene = preload("res://scenes/card.tscn")
 static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
-static var pointerScene : PackedScene = preload("res://scenes/spacial_pointer.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
@@ -51,7 +50,7 @@ static var is_dragging = false
 static var hovered_card = null
 static var hovered_card_list = []
 
-const colorDebug = false;
+const colorDebug = true;
 
 static func loadAllCards(recursive:bool=true):
 	var cardsDirs = ["res://cards/card_data"]
@@ -88,8 +87,12 @@ func dir_contents(path):
 	else:
 		print("An error occurred when trying to access the path.")
 
-
-
+func giveDebugSquirrel():
+	var squi = cardScene.instantiate()
+	squi.load_data("squirrel")
+	$CardLayer.add_child(squi)
+	#squi.attach_card($SlotsLayer/TestSlot2)
+	squi.attach_card($Hand)
 
 func _init():
 	Game.loadAllCards(true)
@@ -133,11 +136,7 @@ func _ready():
 
 func _process(delta):
 	if(Input.is_action_just_pressed("Debug1")):
-		var squi = cardScene.instantiate()
-		squi.load_data("squirrel")
-		$CardLayer.add_child(squi)
-		#squi.attach_card($SlotsLayer/TestSlot2)
-		squi.attach_card($Hand)
+		giveDebugSquirrel()
 		
 	var draggable_card_list = []
 	hovered_card_list = []

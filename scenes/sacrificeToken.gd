@@ -37,6 +37,7 @@ func _process(delta):
 			state = STATES.IDLE
 		else:
 			state = STATES.ACTIVATED
+			gameRoot.giveDebugSquirrel()
 	
 	if color_tween == null or !color_tween.is_running():
 		if $SacrificeIcon.modulate != get_state_color($SacrificeIcon.name):
