@@ -22,8 +22,9 @@ var offset: Vector2
 var attached_to = null
 var gameRoot = null
 
-var rotation_tween = null;
-var position_tween = null;
+var rotation_tween : Tween = null;
+var position_tween : Tween = null;
+var color_tween : Tween = null;
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Dictionary = {
@@ -232,7 +233,7 @@ func _process(delta):
 
 func _on_area_2d_mouse_entered():
 	hovered = true
-	if not Game.is_dragging:
+	if Game.allow_card_drag and not Game.is_dragging:
 		if attached_to != null and attached_to.allow_pick:
 			draggable = true
 			#var scale_tween = create_tween()
