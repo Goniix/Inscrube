@@ -50,6 +50,7 @@ static var is_dragging = false
 
 static var hovered_card = null
 static var hovered_card_list = []
+static var allow_card_drag = true;
 
 const colorDebug = false;
 
@@ -125,7 +126,7 @@ func _ready():
 		player_slot.position = $SlotsPath/PathFollow2D.global_position + Vector2(0,160)
 		player_slot.sacrifice_mark_ref = sacrificeMarkScene.instantiate()
 		player_slot.sacrifice_mark_ref.position = player_slot.position
-		player_slot.sacrifice_mark_ref.modulate = Color(1,1,1,0)
+		player_slot.sacrifice_mark_ref.slot_ref = player_slot
 		#player_slot.allow_pick = false
 		$SacrificeMarkLayer.add_child(player_slot.sacrifice_mark_ref)
 		$SlotsLayer.add_child(player_slot)

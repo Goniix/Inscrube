@@ -41,10 +41,12 @@ func _process(delta):
 		else:
 			state = STATES.ACTIVATED
 			
+		Game.allow_card_drag = not is_activated()
+		gameRoot.get_node("Hand").update_cards_color()
+			
 		for slot in gameRoot.get_node("SlotsLayer").get_children():
 			if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
-				slot.sacrifice_mark_ref.color_tween = create_tween()
-				slot.sacrifice_mark_ref.color_tween.tween_property(slot.sacrifice_mark_ref,"modulate",Color(1,1,1,1 if (state == STATES.ACTIVATED) else 0),0.2) 
+				slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE if (state == STATES.ACTIVATED) else ScarMark.STATES.HIDDEN)
 				
 	
 	if color_tween == null or !color_tween.is_running():

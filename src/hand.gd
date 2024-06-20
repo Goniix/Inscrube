@@ -18,6 +18,12 @@ func add_card(card: Card):
 func remove_card(card: Card):
 	attached_cards.erase(card)
 
+func update_cards_color():
+	for card in attached_cards:
+		card.color_tween = create_tween()
+		var fct = (1 if (Game.allow_card_drag) else 0.5)
+		card.color_tween.tween_property(card,"modulate",Color(fct,fct,fct,1),0.1)
+
 func refresh_cards_pos():
 	#print(str(len(attached_cards))+" cartes dans la main")
 	var i = 0
