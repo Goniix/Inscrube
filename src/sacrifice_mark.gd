@@ -24,7 +24,11 @@ func get_state_color():
 
 func change_state(target_state: STATES):
 	if(target_state != state):
+		force_color_change()
 		state = target_state
+
+func force_color_change():
+	color_tween.kill()
 
 func _ready():
 	set_z_index(20)
@@ -40,8 +44,10 @@ func _process(delta):
 		STATES.HOVERED:
 			if(Input.is_action_just_pressed("leftClick")):
 				change_state(STATES.ACTIVE)
+				Game.sacrificed_value +=1
 			elif not isHovered():
 				change_state( STATES.IDLE)
+				Game.sacrificed_value -=1
 		STATES.IDLE:
 			if(isHovered()):
 				change_state( STATES.HOVERED)

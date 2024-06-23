@@ -38,6 +38,7 @@ func _process(delta):
 		#gameRoot.giveDebugSquirrel()
 		if is_activated():
 			state = STATES.IDLE
+			Game.sacrificed_value = 0;
 		else:
 			state = STATES.ACTIVATED
 			

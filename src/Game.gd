@@ -51,6 +51,7 @@ static var is_dragging = false
 static var hovered_card = null
 static var hovered_card_list = []
 static var allow_card_drag = true;
+static var sacrificed_value = 0;
 
 const colorDebug = false;
 
