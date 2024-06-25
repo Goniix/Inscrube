@@ -18,7 +18,7 @@ func add_card(card: Card):
 func remove_card(card: Card):
 	attached_cards.erase(card)
 
-func update_cards_color():
+func refresh_cards_color():
 	for card in attached_cards:
 		card.color_tween = create_tween()
 		var fct = (1 if (Game.allow_card_drag or card.card_cost.get("blood") <= Game.sacrificed_value) else 0.5)

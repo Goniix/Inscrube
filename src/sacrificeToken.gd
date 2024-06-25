@@ -1,3 +1,4 @@
+class_name ScarToken
 extends Node2D
 
 var color_tween: Tween
@@ -43,7 +44,7 @@ func _process(delta):
 			state = STATES.ACTIVATED
 			
 		Game.allow_card_drag = not is_activated()
-		gameRoot.get_node("Hand").update_cards_color()
+		gameRoot.get_node("Hand").refresh_cards_color()
 			
 		for slot in gameRoot.get_node("SlotsLayer").get_children():
 			if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
