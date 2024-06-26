@@ -147,7 +147,7 @@ func is_available(elem):
 			return false
 	return elem.allow_drop
 
-func attach_card(new_slot_body):
+func attach_card(new_slot_body,pos=0):
 	if attached_to is Hand and not new_slot_body is Hand:
 		attached_to.remove_card(self)
 	
@@ -168,7 +168,7 @@ func attach_card(new_slot_body):
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		if not new_slot_body.attached_cards.has(self):
-			new_slot_body.add_card(self)
+			new_slot_body.add_card(self,pos)
 		new_slot_body.refresh_cards_pos()
 		
 	attached_to = new_slot_body
@@ -181,7 +181,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Game.colorDebug:
+	if Game.COLOR_DEBUG:
 		if draggable :
 			modulate = Color.GREEN
 		else:
@@ -194,42 +194,50 @@ func _process(delta):
 	
 	if draggable and Game.hovered_card == self:
 		if Input.is_action_just_pressed("leftClick"):
-			offset = get_global_mouse_position() - global_position
-			Game.is_dragging = true
+			if not Game.card_played:
+				Game.card_played_pos = attached_to.attached_cards.find(self)
+				print(Game.card_played_pos)
+				attach_card(gameRoot.get_node("SlotsLayer").get_node("PlayedSlot"))
+				Game.card_played = true
+				gameRoot.get_node("SacrificeToken").toggle_state()
+				for card in gameRoot.get_node("Hand").attached_cards:
+					card.draggable = false
+			#offset = get_global_mouse_position() - global_position
+			#Game.is_dragging = true
 			#get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
-			set_z_index(10)
+			#set_z_index(10)
 			
-			if rotation!=0:
-				rotation_tween = create_tween()
-				rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
+			#if rotation!=0:
+				#rotation_tween = create_tween()
+				#rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
 			
-		if Input.is_action_pressed("leftClick") and Game.is_dragging:
-			global_position = get_global_mouse_position() - offset
-			
-			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
-			if len(slot_elems)>0:
-				is_in_dropable = true
-				for elem in slot_elems:
-					if position.distance_to(elem.position) < position.distance_to(body_ref.position):
-						body_ref = elem
-					
-			else:
-				is_in_dropable = false
+		#if Input.is_action_pressed("leftClick") and Game.is_dragging:
+			#global_position = get_global_mouse_position() - offset
+			#
+			#var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
+			#if len(slot_elems)>0:
+				#is_in_dropable = true
+				#for elem in slot_elems:
+					#if position.distance_to(elem.position) < position.distance_to(body_ref.position):
+						#body_ref = elem
+					#
+			#else:
+				#is_in_dropable = false
 
-		elif Input.is_action_just_released("leftClick") and Game.is_dragging:
-			Game.is_dragging = false
-			for elem in gameRoot.get_node("CardLayer").get_children():
-				elem.draggable = elem in Game.hovered_card_list
-			
-			set_z_index(2)
-			
-			if is_in_dropable:
-				attach_card(body_ref)
-			else:
-				attach_card(attached_to)
-			
-			var tween = get_tree().create_tween()
-			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+		#elif Input.is_action_just_released("leftClick") and Game.is_dragging:
+			#Game.is_dragging = false
+			#for elem in gameRoot.get_node("CardLayer").get_children():
+				#elem.draggable = elem in Game.hovered_card_list
+			#
+			#set_z_index(2)
+			#
+			#if is_in_dropable:
+				#attach_card(body_ref)
+			#else:
+				#attach_card(attached_to)
+			#
+			#var tween = get_tree().create_tween()
+			#tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_entered():
 	hovered = true
