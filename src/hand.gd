@@ -12,8 +12,9 @@ func get_card_index(card: Card):
 		i+= 1
 	return -1
 
-func add_card(card: Card):
-	attached_cards.append(card)
+func add_card(card: Card, pos: int):
+	#attached_cards.append(card)
+	attached_cards.insert(pos,card)
 
 func remove_card(card: Card):
 	attached_cards.erase(card)
