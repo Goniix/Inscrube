@@ -51,13 +51,16 @@ static var is_dragging = false
 static var hovered_card = null
 static var hovered_card_list = []
 static var allow_card_drag = true;
-static var sacrificed_value = 0;
+static var card_played = false;
+static var card_played_pos = null
+static var sacrificed_value = 0
+static var card_total_value = 0
 
-const colorDebug = false;
+const COLOR_DEBUG = false;
 
 static func loadAllCards(recursive:bool=true):
-	var cardsDirs = ["res://cards/card_data"]
-	for elem in cardsDirs:
+	var cards_dir_list = ["res://cards/card_data"]
+	for elem in cards_dir_list:
 		var dir = DirAccess.open(elem)
 		if dir:
 			dir.list_dir_begin()
@@ -71,7 +74,7 @@ static func loadAllCards(recursive:bool=true):
 					cardData[card_name] = json_parsed
 					print_rich("loaded card [b]"+card_name+"[/b] : [color=YELLOW]"+file_path)
 				elif recursive :
-					cardsDirs.append(file_path)
+					cards_dir_list.append(file_path)
 				file_name = dir.get_next()
 		else:
 			print("An error occurred when trying to access the path.")
@@ -95,7 +98,7 @@ func giveDebugSquirrel():
 	squi.load_data("squirrel")
 	$CardLayer.add_child(squi)
 	#squi.attach_card($SlotsLayer/TestSlot2)
-	squi.attach_card($Hand)
+	squi.attach_card($Hand,$Hand.attached_cards.size())
 
 func _init():
 	Game.loadAllCards(true)
@@ -107,6 +110,12 @@ func _ready():
 	$CardLayer.add_child(new_card)
 	#new_card.attach_card($SlotsLayer/TestSlot)
 	new_card.attach_card($Hand)
+	
+	
+	var played_slot = $SlotsLayer/PlayedSlot
+	played_slot.allow_drop = false
+	played_slot.allow_pick = false
+	played_slot.allow_sacrifice = false
 	
 	#for i in range(5):
 		#var squi = cardScene.instantiate()
@@ -159,3 +168,11 @@ func _process(delta):
 		for card in draggable_card_list:
 			if hovered_card == null or card.position.distance_to(get_viewport().get_mouse_position()):
 				hovered_card = card
+				
+	if Input.is_action_just_pressed("leftClick"):
+		if card_played:
+			print(card_played_pos)
+			$SlotsLayer/PlayedSlot.attached_card.attach_card($Hand,card_played_pos)
+			card_played = false
+			$SacrificeToken.toggle_state()
+			#if hovered_card == $SlotsLayer/PlayedSlot.attached_card:
