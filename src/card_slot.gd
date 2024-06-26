@@ -1,5 +1,5 @@
 class_name Slot
-extends StaticBody2D
+extends Area2D
 
 var slot_index: int
 enum SLOT_TYPE {PLAYER,OPPONENT}
@@ -14,6 +14,7 @@ var sacrifice_mark_ref: Node2D = null;
 
 enum STATES {IDLE,LIGHTED,HOVERED,ATTACHED}
 var state: STATES = STATES.IDLE
+var hovered: bool = false
 
 var color_tween: Tween
 
@@ -42,11 +43,12 @@ func card_exited(card: Card):
 	change_state(STATES.IDLE)
 	
 func is_hovered():
-	var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
-	for card in card_list:
-		if card.body_ref == self and card.is_in_dropable:
-			return true
-	return false
+	#var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
+	#for card in card_list:
+		#if card.body_ref == self and card.is_in_dropable:
+			#return true
+	#return false
+	return hovered
 	
 func is_attached():
 	var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
@@ -62,7 +64,7 @@ func _ready():
 	pass
 
 func _process(delta):
-	if Game.is_dragging:
+	if Game.card_played:
 		if is_attached():
 			change_state(STATES.ATTACHED)
 		elif allow_drop:
@@ -82,3 +84,12 @@ func _process(delta):
 func _color_change_end(target_color):
 	pass
 	#print(slot_name()+" finished changing to "+str(target_color))
+
+
+func _on_mouse_entered():
+	hovered = true
+	print("entered")
+
+func _on_mouse_exited():
+	hovered = false
+	print("exited")
