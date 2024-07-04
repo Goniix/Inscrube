@@ -173,6 +173,15 @@ func attach_card(new_slot_body,pos=0):
 		
 	attached_to = new_slot_body
 
+func refresh_draggable():
+	if not Game.is_dragging:
+		if hovered:
+			if Game.allow_card_drag:
+				if attached_to != null and attached_to.allow_pick:
+					draggable = true
+		else:
+			draggable = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -182,11 +191,17 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Game.COLOR_DEBUG:
-		if draggable :
-			modulate = Color.GREEN
+		if Game.hovered_card == self:
+			if draggable :
+				modulate = Color.LIGHT_GREEN
+			else:
+				modulate = Color.MAGENTA
 		else:
-			modulate = Color.REBECCA_PURPLE
-	
+			if draggable :
+				modulate = Color.DARK_GREEN
+			else:
+				modulate = Color.DARK_MAGENTA
+				
 	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
@@ -194,11 +209,11 @@ func _process(delta):
 	
 	if draggable and Game.hovered_card == self:
 		if Input.is_action_just_pressed("leftClick"):
-			if not Game.card_played:
-				Game.card_played_pos = attached_to.attached_cards.find(self)
-				print(Game.card_played_pos)
+			if not Game.card_in_play:
+				Game.card_in_play_pos = attached_to.attached_cards.find(self)
+				#print(Game.card_in_play_pos)
 				attach_card(gameRoot.get_node("SlotsLayer").get_node("PlayedSlot"))
-				Game.card_played = true
+				Game.card_in_play = true
 				gameRoot.get_node("SacrificeToken").toggle_state()
 				for card in gameRoot.get_node("Hand").attached_cards:
 					card.draggable = false
@@ -241,16 +256,13 @@ func _process(delta):
 
 func _on_area_2d_mouse_entered():
 	hovered = true
-	if Game.allow_card_drag and not Game.is_dragging:
-		if attached_to != null and attached_to.allow_pick:
-			draggable = true
+	refresh_draggable()
 			#var scale_tween = create_tween()
 			#scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_exited():
 	hovered = false 
-	if not Game.is_dragging:
-		draggable = false
+	refresh_draggable()
 		#var scale_tween = create_tween()
 		#scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 

@@ -50,9 +50,11 @@ static var is_dragging = false
 
 static var hovered_card = null
 static var hovered_card_list = []
+static var hovered_slot = null
+static var hovered_slot_list = []
 static var allow_card_drag = true;
-static var card_played = false;
-static var card_played_pos = null
+static var card_in_play = false;
+static var card_in_play_pos = null
 static var sacrificed_value = 0
 static var card_total_value = 0
 
@@ -157,22 +159,47 @@ func _process(delta):
 	var draggable_card_list = []
 	hovered_card_list = []
 	for card in $CardLayer.get_children():
-		if(card.hovered):
-			hovered_card_list.append(card)			
+		#if(card.hovered):
+			#hovered_card_list.append(card)
 		if(card.draggable):
 			draggable_card_list.append(card)
 	
 	if len(draggable_card_list) == 0:
 		hovered_card = null
 	else:
-		for card in draggable_card_list:
-			if hovered_card == null or card.position.distance_to(get_viewport().get_mouse_position()):
-				hovered_card = card
+		#Cette ligne ne marchent que si les cartes sont ordonnées dans la main dans le même ordre 
+		# qu'elles sont récupérées dans $CardLayer (dernière dans la liste des dragglable = la plus haute)
+		hovered_card = draggable_card_list.back()
+		
 				
+	hovered_slot_list = []
+	if card_in_play:
+		for slot in $SlotsLayer.get_children():
+			if slot.hovered:
+				hovered_slot_list.append(slot)
+
+	if len(hovered_slot_list) == 0:
+		hovered_slot = null
+	else:
+		var closest_slot = hovered_slot_list[0]
+		for slot in hovered_slot_list:
+			var closest_slot_mouse_distance = closest_slot.position.distance_to(get_viewport().get_mouse_position())
+			var slot_mouse_distance = slot.position.distance_to(get_viewport().get_mouse_position())
+			if  slot_mouse_distance < closest_slot_mouse_distance:
+				closest_slot = slot
+		hovered_slot = closest_slot
+	
 	if Input.is_action_just_pressed("leftClick"):
-		if card_played:
-			print(card_played_pos)
-			$SlotsLayer/PlayedSlot.attached_card.attach_card($Hand,card_played_pos)
-			card_played = false
+		if card_in_play:
+			var played_card_ref = $SlotsLayer/PlayedSlot.attached_card
+			if hovered_slot == null or hovered_slot.state == Slot.STATES.ATTACHED:
+				played_card_ref.attach_card($Hand,card_in_play_pos)
+			else:
+				played_card_ref.attach_card(hovered_slot)
+				
+			card_in_play = false
 			$SacrificeToken.toggle_state()
-			#if hovered_card == $SlotsLayer/PlayedSlot.attached_card:
+			
+		for card in $CardLayer.get_children():
+			card.refresh_draggable()
+

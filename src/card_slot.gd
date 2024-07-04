@@ -43,12 +43,7 @@ func card_exited(card: Card):
 	change_state(STATES.IDLE)
 	
 func is_hovered():
-	#var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
-	#for card in card_list:
-		#if card.body_ref == self and card.is_in_dropable:
-			#return true
-	#return false
-	return hovered
+	return hovered and Game.hovered_slot == self
 	
 func is_attached():
 	var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
@@ -64,7 +59,7 @@ func _ready():
 	pass
 
 func _process(delta):
-	if Game.card_played:
+	if Game.card_in_play:
 		if is_attached():
 			change_state(STATES.ATTACHED)
 		elif allow_drop:
@@ -88,8 +83,8 @@ func _color_change_end(target_color):
 
 func _on_mouse_entered():
 	hovered = true
-	print("entered")
+	#print("entered")
 
 func _on_mouse_exited():
 	hovered = false
-	print("exited")
+	#print("exited")
