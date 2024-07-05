@@ -14,13 +14,13 @@ var slot_ref : Slot = null
 func get_state_color():
 	match state:
 		STATES.HOVERED:
-			return Color.WHITE
+			return Color.RED
 		STATES.IDLE:
-			return Color.BLACK
+			return Color(1,0,0,0)
 		STATES.HIDDEN:
 			return Color.TRANSPARENT
 		STATES.ACTIVE:
-			return Color.RED
+			return Color.BLACK
 
 func change_state(target_state: STATES):
 	if(target_state != state):

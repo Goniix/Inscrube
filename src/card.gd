@@ -165,6 +165,7 @@ func attach_card(new_slot_body,pos=0):
 			
 		position_tween = create_tween()
 		position_tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
+		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		if not new_slot_body.attached_cards.has(self):
@@ -181,6 +182,11 @@ func refresh_draggable():
 					draggable = true
 		else:
 			draggable = false
+
+func get_affordable():
+	#print("Cost is: " + str(card_cost["blood"]))
+	#print("Total value is "+gameRoot.get_total_value())
+	return card_cost["blood"]<=gameRoot.get_total_value()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -207,16 +213,7 @@ func _process(delta):
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
 	
-	if draggable and Game.hovered_card == self:
-		if Input.is_action_just_pressed("leftClick"):
-			if not Game.card_in_play:
-				Game.card_in_play_pos = attached_to.attached_cards.find(self)
-				#print(Game.card_in_play_pos)
-				attach_card(gameRoot.get_node("SlotsLayer").get_node("PlayedSlot"))
-				Game.card_in_play = true
-				gameRoot.get_node("SacrificeToken").toggle_state()
-				for card in gameRoot.get_node("Hand").attached_cards:
-					card.draggable = false
+	
 			#offset = get_global_mouse_position() - global_position
 			#Game.is_dragging = true
 			#get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)

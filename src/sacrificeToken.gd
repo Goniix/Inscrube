@@ -37,7 +37,7 @@ func toggle_state():
 		state = STATES.ACTIVATED
 		
 	Game.allow_card_drag = not is_activated()
-	gameRoot.get_node("Hand").refresh_cards_color()
+	#gameRoot.get_node("Hand").refresh_cards_color()
 		
 	for slot in gameRoot.get_node("SlotsLayer").get_children():
 		if(slot.sacrifice_mark_ref != null and slot.attached_card != null):

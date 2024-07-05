@@ -4,7 +4,7 @@ extends Node
 signal card_dropped(card:Card)
 
 static var cardScene : PackedScene = preload("res://scenes/card.tscn")
-static var slotScene : PackedScene = preload("res://scenes/card_slot.tscn")
+static var slotScene : PackedScene = preload("res://scenes/slot.tscn")
 static var sacrificeMarkScene : PackedScene = preload("res://scenes/sacrifice_mark.tscn")
 
 static var cardData : Dictionary = {}
@@ -48,15 +48,14 @@ static var language = 0
 
 static var is_dragging = false
 
-static var hovered_card = null
-static var hovered_card_list = []
-static var hovered_slot = null
+static var hovered_card : Card = null
+static var hovered_card_list : Array = []
+static var hovered_slot : Slot = null
 static var hovered_slot_list = []
-static var allow_card_drag = true;
-static var card_in_play = false;
-static var card_in_play_pos = null
-static var sacrificed_value = 0
-static var card_total_value = 0
+static var allow_card_drag : bool = true;
+static var card_in_play : bool = false;
+static var card_in_play_pos : int = -1
+static var sacrificed_value : int = 0
 
 const COLOR_DEBUG = false;
 
@@ -81,7 +80,7 @@ static func loadAllCards(recursive:bool=true):
 		else:
 			print("An error occurred when trying to access the path.")
 
-func dir_contents(path):
+static func dir_contents(path):
 	var dir = DirAccess.open(path)
 	if dir:
 		dir.list_dir_begin()
@@ -101,6 +100,14 @@ func giveDebugSquirrel():
 	$CardLayer.add_child(squi)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	squi.attach_card($Hand,$Hand.attached_cards.size())
+
+func get_total_value():
+	var total_value = 0
+	var slot_list = $SlotsLayer.get_children()
+	for slot in slot_list:
+		if slot.slot_type == Slot.SLOT_TYPE.PLAYER and slot.attached_card != null:
+			total_value+=1
+	return total_value
 
 func _init():
 	Game.loadAllCards(true)
@@ -151,6 +158,8 @@ func _ready():
 		opponent_slot.allow_drop = false
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)
+		
+		$Hand.refresh_cards_color()
 
 func _process(delta):
 	if(Input.is_action_just_pressed("Debug1")):
@@ -191,15 +200,37 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("leftClick"):
 		if card_in_play:
-			var played_card_ref = $SlotsLayer/PlayedSlot.attached_card
-			if hovered_slot == null or hovered_slot.state == Slot.STATES.ATTACHED:
+			#left click but a card is already played (card play handled from card TO MOVE HERE)
+			var played_card_ref = $SlotsLayer/PlayedSlot.attached_card #get the played card
+			print(str(played_card_ref)+" already in play")
+			if hovered_slot == null or hovered_slot.state == Slot.STATES.ATTACHED or not hovered_slot.allow_drop:
+				#no slot are hovered, slot is already filled or slot doesnt allows drop
+				print("Sending "+str(played_card_ref)+" back to hand")
 				played_card_ref.attach_card($Hand,card_in_play_pos)
 			else:
+				#slot is valid
+				print("Playing "+str(played_card_ref)+"  to "+str(hovered_slot))
 				played_card_ref.attach_card(hovered_slot)
+				played_card_ref.modulate = Color(1,1,1,1)
 				
 			card_in_play = false
 			$SacrificeToken.toggle_state()
-			
-		for card in $CardLayer.get_children():
+		else:
+			print("No card in play")
+			if hovered_card != null and hovered_card.draggable and hovered_card.get_affordable():
+				print("Sending "+str(hovered_card)+" to play")
+				card_in_play_pos = hovered_card.attached_to.attached_cards.find(hovered_card)
+				
+				hovered_card.attach_card($SlotsLayer/PlayedSlot)
+				card_in_play = true
+				
+				$SacrificeToken.toggle_state()
+				for card in $Hand.attached_cards:
+					card.draggable = false
+			else:
+				print("Cannot play "+str(hovered_card))
+		for card in $CardLayer.get_children(): #refresh draggable state of all cards
 			card.refresh_draggable()
+		$Hand.refresh_cards_pos()
+		$Hand.refresh_cards_color()
 
