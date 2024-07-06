@@ -27,33 +27,31 @@ func change_state(target_state: STATES):
 		force_color_change()
 		state = target_state
 
-func force_color_change():
+func force_color_change(instant:bool = false):
 	color_tween.kill()
+	if(instant):
+		$Sprite.modulate = get_state_color()
+
+func is_active():
+	return state == STATES.ACTIVE
 
 func _ready():
 	set_z_index(20)
 	pass # Replace with function body.
 
-func isHovered():
+func is_hovered():
 	return slot_ref != null and slot_ref.attached_card != null and slot_ref.attached_card.hovered
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	var played_card_slot = get_tree().root.get_child(0).get_node("SlotsLayer/PlayedSlot")
 	match state:
-		STATES.HOVERED:
-			if(Input.is_action_just_pressed("leftClick")):
-				change_state(STATES.ACTIVE)
-				Game.sacrificed_value +=1
-			elif not isHovered():
-				change_state( STATES.IDLE)
-				Game.sacrificed_value -=1
 		STATES.IDLE:
-			if(isHovered()):
-				change_state( STATES.HOVERED)
-		STATES.ACTIVE:
-			if(isHovered() and Input.is_action_just_pressed("leftClick")):
+			if is_hovered() and Game.sacrificed_value < played_card_slot.attached_card.get_cost("blood"):
 				change_state(STATES.HOVERED)
-			
+		STATES.HOVERED:
+			if not is_hovered():
+				change_state(STATES.IDLE)
 		
 	
 	if color_tween == null or !color_tween.is_running():

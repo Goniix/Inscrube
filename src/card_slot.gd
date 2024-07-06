@@ -33,7 +33,8 @@ func get_state_color():
 	return res
 
 func force_color_change():
-	color_tween.kill()
+	if color_tween != null:
+		color_tween.kill()
 
 func change_state(target_state: STATES):
 	if(target_state != state):
@@ -48,11 +49,11 @@ func is_hovered():
 	return hovered#and Game.hovered_slot == self
 	
 func is_attached():
-	var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
-	for card in card_list:
-		if card.attached_to == self:
-			return true
-	return false
+	#var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
+	#for card in card_list:
+		#if card.attached_to == self:
+			#return true
+	return attached_card != null
 
 func slot_name():
 	return str(slot_type)+":"+str(slot_index)

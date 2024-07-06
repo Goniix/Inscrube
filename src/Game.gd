@@ -200,21 +200,46 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("leftClick"):
 		if card_in_play:
-			#left click but a card is already played (card play handled from card TO MOVE HERE)
+			#left click but a card is already played
 			var played_card_ref = $SlotsLayer/PlayedSlot.attached_card #get the played card
-			print(str(played_card_ref)+" already in play")
-			if hovered_slot == null or hovered_slot.state == Slot.STATES.ATTACHED or not hovered_slot.allow_drop:
+			#print(str(played_card_ref)+" already in play")
+			if hovered_slot == null or not hovered_slot.allow_drop:
 				#no slot are hovered, slot is already filled or slot doesnt allows drop
 				print("Sending "+str(played_card_ref)+" back to hand")
 				played_card_ref.attach_card($Hand,card_in_play_pos)
+				card_in_play = false
+				$SacrificeToken.toggle_state()
+				
+			elif hovered_slot.state == Slot.STATES.ATTACHED :
+				if(hovered_slot.sacrifice_mark_ref.is_active()):
+						hovered_slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE)					
+						sacrificed_value -=1
+					
+				else:
+					if sacrificed_value < played_card_ref.get_cost("blood"):
+						sacrificed_value +=1
+						hovered_slot.sacrifice_mark_ref.change_state(ScarMark.STATES.ACTIVE)
+						print("Activated slot")
+				
+				if sacrificed_value >= played_card_ref.get_cost("blood"):
+					for slot in $SlotsLayer.get_children():
+						if slot.sacrifice_mark_ref != null and slot.sacrifice_mark_ref.state == ScarMark.STATES.ACTIVE:
+							slot.attached_card.sacrifice()
+							
+				
 			else:
 				#slot is valid
 				print("Playing "+str(played_card_ref)+"  to "+str(hovered_slot))
-				played_card_ref.attach_card(hovered_slot)
-				played_card_ref.modulate = Color(1,1,1,1)
+				if sacrificed_value >= played_card_ref.get_cost("blood"):
+					played_card_ref.attach_card(hovered_slot)
+					played_card_ref.modulate = Color(1,1,1,1)
+					card_in_play = false
+					$SacrificeToken.toggle_state()
+				else:
+					print("Cost is not full filled ("+str(sacrificed_value)+"/"+str(played_card_ref.get_cost("blood"))+")")
 				
-			card_in_play = false
-			$SacrificeToken.toggle_state()
+			
+			
 		else:
 			print("No card in play")
 			if hovered_card != null and hovered_card.draggable and hovered_card.get_affordable():

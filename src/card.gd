@@ -14,6 +14,8 @@ var card_power: Dictionary
 var card_illustrator: String
 var card_scrybe: String
 
+enum CostTypes {BLOOD,BONE}
+
 var draggable = false
 var hovered = false
 var is_in_dropable = false
@@ -183,10 +185,21 @@ func refresh_draggable():
 		else:
 			draggable = false
 
+func get_cost(cost_type : String):
+	return card_cost[cost_type]
+	
 func get_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
-	return card_cost["blood"]<=gameRoot.get_total_value()
+	return get_cost("blood")<=gameRoot.get_total_value()
+
+func sacrifice():
+	if not attached_to is Slot:
+		push_error("Trying to sacrifice an unplayed card!")
+	else:
+		attached_to.sacrifice_mark_ref.change_state(ScarMark.STATES.HIDDEN)
+		attached_to.attached_card = null
+		queue_free()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
