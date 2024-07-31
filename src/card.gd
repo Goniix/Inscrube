@@ -10,7 +10,7 @@ var card_faction: String
 var card_subclass: Array
 var card_cost: Dictionary
 var card_health: int
-var card_power: Dictionary
+var card_power: Dictionary # "alt" type of alt OR null, "value" value of power
 var card_illustrator: String
 var card_scrybe: String
 
@@ -36,8 +36,8 @@ static var rarity_to_frame_id: Dictionary = {
 	"RARE" = 2,
 	"TALKING" =2
 }
-#BG CONSTS
 
+#BG CONSTS
 static var rarity_to_bg_id: Dictionary = {
 	"SIDE_DECK" = 0,
 	"COMMON" = 0,
@@ -45,8 +45,6 @@ static var rarity_to_bg_id: Dictionary = {
 	"RARE" = 1,
 	"TALKING" = 1
 }
-#COST CONSTS
-
 
 func load_data(id: String):
 	card_id = id
@@ -201,6 +199,22 @@ func sacrifice():
 		attached_to.attached_card = null
 		queue_free()
 
+func kill():
+	pass
+
+func attack(card : Card):
+	if card != null:
+		card.damage(card_power["value"])
+		print("attacked "+str(card)+" for "+card_power["value"]+" power")
+	else:
+		Game.health_scale += card_power["value"]
+		print("attacked scale for "+str(card_power["value"])+" power (scale value="+str(Game.health_scale)+")")
+		gameRoot.update_scale()
+
+func damage(amount: int):
+	card_health -= amount
+	update_stats()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -221,7 +235,7 @@ func _process(delta):
 			else:
 				modulate = Color.DARK_MAGENTA
 				
-	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
+	var tween_vector = Vector2(0.23,0.23) if (Game.hovered_card == self and get_affordable()) else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
@@ -263,6 +277,9 @@ func _process(delta):
 			#
 			#var tween = get_tree().create_tween()
 			#tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+
+func _to_string():
+	return "Card("+card_name+")"
 
 func _on_area_2d_mouse_entered():
 	hovered = true

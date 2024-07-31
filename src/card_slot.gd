@@ -27,7 +27,7 @@ func get_state_color():
 			res = Color(0.25, 0.25, 0.25, 1)
 		STATES.HOVERED:
 			#res = Color.WHITE
-			res = Color(0.15,0,0)
+			res = Color(0.3,0,0)
 		STATES.ATTACHED:
 			res = Color.BLACK
 	return res
@@ -46,7 +46,7 @@ func card_exited(card: Card):
 	change_state(STATES.IDLE)
 	
 func is_hovered():
-	return hovered#and Game.hovered_slot == self
+	return hovered and Game.hovered_slot == self
 	
 func is_attached():
 	#var card_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
@@ -84,6 +84,12 @@ func _process(delta):
 			color_tween = create_tween()
 			color_tween.tween_property($Sprite,"modulate",get_state_color(),0.1 if (state == STATES.HOVERED)else 0.3)
 			#color_tween.finished.connect(_color_change_end.bind(get_state_color()))
+
+func _to_string():
+	var out = "Slot("+str(slot_type)
+	if slot_type == SLOT_TYPE.PLAYER:
+		out+=str(Game.player_slots.find(self))
+	return out+")"
 
 func _on_mouse_entered():
 	hovered = true

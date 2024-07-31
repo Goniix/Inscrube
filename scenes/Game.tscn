@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=13 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
@@ -6,7 +6,9 @@
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="4_caxdh"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="4_egrnp"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/slot.tscn" id="5_2vkrc"]
+[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/GameRes/DebugLabel.tres" id="6_ttqyr"]
 [ext_resource type="PackedScene" uid="uid://boxdxeyolykw3" path="res://scenes/sacrifice_token.tscn" id="7_f6api"]
+[ext_resource type="Script" path="res://src/EndTurnButton.gd" id="7_fp01c"]
 
 [sub_resource type="Curve2D" id="Curve2D_nrd8v"]
 _data = {
@@ -55,6 +57,29 @@ curve = SubResource("Curve2D_nrd8v")
 [node name="SacrificeToken" parent="." instance=ExtResource("7_f6api")]
 position = Vector2(1632, 638)
 
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthScale" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 778.0
+offset_right = 345.0
+offset_bottom = 861.0
+text = "7"
+label_settings = ExtResource("6_ttqyr")
+
+[node name="EndTurnButton" type="Button" parent="GUI"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 547.0
+offset_right = 150.0
+offset_bottom = 676.0
+script = ExtResource("7_fp01c")
+
 [node name="CRT" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_nxjqi")
@@ -76,3 +101,4 @@ mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [connection signal="card_dropped" from="." to="." method="_on_card_dropped"]
+[connection signal="pressed" from="GUI/EndTurnButton" to="GUI/EndTurnButton" method="_on_pressed"]

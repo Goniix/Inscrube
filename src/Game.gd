@@ -57,6 +57,14 @@ static var card_in_play : bool = false;
 static var card_in_play_pos : int = -1
 static var sacrificed_value : int = 0
 
+static var health_scale : int = 0
+const PLAYER_HEALTH: int = 7
+
+static var player_turn: bool = true
+static var player_slots: Array = []
+static var opponent_slots: Array = []
+
+
 const COLOR_DEBUG = false;
 
 static func loadAllCards(recursive:bool=true):
@@ -109,11 +117,13 @@ func get_total_value():
 			total_value+=1
 	return total_value
 
+func update_scale():
+	$GUI/HealthScale.text = str(health_scale)
+
 func _init():
 	Game.loadAllCards(true)
 	
 func _ready():
-	
 	var new_card = cardScene.instantiate()
 	new_card.load_data("adder")
 	$CardLayer.add_child(new_card)
@@ -126,6 +136,7 @@ func _ready():
 	played_slot.allow_pick = false
 	played_slot.allow_sacrifice = false
 	
+
 	#for i in range(5):
 		#var squi = cardScene.instantiate()
 		#squi.load_data("squirrel")
@@ -133,7 +144,7 @@ func _ready():
 		##squi.attach_card($SlotsLayer/TestSlot2)
 		#squi.attach_card($Hand)
 	
-	
+	update_scale()
 	
 	for i in range(4):
 		$SlotsPath/PathFollow2D.progress_ratio = i/3.0
@@ -149,6 +160,7 @@ func _ready():
 		#player_slot.allow_pick = false
 		$SacrificeMarkLayer.add_child(player_slot.sacrifice_mark_ref)
 		$SlotsLayer.add_child(player_slot)
+		player_slots.append(player_slot)
 		
 		var opponent_slot = slotScene.instantiate()
 		opponent_slot.scale = Vector2(1.5,1.5)
@@ -158,6 +170,7 @@ func _ready():
 		opponent_slot.allow_drop = false
 		opponent_slot.position = $SlotsPath/PathFollow2D.global_position - Vector2(0,160)
 		$SlotsLayer.add_child(opponent_slot)
+		opponent_slots.append(opponent_slot)
 		
 		$Hand.refresh_cards_color()
 
@@ -182,10 +195,10 @@ func _process(delta):
 		
 				
 	hovered_slot_list = []
-	if card_in_play:
-		for slot in $SlotsLayer.get_children():
-			if slot.hovered:
-				hovered_slot_list.append(slot)
+	# if card_in_play:
+	for slot in $SlotsLayer.get_children():
+		if slot.hovered:
+			hovered_slot_list.append(slot)
 
 	if len(hovered_slot_list) == 0:
 		hovered_slot = null
@@ -258,4 +271,3 @@ func _process(delta):
 			card.refresh_draggable()
 		$Hand.refresh_cards_pos()
 		$Hand.refresh_cards_color()
-
