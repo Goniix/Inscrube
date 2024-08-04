@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj5171ukad3er"
-path="res://.godot/imported/TokenShadow.png-8869fcfa6e40cbb93a56a555e048d672.ctex"
+uid="uid://bhfnd1hbu5frt"
+path="res://.godot/imported/bell_button.png-031234114c71a93400aad732e0dea38a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/board/TokenShadow.png"
-dest_files=["res://.godot/imported/TokenShadow.png-8869fcfa6e40cbb93a56a555e048d672.ctex"]
+source_file="res://assets/unused/bell_button.png"
+dest_files=["res://.godot/imported/bell_button.png-031234114c71a93400aad732e0dea38a.ctex"]
 
 [params]
 

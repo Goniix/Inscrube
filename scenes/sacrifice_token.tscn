@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/sacrificeToken.gd" id="1_mnlhc"]
 [ext_resource type="Texture2D" uid="uid://cgoff8aocns4b" path="res://assets/board/sacrifice_button.png" id="2_b7s1w"]
-[ext_resource type="Texture2D" uid="uid://dj5171ukad3er" path="res://assets/board/TokenShadow.png" id="2_lqj0g"]
+[ext_resource type="Texture2D" uid="uid://dj5171ukad3er" path="res://assets/board/token_button.png" id="2_lqj0g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fj61a"]
 radius = 70.0
