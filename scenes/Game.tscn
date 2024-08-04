@@ -54,9 +54,6 @@ curve = SubResource("Curve2D_nrd8v")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="SlotsPath"]
 
-[node name="SacrificeToken" parent="." instance=ExtResource("7_f6api")]
-position = Vector2(1632, 638)
-
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -75,6 +72,9 @@ label_settings = ExtResource("6_ttqyr")
 [node name="BellButton" parent="GUI" instance=ExtResource("7_t4fnj")]
 position = Vector2(93, 605)
 
+[node name="SacrificeToken" parent="GUI" instance=ExtResource("7_f6api")]
+position = Vector2(1632, 638)
+
 [node name="CRT" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_nxjqi")
@@ -86,6 +86,7 @@ grow_vertical = 2
 metadata/_edit_lock_ = true
 
 [node name="Vignette" type="ColorRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_yhj8r")
 anchors_preset = 15
 anchor_right = 1.0
