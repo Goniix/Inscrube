@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cd6d1rdel2vgx"]
+
+[ext_resource type="Script" path="res://src/bell_button.gd" id="1_gqacd"]
+[ext_resource type="Texture2D" uid="uid://dj5171ukad3er" path="res://assets/board/token_button.png" id="2_lbaeb"]
+[ext_resource type="Texture2D" uid="uid://yturhmdcjuam" path="res://assets/board/bell_button_icon.png" id="3_cg1fj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_glgrk"]
+radius = 69.6419
+
+[node name="BellButton" type="Node2D"]
+script = ExtResource("1_gqacd")
+idle_icon_color = Color(0, 0, 0, 1)
+hover_icon_color = Color(0, 0, 0, 1)
+idle_token_color = Color(0, 0, 0, 1)
+hover_token_color = Color(0.3, 0, 0, 1)
+
+[node name="Token" type="Sprite2D" parent="."]
+texture = ExtResource("2_lbaeb")
+offset = Vector2(0, 2)
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(0, -5)
+texture = ExtResource("3_cg1fj")
+
+[node name="ButtonHitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ButtonHitBox"]
+shape = SubResource("CircleShape2D_glgrk")
+
+[connection signal="mouse_entered" from="ButtonHitBox" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonHitBox" to="." method="_on_mouse_exited"]

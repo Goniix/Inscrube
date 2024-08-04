@@ -1,3 +1,4 @@
+class_name ScarToken
 extends Node2D
 
 var color_tween: Tween
@@ -27,6 +28,22 @@ func get_state_color(node_name):
 func is_activated():
 	return state == STATES.ACTIVATED
 
+func toggle_state():
+	#gameRoot.giveDebugSquirrel()
+	if is_activated():
+		state = STATES.IDLE
+		Game.sacrificed_value = 0;
+	else:
+		state = STATES.ACTIVATED
+		
+	Game.allow_card_drag = not is_activated()
+	#gameRoot.get_node("Hand").refresh_cards_color()
+		
+	for slot in gameRoot.get_node("SlotsLayer").get_children():
+		if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
+			slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE if (state == STATES.ACTIVATED) else ScarMark.STATES.HIDDEN)
+			
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	gameRoot = get_tree().root.get_child(0)
@@ -35,20 +52,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_just_pressed("leftClick") and hovered:
-		#gameRoot.giveDebugSquirrel()
-		if is_activated():
-			state = STATES.IDLE
-			Game.sacrificed_value = 0;
-		else:
-			state = STATES.ACTIVATED
-			
-		Game.allow_card_drag = not is_activated()
-		gameRoot.get_node("Hand").update_cards_color()
-			
-		for slot in gameRoot.get_node("SlotsLayer").get_children():
-			if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
-				slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE if (state == STATES.ACTIVATED) else ScarMark.STATES.HIDDEN)
-				
+		toggle_state()
 	
 	if color_tween == null or !color_tween.is_running():
 		if $SacrificeIcon.modulate != get_state_color($SacrificeIcon.name):
@@ -60,7 +64,9 @@ func _process(delta):
 			color_tween.tween_property($Token,"modulate",get_state_color($Token.name),0.2)
 	
 func _on_area_2d_mouse_entered():
-	hovered = true
+	#hovered = true
+	pass
 
 func _on_area_2d_mouse_exited():
-	hovered = false
+	#hovered = false
+	pass

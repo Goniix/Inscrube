@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=3 uid="uid://n3pvl32hu31p"]
+
+[ext_resource type="Script" path="res://src/card.gd" id="1_kk43u"]
+[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="3_l635c"]
+[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_pw6dg"]
+[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="4_mq33s"]
+[ext_resource type="Theme" uid="uid://dihx0jdpbk4bh" path="res://assets/themes/LargeLabel.tres" id="5_35tpj"]
+[ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="6_hvw4q"]
+[ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="7_1xwl1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bvok"]
+size = Vector2(400, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7641"]
+size = Vector2(1040, 1480)
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_kk43u")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(0, -216)
+scale = Vector2(10, 10)
+texture = ExtResource("3_l635c")
+
+[node name="Frame" type="Sprite2D" parent="."]
+scale = Vector2(10, 10)
+texture = ExtResource("3_pw6dg")
+
+[node name="Art" type="Sprite2D" parent="."]
+position = Vector2(0, -216)
+scale = Vector2(10, 10)
+texture = ExtResource("4_mq33s")
+
+[node name="CostContainer" type="HBoxContainer" parent="."]
+offset_left = -170.0
+offset_top = -640.0
+offset_right = 440.0
+offset_bottom = -560.0
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Name" type="Label" parent="."]
+texture_filter = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -430.0
+offset_top = -660.0
+offset_right = 216.0
+offset_bottom = -554.0
+grow_horizontal = 2
+theme = ExtResource("5_35tpj")
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "Default
+"
+
+[node name="Credit" type="Label" parent="."]
+texture_filter = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 580.0
+offset_right = 320.0
+offset_bottom = 670.0
+grow_horizontal = 2
+theme = ExtResource("6_hvw4q")
+text = "Default
+"
+horizontal_alignment = 1
+
+[node name="Rarity" type="Label" parent="."]
+texture_filter = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 500.0
+offset_right = 410.0
+offset_bottom = 560.0
+grow_horizontal = 2
+theme = ExtResource("7_1xwl1")
+text = "Default
+"
+vertical_alignment = 2
+
+[node name="Health" type="Label" parent="."]
+texture_filter = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 353.0
+offset_top = 564.0
+offset_right = 406.0
+offset_bottom = 706.0
+grow_horizontal = 2
+theme = ExtResource("5_35tpj")
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "0"
+
+[node name="Power" type="Label" parent="."]
+texture_filter = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -407.0
+offset_top = 564.0
+offset_right = -354.0
+offset_bottom = 706.0
+grow_horizontal = 2
+theme = ExtResource("5_35tpj")
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "0"
+
+[node name="CollisionArea" type="Area2D" parent="."]
+position = Vector2(-520, -740)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+position = Vector2(520, 740)
+shape = SubResource("RectangleShape2D_2bvok")
+debug_color = Color(0.963767, 0, 0.496767, 0.42)
+
+[node name="SelectionArea" type="Area2D" parent="." groups=["card"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea"]
+shape = SubResource("RectangleShape2D_i7641")
+debug_color = Color(0.158803, 0.635823, 0.313217, 0.42)
+
+[connection signal="body_entered" from="CollisionArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="CollisionArea" to="." method="_on_area_2d_body_exited"]
+[connection signal="mouse_entered" from="SelectionArea" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="SelectionArea" to="." method="_on_area_2d_mouse_exited"]

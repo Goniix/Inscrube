@@ -1,12 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=13 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://src/Game.gd" id="2_6g747"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_vvpvs"]
 [ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/hand.tscn" id="4_41c2r"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="4_caxdh"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="4_egrnp"]
-[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="5_2vkrc"]
-[ext_resource type="PackedScene" uid="uid://boxdxeyolykw3" path="res://scenes/SacrificeToken.tscn" id="7_f6api"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/slot.tscn" id="5_2vkrc"]
+[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/GameRes/DebugLabel.tres" id="6_ttqyr"]
+[ext_resource type="PackedScene" uid="uid://boxdxeyolykw3" path="res://scenes/sacrifice_token.tscn" id="7_f6api"]
+[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/BellButton.tscn" id="7_t4fnj"]
 
 [sub_resource type="Curve2D" id="Curve2D_nrd8v"]
 _data = {
@@ -36,12 +38,8 @@ metadata/_edit_lock_ = true
 
 [node name="SlotsLayer" type="Node" parent="."]
 
-[node name="TestSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
-position = Vector2(288, 364)
-rotation = 3.14159
-
-[node name="TestSlot2" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
-position = Vector2(283, 851)
+[node name="PlayedSlot" parent="SlotsLayer" instance=ExtResource("5_2vkrc")]
+position = Vector2(280, 600)
 
 [node name="SacrificeMarkLayer" type="Node" parent="."]
 
@@ -56,7 +54,25 @@ curve = SubResource("Curve2D_nrd8v")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="SlotsPath"]
 
-[node name="SacrificeToken" parent="." instance=ExtResource("7_f6api")]
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthScale" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 778.0
+offset_right = 345.0
+offset_bottom = 861.0
+text = "7"
+label_settings = ExtResource("6_ttqyr")
+
+[node name="BellButton" parent="GUI" instance=ExtResource("7_t4fnj")]
+position = Vector2(93, 605)
+
+[node name="SacrificeToken" parent="GUI" instance=ExtResource("7_f6api")]
 position = Vector2(1632, 638)
 
 [node name="CRT" type="ColorRect" parent="."]
@@ -70,6 +86,7 @@ grow_vertical = 2
 metadata/_edit_lock_ = true
 
 [node name="Vignette" type="ColorRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_yhj8r")
 anchors_preset = 15
 anchor_right = 1.0

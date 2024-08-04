@@ -10,9 +10,11 @@ var card_faction: String
 var card_subclass: Array
 var card_cost: Dictionary
 var card_health: int
-var card_power: Dictionary
+var card_power: Dictionary # "alt" type of alt OR null, "value" value of power
 var card_illustrator: String
 var card_scrybe: String
+
+enum CostTypes {BLOOD,BONE}
 
 var draggable = false
 var hovered = false
@@ -34,8 +36,8 @@ static var rarity_to_frame_id: Dictionary = {
 	"RARE" = 2,
 	"TALKING" =2
 }
-#BG CONSTS
 
+#BG CONSTS
 static var rarity_to_bg_id: Dictionary = {
 	"SIDE_DECK" = 0,
 	"COMMON" = 0,
@@ -43,8 +45,6 @@ static var rarity_to_bg_id: Dictionary = {
 	"RARE" = 1,
 	"TALKING" = 1
 }
-#COST CONSTS
-
 
 func load_data(id: String):
 	card_id = id
@@ -147,7 +147,7 @@ func is_available(elem):
 			return false
 	return elem.allow_drop
 
-func attach_card(new_slot_body):
+func attach_card(new_slot_body,pos=0):
 	if attached_to is Hand and not new_slot_body is Hand:
 		attached_to.remove_card(self)
 	
@@ -165,13 +165,55 @@ func attach_card(new_slot_body):
 			
 		position_tween = create_tween()
 		position_tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
+		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		if not new_slot_body.attached_cards.has(self):
-			new_slot_body.add_card(self)
+			new_slot_body.add_card(self,pos)
 		new_slot_body.refresh_cards_pos()
 		
 	attached_to = new_slot_body
+
+func refresh_draggable():
+	if not Game.is_dragging:
+		if hovered:
+			if Game.allow_card_drag:
+				if attached_to != null and attached_to.allow_pick:
+					draggable = true
+		else:
+			draggable = false
+
+func get_cost(cost_type : String):
+	return card_cost[cost_type]
+	
+func get_affordable():
+	#print("Cost is: " + str(card_cost["blood"]))
+	#print("Total value is "+gameRoot.get_total_value())
+	return get_cost("blood")<=gameRoot.get_total_value()
+
+func sacrifice():
+	if not attached_to is Slot:
+		push_error("Trying to sacrifice an unplayed card!")
+	else:
+		attached_to.sacrifice_mark_ref.change_state(ScarMark.STATES.HIDDEN)
+		attached_to.attached_card = null
+		queue_free()
+
+func kill():
+	pass
+
+func attack(card : Card):
+	if card != null:
+		card.damage(card_power["value"])
+		print("attacked "+str(card)+" for "+card_power["value"]+" power")
+	else:
+		Game.health_scale += card_power["value"]
+		print("attacked scale for "+str(card_power["value"])+" power (scale value="+str(Game.health_scale)+")")
+		gameRoot.update_scale()
+
+func damage(amount: int):
+	card_health -= amount
+	update_stats()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -181,68 +223,73 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Game.colorDebug:
-		if draggable :
-			modulate = Color.GREEN
+	if Game.COLOR_DEBUG:
+		if Game.hovered_card == self:
+			if draggable :
+				modulate = Color.LIGHT_GREEN
+			else:
+				modulate = Color.MAGENTA
 		else:
-			modulate = Color.REBECCA_PURPLE
-	
-	var tween_vector = Vector2(0.23,0.23) if Game.hovered_card == self else Vector2(0.22,0.22)
+			if draggable :
+				modulate = Color.DARK_GREEN
+			else:
+				modulate = Color.DARK_MAGENTA
+				
+	var tween_vector = Vector2(0.23,0.23) if (Game.hovered_card == self and get_affordable()) else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
 	
-	if draggable and Game.hovered_card == self:
-		if Input.is_action_just_pressed("leftClick"):
-			offset = get_global_mouse_position() - global_position
-			Game.is_dragging = true
+	
+			#offset = get_global_mouse_position() - global_position
+			#Game.is_dragging = true
 			#get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
-			set_z_index(10)
+			#set_z_index(10)
 			
-			if rotation!=0:
-				rotation_tween = create_tween()
-				rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
+			#if rotation!=0:
+				#rotation_tween = create_tween()
+				#rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
 			
-		if Input.is_action_pressed("leftClick") and Game.is_dragging:
-			global_position = get_global_mouse_position() - offset
-			
-			var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
-			if len(slot_elems)>0:
-				is_in_dropable = true
-				for elem in slot_elems:
-					if position.distance_to(elem.position) < position.distance_to(body_ref.position):
-						body_ref = elem
-					
-			else:
-				is_in_dropable = false
+		#if Input.is_action_pressed("leftClick") and Game.is_dragging:
+			#global_position = get_global_mouse_position() - offset
+			#
+			#var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
+			#if len(slot_elems)>0:
+				#is_in_dropable = true
+				#for elem in slot_elems:
+					#if position.distance_to(elem.position) < position.distance_to(body_ref.position):
+						#body_ref = elem
+					#
+			#else:
+				#is_in_dropable = false
 
-		elif Input.is_action_just_released("leftClick") and Game.is_dragging:
-			Game.is_dragging = false
-			for elem in gameRoot.get_node("CardLayer").get_children():
-				elem.draggable = elem in Game.hovered_card_list
-			
-			set_z_index(2)
-			
-			if is_in_dropable:
-				attach_card(body_ref)
-			else:
-				attach_card(attached_to)
-			
-			var tween = get_tree().create_tween()
-			tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+		#elif Input.is_action_just_released("leftClick") and Game.is_dragging:
+			#Game.is_dragging = false
+			#for elem in gameRoot.get_node("CardLayer").get_children():
+				#elem.draggable = elem in Game.hovered_card_list
+			#
+			#set_z_index(2)
+			#
+			#if is_in_dropable:
+				#attach_card(body_ref)
+			#else:
+				#attach_card(attached_to)
+			#
+			#var tween = get_tree().create_tween()
+			#tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
+
+func _to_string():
+	return "Card("+card_name+")"
 
 func _on_area_2d_mouse_entered():
 	hovered = true
-	if Game.allow_card_drag and not Game.is_dragging:
-		if attached_to != null and attached_to.allow_pick:
-			draggable = true
+	refresh_draggable()
 			#var scale_tween = create_tween()
 			#scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
 
 func _on_area_2d_mouse_exited():
 	hovered = false 
-	if not Game.is_dragging:
-		draggable = false
+	refresh_draggable()
 		#var scale_tween = create_tween()
 		#scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
 
