@@ -3,9 +3,9 @@ extends Node
 
 signal card_dropped(card:Card)
 
-static var cardScene : PackedScene = preload("res://scenes/card.tscn")
-static var slotScene : PackedScene = preload("res://scenes/slot.tscn")
-static var sacrificeMarkScene : PackedScene = preload("res://scenes/sacrifice_mark.tscn")
+static var cardScene : PackedScene = preload("res://scenes/Card/Card.tscn")
+static var slotScene : PackedScene = preload("res://scenes/CardSlot/CardSlot.tscn")
+static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/SacrificeMark.tscn")
 
 static var cardData : Dictionary = {}
 static var art_data: Dictionary = {
@@ -247,12 +247,10 @@ func _process(delta):
 					played_card_ref.attach_card(hovered_slot)
 					played_card_ref.modulate = Color(1,1,1,1)
 					card_in_play = false
-					$SacrificeToken.toggle_state()
+					$GUI/SacrificeToken.toggle_state()
 				else:
 					print("Cost is not full filled ("+str(sacrificed_value)+"/"+str(played_card_ref.get_cost("blood"))+")")
 				
-			
-			
 		else:
 			print("No card in play")
 			if hovered_card != null and hovered_card.draggable and hovered_card.get_affordable():
@@ -262,7 +260,7 @@ func _process(delta):
 				hovered_card.attach_card($SlotsLayer/PlayedSlot)
 				card_in_play = true
 				
-				$SacrificeToken.toggle_state()
+				$GUI/SacrificeToken.toggle_state()
 				for card in $Hand.attached_cards:
 					card.draggable = false
 			else:

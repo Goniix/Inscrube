@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/Game/Game.gd" id="1_q876c"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_cd4bh"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="3_k2b5r"]
-[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/hand.tscn" id="4_0vwdi"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/Hand.tscn" id="4_0vwdi"]
 [ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/Game/DebugLabel.tres" id="5_tvjb6"]
 [ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/BellButton.tscn" id="6_bfcxb"]
 [ext_resource type="PackedScene" uid="uid://boxdxeyolykw3" path="res://scenes/sacrifice_token.tscn" id="7_y3ocs"]
@@ -95,5 +95,3 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 metadata/_edit_lock_ = true
-
-[connection signal="card_dropped" from="." to="." method="_on_card_dropped"]
