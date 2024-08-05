@@ -2,20 +2,27 @@
 
 [ext_resource type="Script" path="res://scenes/CardSlot/card_slot.gd" id="1_wffnj"]
 [ext_resource type="Texture2D" uid="uid://cr51mbyq1o6u1" path="res://assets/board/card_slot.png" id="2_jehyx"]
+[ext_resource type="PackedScene" uid="uid://buuoxwwe0mmdm" path="res://scenes/CardSlot/SacrificeMark/SacrificeMark.tscn" id="3_i7ymd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynyuh"]
-size = Vector2(154, 226)
-
-[node name="CardSlot" type="Area2D" groups=["slot"]]
+[node name="CardSlot" type="TextureButton" groups=["slot"]]
+offset_right = 154.0
+offset_bottom = 226.0
 scale = Vector2(1.2, 1.2)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("2_jehyx")
+texture_pressed = ExtResource("2_jehyx")
+texture_hover = ExtResource("2_jehyx")
+texture_disabled = ExtResource("2_jehyx")
+stretch_mode = 4
 script = ExtResource("1_wffnj")
-metadata/_edit_group_ = true
 
-[node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_jehyx")
+[node name="SacrificeMark" parent="." instance=ExtResource("3_i7ymd")]
+z_index = 1
+layout_mode = 0
+offset_right = 153.0
+offset_bottom = 232.0
+pivot_offset = Vector2(76, 116)
 
-[node name="Box" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ynyuh")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="state_changed" from="." to="." method="_on_state_changed"]

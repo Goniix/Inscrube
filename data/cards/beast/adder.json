@@ -1,22 +1,22 @@
 {
   "name": "ADDER",
   "sigils": [
-    "deathTouch"
+	"deathTouch"
   ],
   "rarity": "COMMON",
   "faction": "BEAST",
   "subclass": [
-    "REPTILE"
+	"REPTILE"
   ],
   "cost": {
-    "blood": 2,
-    "bone": 0,
-    "energy": 0
+	"blood": 2,
+	"bone": 0,
+	"energy": 0
   },
   "life": 2,
   "power": {
-    "value": 2,
-    "alt": null
+	"value": 2,
+	"alt": null
   },
   "illustrator": "Pixel Profligate",
   "scrybe": "Answearing Machine",

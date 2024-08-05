@@ -39,9 +39,9 @@ func toggle_state():
 	Game.allow_card_drag = not is_activated()
 	#gameRoot.get_node("Hand").refresh_cards_color()
 		
-	for slot in gameRoot.get_node("SlotsLayer").get_children():
-		if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
-			slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE if (state == STATES.ACTIVATED) else ScarMark.STATES.HIDDEN)
+	#for slot in gameRoot.get_node("SlotsLayer").get_children():
+		#if(slot.sacrifice_mark_ref != null and slot.attached_card != null):
+			#slot.sacrifice_mark_ref.change_state(ScarMark.STATES.IDLE if (state == STATES.ACTIVATED) else ScarMark.STATES.HIDDEN)
 			
 
 # Called when the node enters the scene tree for the first time.

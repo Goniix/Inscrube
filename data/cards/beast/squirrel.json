@@ -4,17 +4,17 @@
   "rarity": "SIDE_DECK",
   "faction": "BEAST",
   "subclass": [
-    "VERMIN"
+	"VERMIN"
   ],
   "cost": {
-    "blood": 0,
-    "bone": 0,
-    "energy": 0
+	"blood": 0,
+	"bone": 0,
+	"energy": 0
   },
   "life": 1,
   "power": {
-    "value": 0,
-    "alt": null
+	"value": 0,
+	"alt": null
   },
   "illustrator": "Pixel Profligate",
   "scrybe": "Answearing Machine"

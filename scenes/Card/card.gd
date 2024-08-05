@@ -1,63 +1,60 @@
 class_name Card
-extends Node2D
+extends Control
 
 var card_id: String
 var card_name: String
 var card_favor_text: String
 var card_sigils: Array #Define type later, dont know how they will be implemented
-var card_rarity: String
-var card_faction: String
+var card_rarity: int
+var card_faction: int
 var card_subclass: Array
 var card_cost: Dictionary
 var card_health: int
-var card_power: Dictionary # "alt" type of alt OR null, "value" value of power
+var card_attack_type : CardData.ATTACK_ENUM
+var card_strength: int
 var card_illustrator: String
 var card_scrybe: String
-
-enum CostTypes {BLOOD,BONE}
+var card_art: Texture
 
 var draggable = false
-var hovered = false
+#var hovered = false
 var is_in_dropable = false
 var body_ref
 var offset: Vector2
 var attached_to = null
-var gameRoot = null
+var gameRoot: Game = null
 
 var rotation_tween : Tween = null;
 var position_tween : Tween = null;
 var color_tween : Tween = null;
 
 #FRAME CONSTS
-static var rarity_to_frame_id: Dictionary = {
-	"SIDE_DECK" = 0,
-	"COMMON" = 0,
-	"UNCOMMON" = 1,
-	"RARE" = 2,
-	"TALKING" =2
-}
+static var rarity_to_frame_id: Array = [0,0,1,2,2]
 
 #BG CONSTS
-static var rarity_to_bg_id: Dictionary = {
-	"SIDE_DECK" = 0,
-	"COMMON" = 0,
-	"UNCOMMON" = 0,
-	"RARE" = 1,
-	"TALKING" = 1
-}
+static var rarity_to_bg_id: Array = [0,0,0,1,1]
+
 
 func load_data(id: String):
 	card_id = id
-	card_name = Game.cardData[id]["name"]
-	card_sigils = Game.cardData[id]["sigils"]
-	card_rarity = Game.cardData[id]["rarity"]
-	card_faction = Game.cardData[id]["faction"]
-	card_subclass = Game.cardData[id]["subclass"]
-	card_cost = Game.cardData[id]["cost"]
-	card_health = Game.cardData[id]["life"]
-	card_power = Game.cardData[id]["power"]
-	card_illustrator = Game.cardData[id]["illustrator"]
-	card_scrybe = Game.cardData[id]["scrybe"]
+	card_name = Game.cardData[id].name
+	card_sigils = Game.cardData[id].sigils
+	card_rarity = Game.cardData[id].rarity
+	card_faction = Game.cardData[id].faction
+	card_subclass = Game.cardData[id].subclass
+	
+	card_cost = {
+		CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
+		CardData.COST_ENUM.BONE: Game.cardData[id].bone_cost,
+		CardData.COST_ENUM.ENERGY: Game.cardData[id].energy_cost
+		}
+	
+	card_health = Game.cardData[id].life
+	card_attack_type = Game.cardData[id].attack_type
+	card_strength = Game.cardData[id].strength
+	card_illustrator = Game.cardData[id].illustrator
+	card_scrybe = Game.cardData[id].scrybe
+	card_art = Game.cardData[id].art
 	update_background()
 	update_frame()
 	update_art()
@@ -74,19 +71,24 @@ func update_frame():
 	$Frame.texture = Game.frames_data[card_faction][rarity_to_frame_id[card_rarity]]
 	
 func update_background():
+	print(card_faction)
+	print(card_rarity)
 	$Background.texture = Game.bg_data[card_faction][rarity_to_bg_id[card_rarity]]
 	
 func update_art():
-	$Art.texture = Game.art_data[card_id]
+	$Art.texture = card_art
 
 func update_rarity():
-	var res = tr("RARITY").format({"rarity":tr(card_rarity),"faction":tr(card_faction)})
+	var rarity_string : String = CardData.RARITY_ENUM.keys()[card_rarity]
+	var faction_string :String = CardData.FACTION_ENUM.keys()[card_faction]
+	var res = tr("RARITY").format({"rarity":tr(rarity_string),"faction":tr(faction_string)})
 	for elem in card_subclass:
-		res+=tr(elem)+" "
+		res+=tr(CardData.get_subclass(elem).to_upper())+" "
 	$Rarity.text = res
 	
 func update_cost():
-	for key in card_cost.keys():
+	print(card_cost)
+	for key in range(CardData.COST_ENUM.size()):
 		if (card_cost[key] > 0):
 			var sub_container = HBoxContainer.new()
 			sub_container.alignment = BoxContainer.ALIGNMENT_END
@@ -115,7 +117,7 @@ func update_cost():
 				
 				for icon in range(card_cost[key]):
 					var cost_icon: TextureRect = TextureRect.new()
-					cost_icon.texture = Game.cost_data[key]
+					cost_icon.texture = Game.cost_icons[key]
 					cost_icon.custom_minimum_size= Vector2(50,80)
 					sub_container.add_child(cost_icon)
 					
@@ -123,10 +125,10 @@ func update_cost():
 
 func update_stats():
 	$Health.text = str(card_health)
-	if card_power["alt"] != null:
+	if card_attack_type != CardData.ATTACK_ENUM.NORMAL:
 		$Power.text = "A"
 	else:
-		$Power.text = str(card_power["value"])
+		$Power.text = str(card_strength)
 
 func update_credits():
 	$Credit.text = "Art: "+card_illustrator+"\nScrybe: "+card_scrybe
@@ -148,6 +150,9 @@ func is_available(elem):
 	return elem.allow_drop
 
 func attach_card(new_slot_body,pos=0):
+	if(new_slot_body == null):
+		push_error("Trying to attach card to null Slot!")
+		
 	if attached_to is Hand and not new_slot_body is Hand:
 		attached_to.remove_card(self)
 	
@@ -164,7 +169,7 @@ func attach_card(new_slot_body,pos=0):
 			rotation_tween.tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
 			
 		position_tween = create_tween()
-		position_tween.tween_property(self,"position", new_slot_body.position,0.1).set_ease(Tween.EASE_OUT)
+		position_tween.tween_property(self,"position", new_slot_body.global_position,0.1).set_ease(Tween.EASE_OUT)
 		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
@@ -174,22 +179,24 @@ func attach_card(new_slot_body,pos=0):
 		
 	attached_to = new_slot_body
 
-func refresh_draggable():
-	if not Game.is_dragging:
-		if hovered:
-			if Game.allow_card_drag:
-				if attached_to != null and attached_to.allow_pick:
-					draggable = true
-		else:
-			draggable = false
+func is_hovered():
+	return $Button.is_hovered()
 
-func get_cost(cost_type : String):
+func refresh_draggable():
+	if is_hovered():
+		if Game.allow_card_drag:
+			if attached_to != null and attached_to.allow_pick:
+				draggable = true
+	else:
+		draggable = false
+
+func get_cost(cost_type : CardData.COST_ENUM):
 	return card_cost[cost_type]
 	
 func get_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
-	return get_cost("blood")<=gameRoot.get_total_value()
+	return get_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
 
 func sacrifice():
 	if not attached_to is Slot:
@@ -204,11 +211,11 @@ func kill():
 
 func attack(card : Card):
 	if card != null:
-		card.damage(card_power["value"])
-		print("attacked "+str(card)+" for "+card_power["value"]+" power")
+		card.damage(card_strength)
+		print("attacked "+str(card)+" for "+str(card_strength)+" power")
 	else:
-		Game.health_scale += card_power["value"]
-		print("attacked scale for "+str(card_power["value"])+" power (scale value="+str(Game.health_scale)+")")
+		Game.health_scale += card_strength
+		print("attacked scale for "+str(card_strength)+" power (scale value="+str(Game.health_scale)+")")
 		gameRoot.update_scale()
 
 func damage(amount: int):
@@ -221,82 +228,34 @@ func _ready():
 	scale = Vector2(0.22,0.22)
 	gameRoot = get_tree().root.get_child(0)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Game.COLOR_DEBUG:
-		if Game.hovered_card == self:
-			if draggable :
-				modulate = Color.LIGHT_GREEN
-			else:
-				modulate = Color.MAGENTA
-		else:
 			if draggable :
 				modulate = Color.DARK_GREEN
 			else:
 				modulate = Color.DARK_MAGENTA
 				
-	var tween_vector = Vector2(0.23,0.23) if (Game.hovered_card == self and get_affordable()) else Vector2(0.22,0.22)
+	var tween_vector = Vector2(0.23,0.23) if (is_hovered() and get_affordable()) else Vector2(0.22,0.22)
 	if tween_vector != scale:
 		var scale_tween = create_tween()
 		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
+		
+	refresh_draggable()
 	
 	
-			#offset = get_global_mouse_position() - global_position
-			#Game.is_dragging = true
-			#get_tree().root.get_child(0).get_node("CardLayer").move_child(self,-1)
-			#set_z_index(10)
-			
-			#if rotation!=0:
-				#rotation_tween = create_tween()
-				#rotation_tween.parallel().tween_property(self,"rotation", 0,0.1).set_ease(Tween.EASE_OUT)
-			
-		#if Input.is_action_pressed("leftClick") and Game.is_dragging:
-			#global_position = get_global_mouse_position() - offset
-			#
-			#var slot_elems = $CollisionArea.get_overlapping_bodies().filter(is_slot).filter(is_available)
-			#if len(slot_elems)>0:
-				#is_in_dropable = true
-				#for elem in slot_elems:
-					#if position.distance_to(elem.position) < position.distance_to(body_ref.position):
-						#body_ref = elem
-					#
-			#else:
-				#is_in_dropable = false
-
-		#elif Input.is_action_just_released("leftClick") and Game.is_dragging:
-			#Game.is_dragging = false
-			#for elem in gameRoot.get_node("CardLayer").get_children():
-				#elem.draggable = elem in Game.hovered_card_list
-			#
-			#set_z_index(2)
-			#
-			#if is_in_dropable:
-				#attach_card(body_ref)
-			#else:
-				#attach_card(attached_to)
-			#
-			#var tween = get_tree().create_tween()
-			#tween.parallel().tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
-
 func _to_string():
 	return "Card("+card_name+")"
 
-func _on_area_2d_mouse_entered():
-	hovered = true
-	refresh_draggable()
-			#var scale_tween = create_tween()
-			#scale_tween.tween_property(self,"scale",Vector2(0.23,0.23),0.05).set_ease(Tween.EASE_OUT)
+func _on_card_clicked():
+	print(str(self)+" was pressed")
+	if !Game.card_in_play:
+		print("No card in play")
+		if draggable and get_affordable():
+			print("Sending "+str(self)+" to play")
+			Game.card_in_play_pos = attached_to.attached_cards.find(self)
+			attach_card(gameRoot.get_node("PlayedSlot"))
+			Game.card_in_play = true
+		else:
+			print("Cannot play "+str(self))
 
-func _on_area_2d_mouse_exited():
-	hovered = false 
-	refresh_draggable()
-		#var scale_tween = create_tween()
-		#scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.05).set_ease(Tween.EASE_OUT)
-
-func _on_area_2d_body_entered(body):
-	if body.is_in_group("slot"):
-		body_ref = body
-
-func _on_area_2d_body_exited(body):
-	if body.is_in_group("slot"):
-		body.card_exited(self)
+	gameRoot.on_card_play()

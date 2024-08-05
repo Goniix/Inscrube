@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://n3pvl32hu31p"]
+[gd_scene load_steps=8 format=3 uid="uid://n3pvl32hu31p"]
 
 [ext_resource type="Script" path="res://scenes/Card/card.gd" id="1_bqvxu"]
 [ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="2_qp58q"]
@@ -8,50 +8,55 @@
 [ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="6_unk2p"]
 [ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="7_t437r"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bvok"]
-size = Vector2(400, 800)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7641"]
-size = Vector2(1040, 1480)
-
-[node name="Card" type="Node2D"]
+[node name="Card" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_bqvxu")
 
-[node name="Background" type="Sprite2D" parent="."]
-position = Vector2(0, -216)
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 230.0
+offset_right = 176.0
+offset_bottom = 289.0
 scale = Vector2(10, 10)
 texture = ExtResource("2_qp58q")
 
-[node name="Frame" type="Sprite2D" parent="."]
+[node name="Frame" type="TextureRect" parent="."]
+layout_mode = 0
 scale = Vector2(10, 10)
 texture = ExtResource("3_bbwjd")
 
-[node name="Art" type="Sprite2D" parent="."]
-position = Vector2(0, -216)
+[node name="Art" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 230.0
+offset_right = 176.0
+offset_bottom = 289.0
 scale = Vector2(10, 10)
 texture = ExtResource("4_v5cwv")
 
 [node name="CostContainer" type="HBoxContainer" parent="."]
-offset_left = -170.0
-offset_top = -640.0
-offset_right = 440.0
-offset_bottom = -560.0
+layout_mode = 0
+offset_left = 350.0
+offset_top = 100.0
+offset_right = 960.0
+offset_bottom = 180.0
 theme_override_constants/separation = 10
 alignment = 2
 
 [node name="Name" type="Label" parent="."]
 texture_filter = 6
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -430.0
-offset_top = -660.0
-offset_right = 216.0
-offset_bottom = -554.0
+offset_left = 90.0
+offset_top = 80.0
+offset_right = 736.0
+offset_bottom = 186.0
 grow_horizontal = 2
 theme = ExtResource("5_tubf5")
-theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
 text = "Default
@@ -59,13 +64,14 @@ text = "Default
 
 [node name="Credit" type="Label" parent="."]
 texture_filter = 6
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -320.0
-offset_top = 580.0
-offset_right = 320.0
-offset_bottom = 670.0
+offset_left = 200.0
+offset_top = 1320.0
+offset_right = 840.0
+offset_bottom = 1410.0
 grow_horizontal = 2
 theme = ExtResource("6_unk2p")
 text = "Default
@@ -74,13 +80,14 @@ horizontal_alignment = 1
 
 [node name="Rarity" type="Label" parent="."]
 texture_filter = 6
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -400.0
-offset_top = 500.0
-offset_right = 410.0
-offset_bottom = 560.0
+offset_left = 120.0
+offset_top = 1240.0
+offset_right = 930.0
+offset_bottom = 1300.0
 grow_horizontal = 2
 theme = ExtResource("7_t437r")
 text = "Default
@@ -89,13 +96,14 @@ vertical_alignment = 2
 
 [node name="Health" type="Label" parent="."]
 texture_filter = 6
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 353.0
-offset_top = 564.0
-offset_right = 406.0
-offset_bottom = 706.0
+offset_left = 873.0
+offset_top = 1304.0
+offset_right = 926.0
+offset_bottom = 1446.0
 grow_horizontal = 2
 theme = ExtResource("5_tubf5")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
@@ -106,13 +114,14 @@ text = "0"
 
 [node name="Power" type="Label" parent="."]
 texture_filter = 6
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -407.0
-offset_top = 564.0
-offset_right = -354.0
-offset_bottom = 706.0
+offset_left = 113.0
+offset_top = 1304.0
+offset_right = 166.0
+offset_bottom = 1446.0
 grow_horizontal = 2
 theme = ExtResource("5_tubf5")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
@@ -121,21 +130,12 @@ theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
 text = "0"
 
-[node name="CollisionArea" type="Area2D" parent="."]
-position = Vector2(-520, -740)
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 1040.0
+offset_bottom = 1480.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(520, 740)
-shape = SubResource("RectangleShape2D_2bvok")
-debug_color = Color(0.963767, 0, 0.496767, 0.42)
-
-[node name="SelectionArea" type="Area2D" parent="." groups=["card"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea"]
-shape = SubResource("RectangleShape2D_i7641")
-debug_color = Color(0.158803, 0.635823, 0.313217, 0.42)
-
-[connection signal="body_entered" from="CollisionArea" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="CollisionArea" to="." method="_on_area_2d_body_exited"]
-[connection signal="mouse_entered" from="SelectionArea" to="." method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="SelectionArea" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="Button" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_card_clicked"]

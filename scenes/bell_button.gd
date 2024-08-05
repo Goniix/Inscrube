@@ -54,10 +54,11 @@ func activate_button():
 	Game.player_turn = !Game.player_turn
 	icon_color_tween = create_tween()
 	icon_color_tween.tween_property($Icon,"modulate",active_icon_color,0.2)
-	for i in range(4):
-		if Game.player_slots[i].is_attached():
-			print(Game.player_slots[i].attached_card)
-			Game.player_slots[i].attached_card.attack(Game.opponent_slots[i].attached_card)
+	var slot_grid = gameRoot.get_node("SlotGrid")
+	for slot in slot_grid.get_children():
+		if slot.slot_type == Slot.SLOT_TYPE.PLAYER and slot.is_attached():
+			slot.attached_card.attack(slot_grid.get_node("O"+slot.name.right(-1)).attached_card)
+			
 			
 
 func _ready():

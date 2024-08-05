@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=3 format=3 uid="uid://dsn0txuponfit"]
+
+[ext_resource type="Texture2D" uid="uid://b4akcoj866r0w" path="res://assets/art/Squirrel.png" id="1_csw88"]
+[ext_resource type="Script" path="res://data/CardData.gd" id="1_hxfgn"]
+
+[resource]
+script = ExtResource("1_hxfgn")
+name = "SQUIRREL"
+sigils = []
+rarity = 0
+faction = 0
+subclass = Array[int]([6])
+blood_cost = 0
+bone_cost = 0
+energy_cost = 0
+life = 1
+attack_type = 0
+strength = 0
+illustrator = "Pixel Profligate"
+scrybe = "Answearing Machine"
+art = ExtResource("1_csw88")

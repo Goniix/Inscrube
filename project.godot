@@ -64,7 +64,7 @@ Debug1={
 [internationalization]
 
 locale/translation_remaps={}
-locale/translations=PackedStringArray("res://scenes/Game/locales/cards.en.translation", "res://scenes/Game/locales/cards.fr.translation", "res://scenes/Game/locales/keywords.en.translation", "res://scenes/Game/locales/keywords.fr.translation")
+locale/translations=PackedStringArray("res://locales/cards.en.translation", "res://locales/cards.fr.translation", "res://locales/keywords.en.translation", "res://locales/keywords.fr.translation", "res://locales/sigils.en.translation", "res://locales/sigils.fr.translation")
 
 [rendering]
 

@@ -3,8 +3,6 @@
 [ext_resource type="Script" path="res://scenes/CardSlot/SacrificeMark/sacrifice_mark.gd" id="1_lk0n3"]
 [ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="2_34s4v"]
 
-[node name="SacrificeMark" type="Node2D"]
-script = ExtResource("1_lk0n3")
-
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="SacrificeMark" type="TextureRect"]
 texture = ExtResource("2_34s4v")
+script = ExtResource("1_lk0n3")
