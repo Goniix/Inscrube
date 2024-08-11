@@ -14,13 +14,13 @@ var attached_card : Card = null
 
 enum STATES {IDLE,LIGHTED,HOVERED,ATTACHED}
 var state: STATES = STATES.IDLE
-var gameRoot 
+var gameRoot: Game
 #var hovered: bool = false
 
 var color_tween: Tween
 var mark_color_tween: Tween
 
-func get_state_color( state : STATES):
+func get_state_color():
 	var res
 	match state:
 		STATES.IDLE:
@@ -81,24 +81,32 @@ func _to_string():
 
 func _on_pressed():
 	print(str(self)+" was clicked")
-	if state != STATES.ATTACHED:
-		if Game.card_in_play:
+	if gameRoot.card_is_played():
+		if state == STATES.ATTACHED:
+			if $SacrificeMark.state == ScarMark.STATES.IDLE:
+				$SacrificeMark.change_state(ScarMark.STATES.ACTIVE)
+				gameRoot.sacrificed_value +=1
+			elif $SacrificeMark.state == ScarMark.STATES.ACTIVE:
+				$SacrificeMark.change_state(ScarMark.STATES.IDLE)
+				gameRoot.sacrificed_value -=1
+		else:
 			#slot is valid
-			var played_card_ref = gameRoot.get_node("PlayedSlot").attached_card 
+			var played_card_ref: Card = gameRoot.get_node("PlayedSlot").attached_card 
 			print("Playing "+str(played_card_ref)+"  to "+str(self))
-			if Game.sacrificed_value >= played_card_ref.get_cost(CardData.COST_ENUM.BLOOD):
+			if Game.sacrificed_value >= played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD):
 				played_card_ref.attach_card(self)
 				played_card_ref.modulate = Color(1,1,1,1)
 				played_card_ref.get_node("Button").disabled = true
-				Game.card_in_play = false
+				played_card_ref.trigger_sigils(SigilData.SIGIL_EVENTS.ON_PLAY)
 				#$GUI/SacrificeToken.toggle_state()
 				gameRoot.refresh_hand()
+				gameRoot.toggle_all_marks(false)
 			else:
-				print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_cost("blood"))+")")
+				print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD))+")")
 
 
 func _on_state_changed():
 	color_tween = create_tween()
-	color_tween.tween_property(self,"self_modulate",get_state_color(state),0.1 if (state == STATES.HOVERED)else 0.3)
+	color_tween.tween_property(self,"self_modulate",get_state_color(),0.1 if (state == STATES.HOVERED)else 0.3)
 	#print("SlotState "+str(state))
 	#print("MarkState "+str(mark_sate))

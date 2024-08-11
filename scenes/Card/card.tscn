@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://n3pvl32hu31p"]
 
-[ext_resource type="Script" path="res://scenes/Card/card.gd" id="1_bqvxu"]
+[ext_resource type="Script" path="res://scenes/Card/Card.gd" id="1_jur1x"]
 [ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="2_qp58q"]
 [ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_bbwjd"]
 [ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="4_v5cwv"]
@@ -11,7 +11,7 @@
 [node name="Card" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_bqvxu")
+script = ExtResource("1_jur1x")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 0

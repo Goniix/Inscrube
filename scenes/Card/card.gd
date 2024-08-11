@@ -1,20 +1,12 @@
 class_name Card
 extends Control
 
+var data : CardData
+
 var card_id: String
-var card_name: String
-var card_favor_text: String
-var card_sigils: Array #Define type later, dont know how they will be implemented
-var card_rarity: int
-var card_faction: int
-var card_subclass: Array
+#var card_favor_text: String
+#var card_sigils: Array #Define type later, dont know how they will be implemented
 var card_cost: Dictionary
-var card_health: int
-var card_attack_type : CardData.ATTACK_ENUM
-var card_strength: int
-var card_illustrator: String
-var card_scrybe: String
-var card_art: Texture
 
 var draggable = false
 #var hovered = false
@@ -36,53 +28,42 @@ static var rarity_to_bg_id: Array = [0,0,0,1,1]
 
 
 func load_data(id: String):
+	data = Game.cardData[id].duplicate()
 	card_id = id
-	card_name = Game.cardData[id].name
-	card_sigils = Game.cardData[id].sigils
-	card_rarity = Game.cardData[id].rarity
-	card_faction = Game.cardData[id].faction
-	card_subclass = Game.cardData[id].subclass
 	
 	card_cost = {
 		CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
 		CardData.COST_ENUM.BONE: Game.cardData[id].bone_cost,
 		CardData.COST_ENUM.ENERGY: Game.cardData[id].energy_cost
-		}
-	
-	card_health = Game.cardData[id].life
-	card_attack_type = Game.cardData[id].attack_type
-	card_strength = Game.cardData[id].strength
-	card_illustrator = Game.cardData[id].illustrator
-	card_scrybe = Game.cardData[id].scrybe
-	card_art = Game.cardData[id].art
+	}
+	update_name()
+	update_rarity()
 	update_background()
 	update_frame()
 	update_art()
-	update_name()
-	update_rarity()
 	update_cost()
 	update_stats()
 	update_credits()
 
 func update_name():
-	$Name.text = card_name
+	$Name.text = get_card_name()
 
 func update_frame():
-	$Frame.texture = Game.frames_data[card_faction][rarity_to_frame_id[card_rarity]]
+	$Frame.texture = Game.frames_data[get_card_faction()][rarity_to_frame_id[get_card_rarity()]]
 	
 func update_background():
-	print(card_faction)
-	print(card_rarity)
-	$Background.texture = Game.bg_data[card_faction][rarity_to_bg_id[card_rarity]]
+	#print(card_faction)
+	#print(get_card_rarity())
+	$Background.texture = Game.bg_data[get_card_faction()][rarity_to_bg_id[get_card_rarity()]]
 	
 func update_art():
-	$Art.texture = card_art
+	$Art.texture = get_card_art()
 
 func update_rarity():
-	var rarity_string : String = CardData.RARITY_ENUM.keys()[card_rarity]
-	var faction_string :String = CardData.FACTION_ENUM.keys()[card_faction]
+	var rarity_string : String = CardData.RARITY_ENUM.keys()[get_card_rarity()]
+	var faction_string :String = CardData.FACTION_ENUM.keys()[get_card_faction()]
 	var res = tr("RARITY").format({"rarity":tr(rarity_string),"faction":tr(faction_string)})
-	for elem in card_subclass:
+	for elem in get_card_sublass():
 		res+=tr(CardData.get_subclass(elem).to_upper())+" "
 	$Rarity.text = res
 	
@@ -124,14 +105,14 @@ func update_cost():
 			$CostContainer.add_child(sub_container)
 
 func update_stats():
-	$Health.text = str(card_health)
-	if card_attack_type != CardData.ATTACK_ENUM.NORMAL:
+	$Health.text = str(get_card_life())
+	if get_card_attack_type() != CardData.ATTACK_ENUM.NORMAL:
 		$Power.text = "A"
 	else:
-		$Power.text = str(card_strength)
+		$Power.text = str(get_card_strength())
 
 func update_credits():
-	$Credit.text = "Art: "+card_illustrator+"\nScrybe: "+card_scrybe
+	$Credit.text = "Art: "+get_card_illustrator()+"\nScrybe: "+get_card_scrybe()
 
 func at_least_one_is_slot(list:Array):
 	for body in list:
@@ -153,7 +134,7 @@ func attach_card(new_slot_body,pos=0):
 	if(new_slot_body == null):
 		push_error("Trying to attach card to null Slot!")
 		
-	if attached_to is Hand and not new_slot_body is Hand:
+	if attached_to is Hand:# and not new_slot_body is Hand:
 		attached_to.remove_card(self)
 	
 	elif attached_to is Slot:
@@ -190,13 +171,46 @@ func refresh_draggable():
 	else:
 		draggable = false
 
-func get_cost(cost_type : CardData.COST_ENUM):
-	return card_cost[cost_type]
+func get_card_name() -> String:
+	return data.name
 	
+func get_card_cost(cost_type : CardData.COST_ENUM):
+	return card_cost[cost_type]
+
+func get_card_sigils() -> Array:
+	return data.sigils
+	
+func get_card_rarity() -> CardData.RARITY_ENUM:
+	return data.rarity
+
+func get_card_faction() -> CardData.FACTION_ENUM:
+	return data.faction
+	
+func get_card_sublass() -> Array[CardData.SUBCLASS_ENUM]:
+	return data.subclass
+
+func get_card_life() -> int:
+	return data.life
+
+func get_card_strength() -> int:
+	return data.strength
+
+func get_card_attack_type() -> CardData.ATTACK_ENUM:
+	return data.attack_type
+
+func get_card_illustrator() -> String:
+	return data.illustrator
+	
+func get_card_scrybe() -> String:
+	return data.scrybe
+	
+func get_card_art() -> Texture:
+	return data.art
+
 func get_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
-	return get_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
+	return get_card_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
 
 func sacrifice():
 	if not attached_to is Slot:
@@ -211,16 +225,20 @@ func kill():
 
 func attack(card : Card):
 	if card != null:
-		card.damage(card_strength)
-		print("attacked "+str(card)+" for "+str(card_strength)+" power")
+		card.damage(get_card_strength())
+		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")
 	else:
-		Game.health_scale += card_strength
-		print("attacked scale for "+str(card_strength)+" power (scale value="+str(Game.health_scale)+")")
+		Game.health_scale += get_card_strength()
+		print("attacked scale for "+str(get_card_strength())+" power (scale value="+str(Game.health_scale)+")")
 		gameRoot.update_scale()
 
 func damage(amount: int):
-	card_health -= amount
+	data.life -= amount
 	update_stats()
+
+func trigger_sigils(event_triggered : SigilData.SIGIL_EVENTS,target=null):
+	for sigil in data.sigils:
+		sigil.trigger_event(event_triggered,target)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -244,17 +262,16 @@ func _process(delta):
 	
 	
 func _to_string():
-	return "Card("+card_name+")"
+	return "Card("+get_card_name()+")"
 
 func _on_card_clicked():
 	print(str(self)+" was pressed")
-	if !Game.card_in_play:
+	if !gameRoot.card_is_played():
 		print("No card in play")
 		if draggable and get_affordable():
 			print("Sending "+str(self)+" to play")
-			Game.card_in_play_pos = attached_to.attached_cards.find(self)
+			Game.played_card_index = attached_to.attached_cards.find(self)
 			attach_card(gameRoot.get_node("PlayedSlot"))
-			Game.card_in_play = true
 		else:
 			print("Cannot play "+str(self))
 

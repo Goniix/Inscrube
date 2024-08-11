@@ -45,13 +45,10 @@ static var cost_icons: Array = [
 	preload("res://assets/cost/bone.png")
 ]
 
-
-
 static var language = 0
 
 static var allow_card_drag : bool = true;
-static var card_in_play : bool = false;
-static var card_in_play_pos : int = -1
+static var played_card_index : int = -1
 static var sacrificed_value : int = 0
 
 static var health_scale : int = 0
@@ -116,12 +113,12 @@ static func dir_contents(path):
 	else:
 		print("An error occurred when trying to access the path.")
 
-func giveDebugSquirrel():
-	var squi = cardScene.instantiate()
-	squi.load_data("squirrel")
-	$CardLayer.add_child(squi)
+func giveCard(card_id : String):
+	var card = cardScene.instantiate()
+	card.load_data(card_id)
+	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
-	squi.attach_card($Hand,$Hand.attached_cards.size())
+	card.attach_card($Hand,$Hand.attached_cards.size())
 
 func get_total_value():
 	var total_value = 0
@@ -139,12 +136,18 @@ func is_valid_slot_hovered():
 		if slot.is_hovered() and slot.allow_drop:
 			return true
 	return false
-	
+
+func card_is_played() -> bool:
+	return %PlayedSlot.is_attached()
+
+func get_played_card() -> Card:
+	return %PlayedSlot.attached_card
+
 func _init():
 	Game.loadAllCards(true)
 	
 func _ready():
-	var new_card = cardScene.instantiate()
+	var new_card: Card = cardScene.instantiate()
 	new_card.load_data("adder")
 	$CardLayer.add_child(new_card)
 	#new_card.attach_card($SlotsLayer/TestSlot)
@@ -155,22 +158,23 @@ func _ready():
 
 func _process(delta):
 	if(Input.is_action_just_pressed("Debug1")):
-		giveDebugSquirrel()
+		giveCard("squirrel")
+	if(Input.is_action_just_pressed("Debug2")):
+		giveCard("adder")
 		
 	if Input.is_action_just_pressed("leftClick"):
-		if card_in_play:
+		if card_is_played():
 			#left click but a card is already played
-			var played_card_ref = %PlayedSlot.attached_card #get the played card
+			
 			#print(str(played_card_ref)+" already in play")
 			if !is_valid_slot_hovered():
 				#no slot are hovered, slot is already filled or slot doesnt allows drop
-				print("Sending "+str(played_card_ref)+" back to hand")
-				played_card_ref.attach_card($Hand,card_in_play_pos)
-				card_in_play = false
+				print("Sending "+str(get_played_card())+" back to hand")
+				get_played_card().attach_card($Hand,played_card_index)
 				refresh_hand()
 				
-				for slot : Slot in %SlotGrid.get_children():
-						slot.hide_mark()
+				toggle_all_marks(false)
+
 				
 				
 func refresh_hand():
@@ -180,6 +184,12 @@ func refresh_hand():
 func on_card_play():
 	refresh_hand()
 	for slot : Slot in %SlotGrid.get_children():
-		if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached():
+		if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached() and get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
 			slot.show_mark()
-			
+
+func toggle_all_marks(visible:bool):
+	for slot : Slot in %SlotGrid.get_children():
+		if visible:
+			slot.show_mark()
+		else:
+			slot.hide_mark()

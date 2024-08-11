@@ -33,15 +33,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#var played_card_slot = get_tree().root.get_child(0).get_node("PlayedSlot")
-	#match state:
-		#STATES.IDLE:
-			#if is_hovered() and Game.sacrificed_value < played_card_slot.attached_card.get_cost("blood"):
-				#change_state(STATES.HOVERED)
-		#STATES.HOVERED:
-			#if not is_hovered():
-				#change_state(STATES.IDLE)
-		#
 	if color_tween == null or !color_tween.is_running():
 		if modulate != get_state_color():
 			#print("switching to"+str(get_state_color()))
