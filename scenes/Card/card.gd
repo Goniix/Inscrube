@@ -15,10 +15,14 @@ var body_ref
 var offset: Vector2
 var attached_to = null
 var gameRoot: Game = null
+const perspective_amount: int = 4
+var perspective_vec: Vector2
 
-var rotation_tween : Tween = null;
-var position_tween : Tween = null;
-var color_tween : Tween = null;
+var rotation_tween : Tween = null
+var position_tween : Tween = null
+var scale_tween : Tween
+var color_tween : Tween
+var perspective_tween: Tween
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Array = [0,0,1,2,2]
@@ -46,18 +50,18 @@ func load_data(id: String):
 	update_credits()
 
 func update_name():
-	$Name.text = get_card_name()
+	%Name.text = get_card_name()
 
 func update_frame():
-	$Frame.texture = Game.frames_data[get_card_faction()][rarity_to_frame_id[get_card_rarity()]]
+	%Frame.texture = Game.frames_data[get_card_faction()][rarity_to_frame_id[get_card_rarity()]]
 	
 func update_background():
 	#print(card_faction)
 	#print(get_card_rarity())
-	$Background.texture = Game.bg_data[get_card_faction()][rarity_to_bg_id[get_card_rarity()]]
+	%Background.texture = Game.bg_data[get_card_faction()][rarity_to_bg_id[get_card_rarity()]]
 	
 func update_art():
-	$Art.texture = get_card_art()
+	%Art.texture = get_card_art()
 
 func update_rarity():
 	var rarity_string : String = CardData.RARITY_ENUM.keys()[get_card_rarity()]
@@ -65,7 +69,7 @@ func update_rarity():
 	var res = tr("RARITY").format({"rarity":tr(rarity_string),"faction":tr(faction_string)})
 	for elem in get_card_sublass():
 		res+=tr(CardData.get_subclass(elem).to_upper())+" "
-	$Rarity.text = res
+	%Rarity.text = res
 	
 func update_cost():
 	print(card_cost)
@@ -102,17 +106,17 @@ func update_cost():
 					cost_icon.custom_minimum_size= Vector2(50,80)
 					sub_container.add_child(cost_icon)
 					
-			$CostContainer.add_child(sub_container)
+			%CostContainer.add_child(sub_container)
 
 func update_stats():
-	$Health.text = str(get_card_life())
+	%Health.text = str(get_card_life())
 	if get_card_attack_type() != CardData.ATTACK_ENUM.NORMAL:
-		$Power.text = "A"
+		%Power.text = "A"
 	else:
-		$Power.text = str(get_card_strength())
+		%Power.text = str(get_card_strength())
 
 func update_credits():
-	$Credit.text = "Art: "+get_card_illustrator()+"\nScrybe: "+get_card_scrybe()
+	%Credit.text = "Art: "+get_card_illustrator()+"\nScrybe: "+get_card_scrybe()
 
 func at_least_one_is_slot(list:Array):
 	for body in list:
@@ -123,12 +127,8 @@ func at_least_one_is_slot(list:Array):
 func is_slot(elem):
 	return elem.is_in_group("slot")
 
-func is_available(elem):
-	var cards_list = get_tree().root.get_child(0).get_node("CardLayer").get_children()
-	for card in cards_list:
-		if elem == card.attached_to:
-			return false
-	return elem.allow_drop
+func is_playable() -> bool:
+	return is_hovered() and is_affordable() and !$Button.disabled
 
 func attach_card(new_slot_body,pos=0):
 	if(new_slot_body == null):
@@ -149,8 +149,8 @@ func attach_card(new_slot_body,pos=0):
 			rotation_tween = create_tween()
 			rotation_tween.tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
 			
-		position_tween = create_tween()
-		position_tween.tween_property(self,"position", new_slot_body.global_position,0.1).set_ease(Tween.EASE_OUT)
+		position_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+		position_tween.tween_property(self,"position", new_slot_body.get_postion()-pivot_offset,0.4)
 		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
@@ -207,7 +207,7 @@ func get_card_scrybe() -> String:
 func get_card_art() -> Texture:
 	return data.art
 
-func get_affordable():
+func is_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
 	return get_card_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
@@ -216,7 +216,6 @@ func sacrifice():
 	if not attached_to is Slot:
 		push_error("Trying to sacrifice an unplayed card!")
 	else:
-		attached_to.sacrifice_mark_ref.change_state(ScarMark.STATES.HIDDEN)
 		attached_to.attached_card = null
 		queue_free()
 
@@ -240,6 +239,15 @@ func trigger_sigils(event_triggered : SigilData.SIGIL_EVENTS,target=null):
 	for sigil in data.sigils:
 		sigil.trigger_event(event_triggered,target)
 
+func show_mark():
+	$SacrificeMark.change_state(ScarMark.STATES.IDLE)
+
+func hide_mark():
+	$SacrificeMark.change_state(ScarMark.STATES.HIDDEN)
+
+func is_sacrificed():
+	return $SacrificeMark.is_active()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -252,27 +260,75 @@ func _process(delta):
 				modulate = Color.DARK_GREEN
 			else:
 				modulate = Color.DARK_MAGENTA
-				
-	var tween_vector = Vector2(0.23,0.23) if (is_hovered() and get_affordable()) else Vector2(0.22,0.22)
-	if tween_vector != scale:
-		var scale_tween = create_tween()
-		scale_tween.tween_property(self,"scale",tween_vector,0.05).set_ease(Tween.EASE_OUT)
-		
+	
 	refresh_draggable()
+	if is_hovered() and is_affordable() and !$Button.disabled and !position_tween:
+		perspective_vec = Vector2(-perspective_amount,-perspective_amount) + perspective_amount*2*(get_local_mouse_position()/$Button.size)
 	
-	
+	material.set("shader_parameter/x_rot",-perspective_vec.y)
+	material.set("shader_parameter/y_rot",perspective_vec.x)
+		
 func _to_string():
 	return "Card("+get_card_name()+")"
 
-func _on_card_clicked():
+func play_card_method():
 	print(str(self)+" was pressed")
-	if !gameRoot.card_is_played():
-		print("No card in play")
-		if draggable and get_affordable():
-			print("Sending "+str(self)+" to play")
-			Game.played_card_index = attached_to.attached_cards.find(self)
-			attach_card(gameRoot.get_node("PlayedSlot"))
-		else:
-			print("Cannot play "+str(self))
+	if draggable and is_affordable():
+		print("Sending "+str(self)+" to play")
+		Game.played_card_index = attached_to.attached_cards.find(self)
+		attach_card(gameRoot.get_node("PlayedSlot"))
+		_on_mouse_exited()
+		gameRoot.on_card_play()
+	else:
+		print("Cannot play "+str(self))
 
-	gameRoot.on_card_play()
+
+func select_sacrifice_method():
+	if $SacrificeMark.state == ScarMark.STATES.IDLE:
+		$SacrificeMark.change_state(ScarMark.STATES.ACTIVE)
+		gameRoot.sacrificed_value +=1
+		gameRoot.activate_sacrifice()
+	elif $SacrificeMark.state == ScarMark.STATES.ACTIVE:
+		$SacrificeMark.change_state(ScarMark.STATES.IDLE)
+		gameRoot.sacrificed_value -=1
+
+func default_card_click_method():
+	pass
+
+func get_click_method() -> Callable:
+	if gameRoot.card_is_played():
+		print("A card is in play")
+		return select_sacrifice_method
+	elif attached_to is Hand:
+		print("No card in play")
+		return play_card_method
+	return default_card_click_method
+		
+func _on_card_clicked():
+	get_click_method().call()
+
+
+func _on_mouse_entered():
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+		
+	if is_affordable() and !$Button.disabled:
+		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		scale_tween.tween_property(self,"scale",Vector2(0.24,0.24),0.5)
+
+
+func _on_mouse_exited():
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+		
+	if is_affordable() and !$Button.disabled:
+		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.5)
+
+	if perspective_tween and perspective_tween.is_running():
+		perspective_tween.kill()
+	
+	perspective_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	perspective_tween.tween_property(self,"perspective_vec",Vector2(0,0),0.5)
+	
+	

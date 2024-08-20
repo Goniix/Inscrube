@@ -31,19 +31,17 @@ metadata/_edit_lock_ = true
 
 [node name="PlayedSlot" parent="." instance=ExtResource("3_k2b5r")]
 unique_name_in_owner = true
-offset_left = 190.0
-offset_top = 462.0
-offset_right = 344.0
-offset_bottom = 688.0
+offset_left = 280.0
+offset_top = 426.0
+offset_right = 434.0
+offset_bottom = 652.0
 allow_drop = false
 allow_sacrifice = false
 
 [node name="SacrificeMarkLayer" type="Node" parent="."]
 
-[node name="CardLayer" type="Node" parent="."]
-
 [node name="Hand" parent="." instance=ExtResource("4_0vwdi")]
-position = Vector2(1310, 897)
+position = Vector2(1270, 961)
 
 [node name="SlotGrid" type="GridContainer" parent="."]
 unique_name_in_owner = true
@@ -102,6 +100,8 @@ layout_mode = 2
 [node name="PSlot3" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
 layout_mode = 2
 
+[node name="CardLayer" type="Node" parent="."]
+
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -118,7 +118,7 @@ text = "7"
 label_settings = ExtResource("5_tvjb6")
 
 [node name="BellButton" parent="GUI" instance=ExtResource("6_bfcxb")]
-position = Vector2(93, 605)
+position = Vector2(100, 553)
 
 [node name="CRT" type="ColorRect" parent="."]
 visible = false

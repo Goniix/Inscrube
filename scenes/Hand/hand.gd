@@ -29,7 +29,7 @@ func refresh_cards_color():
 	for card in attached_cards:
 		card.color_tween = create_tween()
 		var fct = (1.0 if (not game_root.card_is_played() and card.get_card_cost(CardData.COST_ENUM.BLOOD)<=total_value) else 0.5)
-		card.color_tween.tween_property(card,"modulate",Color(fct,fct,fct,1),0.1)
+		card.color_tween.tween_property(card.get_node("SubViewportContainer/SubViewport/SubCard"),"modulate",Color(fct,fct,fct,1),0.1)
 
 func refresh_cards_pos():
 	#print(str(len(attached_cards))+" cartes dans la main")
@@ -38,14 +38,14 @@ func refresh_cards_pos():
 		if(card_elem.rotation_tween!=null and card_elem.rotation_tween.is_running()):
 			card_elem.rotation_tween.kill()
 		
-		var tween = create_tween()
+		var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 		var path_data = get_card_position(card_elem)
-		tween.tween_property(card_elem,"position", path_data[0], 0.1).set_ease(Tween.EASE_OUT)
-		tween.parallel().tween_property(card_elem,"rotation", path_data[1], 0.1).set_ease(Tween.EASE_OUT)
+		tween.tween_property(card_elem,"position", path_data[0], 0.4)
+		tween.parallel().tween_property(card_elem,"rotation", path_data[1], 0.4)
 		card_elem.set_z_index(i)
 		i+=1
 
 func get_card_position(card: Card):
 	var card_index: int = get_card_index(card)
 	$HandPath/PathFollow2D.progress_ratio = ((card_index+1) as float)/(len(attached_cards)+1)
-	return [$HandPath/PathFollow2D.global_position,$HandPath/PathFollow2D.rotation]
+	return [$HandPath/PathFollow2D.global_position-card.pivot_offset,$HandPath/PathFollow2D.rotation]

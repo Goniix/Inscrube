@@ -27,9 +27,9 @@ func force_color_change(instant:bool = false):
 	color_tween.kill()
 	if(instant):
 		modulate = get_state_color()
-
-func _ready():
-	pass
+	
+func is_active()->bool:
+	return state == STATES.ACTIVE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -38,3 +38,6 @@ func _process(delta):
 			#print("switching to"+str(get_state_color()))
 			color_tween = create_tween()
 			color_tween.tween_property(self,"modulate",get_state_color(),0.2)
+
+func _to_string():
+	return "Mark("+str(get_parent())+")"

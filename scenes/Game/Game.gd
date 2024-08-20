@@ -119,6 +119,7 @@ func giveCard(card_id : String):
 	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	card.attach_card($Hand,$Hand.attached_cards.size())
+	refresh_hand()
 
 func get_total_value():
 	var total_value = 0
@@ -154,26 +155,29 @@ func _ready():
 	new_card.attach_card($Hand)
 
 	update_scale()
-	$Hand.refresh_cards_color()
+	refresh_hand()
 
 func _process(delta):
 	if(Input.is_action_just_pressed("Debug1")):
 		giveCard("squirrel")
 	if(Input.is_action_just_pressed("Debug2")):
 		giveCard("adder")
+	if(Input.is_action_just_pressed("Debug3")):
+		for i in range(85):
+			giveCard("squirrel")
 		
-	if Input.is_action_just_pressed("leftClick"):
-		if card_is_played():
-			#left click but a card is already played
-			
-			#print(str(played_card_ref)+" already in play")
-			if !is_valid_slot_hovered():
-				#no slot are hovered, slot is already filled or slot doesnt allows drop
-				print("Sending "+str(get_played_card())+" back to hand")
-				get_played_card().attach_card($Hand,played_card_index)
-				refresh_hand()
-				
-				toggle_all_marks(false)
+	#if Input.is_action_just_pressed("leftClick"):
+		#if card_is_played():
+			##left click but a card is already played
+			#
+			##print(str(played_card_ref)+" already in play")
+			#if !is_valid_slot_hovered():
+				##no slot are hovered, slot is already filled or slot doesnt allows drop
+				#print("Sending "+str(get_played_card())+" back to hand")
+				#get_played_card().attach_card($Hand,played_card_index)
+				#refresh_hand()
+				#
+				#toggle_all_marks(false)
 
 				
 				
@@ -183,13 +187,22 @@ func refresh_hand():
 
 func on_card_play():
 	refresh_hand()
-	for slot : Slot in %SlotGrid.get_children():
-		if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached() and get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
-			slot.show_mark()
+	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
+		for slot : Slot in %SlotGrid.get_children():
+			if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached():
+				slot.attached_card.show_mark()
 
 func toggle_all_marks(visible:bool):
 	for slot : Slot in %SlotGrid.get_children():
-		if visible:
-			slot.show_mark()
-		else:
-			slot.hide_mark()
+		if(slot.is_attached()):
+			if visible:
+				slot.attached_card.show_mark()
+			else:
+				slot.attached_card.hide_mark()
+				
+func activate_sacrifice():
+	if sacrificed_value == get_played_card().get_card_cost(CardData.COST_ENUM.BLOOD):
+		for slot : Slot in %SlotGrid.get_children():
+			if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached():
+				if slot.attached_card.is_sacrificed():
+					slot.attached_card.sacrifice()

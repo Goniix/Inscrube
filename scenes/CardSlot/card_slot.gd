@@ -42,7 +42,6 @@ func change_state(target_state: STATES):
 		#print(slot_name()+" changed state to "+str(target_state))
 		state = target_state
 		emit_signal("state_changed")
-		tooltip_text = str(state)
 
 func is_attached():
 	return attached_card != null
@@ -66,11 +65,17 @@ func _process(delta):
 	else:
 		change_state(STATES.IDLE)
 
-func show_mark():
-	$SacrificeMark.change_state(ScarMark.STATES.IDLE)
+#func show_mark():
+	#$SacrificeMark.change_state(ScarMark.STATES.IDLE)
+#
+#func hide_mark():
+	#$SacrificeMark.change_state(ScarMark.STATES.HIDDEN)
 
-func hide_mark():
-	$SacrificeMark.change_state(ScarMark.STATES.HIDDEN)
+func get_postion() -> Vector2:
+	if get_parent_control() is Container:
+		return global_position+(size*get_parent_control().scale)/2
+	else:
+		return global_position+(size*scale)/2
 		
 
 func _to_string():
@@ -82,27 +87,20 @@ func _to_string():
 func _on_pressed():
 	print(str(self)+" was clicked")
 	if gameRoot.card_is_played():
-		if state == STATES.ATTACHED:
-			if $SacrificeMark.state == ScarMark.STATES.IDLE:
-				$SacrificeMark.change_state(ScarMark.STATES.ACTIVE)
-				gameRoot.sacrificed_value +=1
-			elif $SacrificeMark.state == ScarMark.STATES.ACTIVE:
-				$SacrificeMark.change_state(ScarMark.STATES.IDLE)
-				gameRoot.sacrificed_value -=1
+		#slot is valid
+		var played_card_ref: Card = gameRoot.get_node("PlayedSlot").attached_card 
+		print("Playing "+str(played_card_ref)+"  to "+str(self))
+		if Game.sacrificed_value >= played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD):
+			played_card_ref.attach_card(self)
+			played_card_ref.modulate = Color(1,1,1,1)
+			#played_card_ref.get_node("Button").mouse_filter = MOUSE_FILTER_IGNORE
+			played_card_ref.trigger_sigils(SigilData.SIGIL_EVENTS.ON_PLAY)
+			#$GUI/SacrificeToken.toggle_state()
+			gameRoot.refresh_hand()
+			gameRoot.toggle_all_marks(false)
+			gameRoot.sacrificed_value = 0
 		else:
-			#slot is valid
-			var played_card_ref: Card = gameRoot.get_node("PlayedSlot").attached_card 
-			print("Playing "+str(played_card_ref)+"  to "+str(self))
-			if Game.sacrificed_value >= played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD):
-				played_card_ref.attach_card(self)
-				played_card_ref.modulate = Color(1,1,1,1)
-				played_card_ref.get_node("Button").disabled = true
-				played_card_ref.trigger_sigils(SigilData.SIGIL_EVENTS.ON_PLAY)
-				#$GUI/SacrificeToken.toggle_state()
-				gameRoot.refresh_hand()
-				gameRoot.toggle_all_marks(false)
-			else:
-				print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD))+")")
+			print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD))+")")
 
 
 func _on_state_changed():
