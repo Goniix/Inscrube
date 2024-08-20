@@ -1,0 +1,195 @@
+[gd_scene load_steps=11 format=3 uid="uid://s5y0n8ui2te5"]
+
+[ext_resource type="Script" path="res://scenes/Card/Card.gd" id="1_hbqo0"]
+[ext_resource type="Material" uid="uid://cyger8qpkw1au" path="res://shaders/2D-Perspective.tres" id="1_ox723"]
+[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="2_qp58q"]
+[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_bbwjd"]
+[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="4_v5cwv"]
+[ext_resource type="Theme" uid="uid://dihx0jdpbk4bh" path="res://assets/themes/LargeLabel.tres" id="5_tubf5"]
+[ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="6_unk2p"]
+[ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="7_t437r"]
+[ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="9_31j3g"]
+[ext_resource type="Script" path="res://scenes/CardSlot/SacrificeMark/sacrifice_mark.gd" id="10_epdbo"]
+
+[node name="Card" type="Control"]
+material = ExtResource("1_ox723")
+layout_mode = 3
+anchors_preset = 0
+pivot_offset = Vector2(520, 740)
+script = ExtResource("1_hbqo0")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+use_parent_material = true
+layout_mode = 0
+offset_right = 1040.0
+offset_bottom = 1480.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(1040, 1480)
+render_target_update_mode = 4
+
+[node name="SubCard" type="Control" parent="SubViewportContainer/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="TextureRect" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 0
+offset_left = 90.0
+offset_top = 230.0
+offset_right = 176.0
+offset_bottom = 289.0
+scale = Vector2(10, 10)
+texture = ExtResource("2_qp58q")
+
+[node name="Frame" type="TextureRect" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 0
+offset_right = 104.0
+offset_bottom = 148.0
+scale = Vector2(10, 10)
+texture = ExtResource("3_bbwjd")
+
+[node name="Art" type="TextureRect" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 0
+offset_left = 90.0
+offset_top = 230.0
+offset_right = 176.0
+offset_bottom = 289.0
+scale = Vector2(10, 10)
+texture = ExtResource("4_v5cwv")
+
+[node name="CostContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 0
+offset_left = 350.0
+offset_top = 100.0
+offset_right = 960.0
+offset_bottom = 180.0
+alignment = 2
+
+[node name="Name" type="Label" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+texture_filter = 6
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 70.0
+offset_top = 80.0
+offset_right = 716.0
+offset_bottom = 186.0
+grow_horizontal = 2
+theme = ExtResource("5_tubf5")
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "Default
+"
+
+[node name="Credit" type="Label" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+texture_filter = 6
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 180.0
+offset_top = 1320.0
+offset_right = 820.0
+offset_bottom = 1410.0
+grow_horizontal = 2
+theme = ExtResource("6_unk2p")
+text = "Default
+"
+horizontal_alignment = 1
+
+[node name="Rarity" type="Label" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+texture_filter = 6
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 100.0
+offset_top = 1240.0
+offset_right = 910.0
+offset_bottom = 1300.0
+grow_horizontal = 2
+theme = ExtResource("7_t437r")
+text = "Default
+"
+vertical_alignment = 2
+
+[node name="Health" type="Label" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+texture_filter = 6
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 853.0
+offset_top = 1304.0
+offset_right = 906.0
+offset_bottom = 1446.0
+grow_horizontal = 2
+theme = ExtResource("5_tubf5")
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "0"
+
+[node name="Power" type="Label" parent="SubViewportContainer/SubViewport/SubCard"]
+unique_name_in_owner = true
+texture_filter = 6
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 93.0
+offset_top = 1304.0
+offset_right = 146.0
+offset_bottom = 1446.0
+grow_horizontal = 2
+theme = ExtResource("5_tubf5")
+theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+text = "0"
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 1040.0
+offset_bottom = 1480.0
+
+[node name="SacrificeMark" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -23.0
+offset_top = -106.0
+offset_right = 130.0
+offset_bottom = 126.0
+scale = Vector2(7, 7)
+mouse_filter = 2
+texture = ExtResource("9_31j3g")
+script = ExtResource("10_epdbo")
+
+[connection signal="mouse_entered" from="Button" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_card_clicked"]

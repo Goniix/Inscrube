@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SigilData" load_steps=3 format=3 uid="uid://bv0utgeyds2qs"]
+
+[ext_resource type="Script" path="res://data/SigilData.gd" id="1_2a3lh"]
+[ext_resource type="Script" path="res://data/sigils/scripts/default.gd" id="1_ledyb"]
+
+[resource]
+script = ExtResource("1_2a3lh")
+name_id = "DEATHTOUCH"
+description_id = "DEATHTOUCH_DES"
+methods = ExtResource("1_ledyb")

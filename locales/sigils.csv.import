@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bb56amf5yovia"
+
+[deps]
+
+files=["res://locales/sigils.en.translation", "res://locales/sigils.fr.translation"]
+
+source_file="res://locales/sigils.csv"
+dest_files=["res://locales/sigils.en.translation", "res://locales/sigils.fr.translation"]
+
+[params]
+
+compress=true
+delimiter=0

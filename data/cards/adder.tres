@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3 uid="uid://63geyw8mcqej"]
+
+[ext_resource type="Texture2D" uid="uid://bi70dsubgkdr4" path="res://assets/art/Adder.png" id="1_2o6xm"]
+[ext_resource type="Script" path="res://data/CardData.gd" id="1_xfo8l"]
+[ext_resource type="Resource" uid="uid://bv0utgeyds2qs" path="res://data/sigils/death_touch.tres" id="3_a6ide"]
+
+[resource]
+script = ExtResource("1_xfo8l")
+name = "ADDER"
+sigils = Array[Resource("res://data/SigilData.gd")]([ExtResource("3_a6ide")])
+rarity = 1
+faction = 0
+subclass = Array[int]([])
+blood_cost = 2
+bone_cost = 0
+energy_cost = 0
+life = 2
+attack_type = 0
+strength = 2
+illustrator = "Pixel Profligate"
+scrybe = "Answearing Machine"
+art = ExtResource("1_2o6xm")

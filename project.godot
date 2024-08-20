@@ -21,7 +21,7 @@ resources_spreadsheet_view/context_menu_on_leftclick=false
 [application]
 
 config/name="Inscrybe"
-run/main_scene="res://scenes/Game.tscn"
+run/main_scene="res://scenes/Game/Game.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://assets/icon.png"
 
@@ -29,7 +29,6 @@ config/icon="res://assets/icon.png"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [dotnet]
@@ -57,14 +56,24 @@ leftClick={
 }
 Debug1={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":101,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":69,"echo":false,"script":null)
+]
+}
+Debug2={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"key_label":0,"unicode":82,"echo":false,"script":null)
+]
+}
+Debug3={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"key_label":0,"unicode":84,"echo":false,"script":null)
 ]
 }
 
 [internationalization]
 
 locale/translation_remaps={}
-locale/translations=PackedStringArray("res://src/locales/cards.en.translation", "res://src/locales/cards.fr.translation", "res://src/locales/keywords.en.translation", "res://src/locales/keywords.fr.translation")
+locale/translations=PackedStringArray("res://locales/cards.en.translation", "res://locales/cards.fr.translation", "res://locales/keywords.en.translation", "res://locales/keywords.fr.translation", "res://locales/sigils.en.translation", "res://locales/sigils.fr.translation")
 
 [rendering]
 

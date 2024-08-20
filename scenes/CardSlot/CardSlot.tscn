@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bt4kdi4xf8ibg"]
+
+[ext_resource type="Script" path="res://scenes/CardSlot/card_slot.gd" id="1_wffnj"]
+[ext_resource type="Texture2D" uid="uid://cr51mbyq1o6u1" path="res://assets/board/card_slot.png" id="2_jehyx"]
+
+[node name="CardSlot" type="TextureButton" groups=["slot"]]
+z_as_relative = false
+offset_right = 154.0
+offset_bottom = 226.0
+scale = Vector2(1.2, 1.2)
+pivot_offset = Vector2(77, 113)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("2_jehyx")
+texture_pressed = ExtResource("2_jehyx")
+texture_hover = ExtResource("2_jehyx")
+texture_disabled = ExtResource("2_jehyx")
+stretch_mode = 4
+script = ExtResource("1_wffnj")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="state_changed" from="." to="." method="_on_state_changed"]

@@ -1,0 +1,142 @@
+[gd_scene load_steps=11 format=3 uid="uid://dxa8iwdognc3s"]
+
+[ext_resource type="Script" path="res://scenes/Game/Game.gd" id="1_q876c"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_cd4bh"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="3_k2b5r"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/Hand.tscn" id="4_0vwdi"]
+[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/Game/DebugLabel.tres" id="5_tvjb6"]
+[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/BellButton.tscn" id="6_bfcxb"]
+[ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_43mj7"]
+[ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="9_qj7li"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxjqi"]
+shader = ExtResource("8_43mj7")
+shader_parameter/scanline_count = 50.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yhj8r"]
+shader = ExtResource("9_qj7li")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/multiplier = 0.4
+shader_parameter/softness = 0.8
+
+[node name="Main" type="Node"]
+script = ExtResource("1_q876c")
+
+[node name="BackGroundBoard" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_cd4bh")
+stretch_mode = 6
+metadata/_edit_lock_ = true
+
+[node name="PlayedSlot" parent="." instance=ExtResource("3_k2b5r")]
+unique_name_in_owner = true
+offset_left = 280.0
+offset_top = 426.0
+offset_right = 434.0
+offset_bottom = 652.0
+allow_drop = false
+allow_sacrifice = false
+
+[node name="SacrificeMarkLayer" type="Node" parent="."]
+
+[node name="Hand" parent="." instance=ExtResource("4_0vwdi")]
+position = Vector2(1270, 961)
+
+[node name="SlotGrid" type="GridContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_left = 0.251042
+anchor_top = 0.180556
+anchor_right = 0.741667
+anchor_bottom = 0.813889
+offset_left = 19.0
+offset_top = -2.99998
+offset_right = -295.0
+offset_bottom = -231.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+columns = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="OSlot0" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+flip_v = true
+slot_type = 1
+allow_drop = false
+allow_sacrifice = false
+
+[node name="OSlot1" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+flip_v = true
+slot_type = 1
+allow_drop = false
+allow_sacrifice = false
+
+[node name="OSlot2" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+flip_v = true
+slot_type = 1
+allow_drop = false
+allow_sacrifice = false
+
+[node name="OSlot3" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+flip_v = true
+slot_type = 1
+allow_drop = false
+allow_sacrifice = false
+
+[node name="PSlot0" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+
+[node name="PSlot1" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+
+[node name="PSlot2" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+
+[node name="PSlot3" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
+layout_mode = 2
+
+[node name="CardLayer" type="Node" parent="."]
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthScale" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 778.0
+offset_right = 345.0
+offset_bottom = 861.0
+text = "7"
+label_settings = ExtResource("5_tvjb6")
+
+[node name="BellButton" parent="GUI" instance=ExtResource("6_bfcxb")]
+position = Vector2(100, 553)
+
+[node name="CRT" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_nxjqi")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_yhj8r")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
