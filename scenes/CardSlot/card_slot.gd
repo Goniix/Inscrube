@@ -4,8 +4,8 @@ extends TextureButton
 signal state_changed()
 
 var slot_index: int
-enum SLOT_TYPE {PLAYER,OPPONENT}
-@export var slot_type: SLOT_TYPE
+#enum SLOT_TYPE {PLAYER,OPPONENT}
+#@export var slot_type: SLOT_TYPE
 
 @export var allow_drop: bool = true
 @export var allow_pick: bool = false
@@ -47,15 +47,22 @@ func is_attached():
 	return attached_card != null
 
 func slot_name():
-	return str(slot_type)+":"+str(slot_index)
+	return str(get_slot_owner())+":"+str(slot_index)
 
 func _ready():
 	gameRoot = get_tree().root.get_child(0)
 	#$SacrificeMark.visible = false
 	emit_signal("state_changed")
 	
-func is_player_slot():
-	return slot_type == SLOT_TYPE.PLAYER
+func get_slot_owner() -> SlotArea.OWNER:
+	if get_parent() is GridContainer:
+		var slot_area_ref:SlotArea = get_parent().get_parent().get_parent()
+		if slot_area_ref.get_player_slots().has(self):
+			return SlotArea.OWNER.PLAYER
+		else:
+			return SlotArea.OWNER.ADVERSE
+	else:
+		return SlotArea.OWNER.FREE
 
 func _process(delta):
 	if is_attached():
@@ -71,17 +78,20 @@ func _process(delta):
 #func hide_mark():
 	#$SacrificeMark.change_state(ScarMark.STATES.HIDDEN)
 
-func get_postion() -> Vector2:
-	if get_parent_control() is Container:
-		return global_position+(size*get_parent_control().scale)/2
+func get_slot_scale():
+	if get_slot_owner()!=SlotArea.OWNER.FREE:
+		var slot_area_ref:SlotArea = get_parent().get_parent().get_parent()
+		return slot_area_ref.scale
 	else:
-		return global_position+(size*scale)/2
-		
+		return scale
+
+func get_slot_postion() -> Vector2:
+	return global_position+(size*get_slot_scale())/2
 
 func _to_string():
-	var out = "Slot("+str(slot_type)
-	if slot_type == SLOT_TYPE.PLAYER:
-		out+=str(gameRoot.get_node("SlotGrid").get_children().find(self))
+	var out = "Slot("+str(get_slot_owner())
+	#if slot_type == SLOT_TYPE.PLAYER:
+	out+=name#str(gameRoot.get_node("SlotArea").find_slot(self).name)
 	return out+")"
 
 func _on_pressed():

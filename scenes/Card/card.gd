@@ -1,6 +1,8 @@
 class_name Card
 extends Control
 
+
+
 var data : CardData
 
 var card_id: String
@@ -23,6 +25,9 @@ var position_tween : Tween = null
 var scale_tween : Tween
 var color_tween : Tween
 var perspective_tween: Tween
+
+const default_scale: Vector2 = Vector2(.22,.22)
+var target_scale: Vector2 = default_scale
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Array = [0,0,1,2,2]
@@ -132,7 +137,7 @@ func is_playable() -> bool:
 
 func attach_card(new_slot_body,pos=0):
 	if(new_slot_body == null):
-		push_error("Trying to attach card to null Slot!")
+		assert(new_slot_body!=null,"Trying to attach card to null Slot!")
 		
 	if attached_to is Hand:# and not new_slot_body is Hand:
 		attached_to.remove_card(self)
@@ -141,16 +146,23 @@ func attach_card(new_slot_body,pos=0):
 		attached_to.attached_card = null
 	
 	if new_slot_body is Slot:
-		new_slot_body.attached_card = self		
-		if(rotation_tween!=null and rotation_tween.is_running()):
+		new_slot_body.attached_card = self
+		
+		if position_tween and position_tween.is_running():
+			position_tween.kill()
+		position_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+		position_tween.tween_property(self,"position", new_slot_body.get_slot_postion()-pivot_offset,0.35)
+		
+		if rotation_tween and rotation_tween.is_running():
 			rotation_tween.kill()
-			
-		if(new_slot_body.rotation != self.rotation):
-			rotation_tween = create_tween()
-			rotation_tween.tween_property(self,"rotation", new_slot_body.rotation,0.2).set_ease(Tween.EASE_OUT)
-			
-		position_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
-		position_tween.tween_property(self,"position", new_slot_body.get_postion()-pivot_offset,0.4)
+		rotation_tween = create_tween().set_ease(Tween.EASE_OUT)
+		rotation_tween.tween_property(self,"rotation", 0,0.1)
+		
+		target_scale = Vector2(.14,.14) * new_slot_body.get_slot_scale()
+		if scale_tween and scale_tween.is_running():
+			scale_tween.kill()
+		scale_tween = create_tween()
+		scale_tween.tween_property(self,"scale",target_scale,0.5)
 		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
@@ -223,21 +235,28 @@ func kill():
 	pass
 
 func attack(card : Card):
-	if card != null:
-		card.damage(get_card_strength())
-		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")
-	else:
+	var attack_properties = trigger_sigils(SigilData.SIGIL_EVENTS.ATTACK_PROPERTY)
+	if attack_properties.find(SigilData.ATTACK_PROPERTY.FLYING) != -1 or card==null:
 		Game.health_scale += get_card_strength()
 		print("attacked scale for "+str(get_card_strength())+" power (scale value="+str(Game.health_scale)+")")
 		gameRoot.update_scale()
+	else:
+		card.damage(get_card_strength())
+		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")
+		
 
 func damage(amount: int):
 	data.life -= amount
 	update_stats()
 
-func trigger_sigils(event_triggered : SigilData.SIGIL_EVENTS,target=null):
+func trigger_sigils(event_triggered : SigilData.SIGIL_EVENTS,target=null)->Array:
+	var resArray = []
 	for sigil in data.sigils:
-		sigil.trigger_event(event_triggered,target)
+		var result = sigil.trigger_event(event_triggered,self,target)
+		if(result != null):
+			resArray.append(result)
+
+	return resArray
 
 func show_mark():
 	$SacrificeMark.change_state(ScarMark.STATES.IDLE)
@@ -250,8 +269,7 @@ func is_sacrificed():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-	scale = Vector2(0.22,0.22)
+	scale = target_scale
 	gameRoot = get_tree().root.get_child(0)
 
 func _process(delta):
@@ -314,7 +332,7 @@ func _on_mouse_entered():
 		
 	if is_affordable() and !$Button.disabled:
 		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		scale_tween.tween_property(self,"scale",Vector2(0.24,0.24),0.5)
+		scale_tween.tween_property(self,"scale",target_scale*1.1,0.5)
 
 
 func _on_mouse_exited():
@@ -323,12 +341,12 @@ func _on_mouse_exited():
 		
 	if is_affordable() and !$Button.disabled:
 		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		scale_tween.tween_property(self,"scale",Vector2(0.22,0.22),0.5)
+		scale_tween.tween_property(self,"scale",target_scale,0.5)
 
 	if perspective_tween and perspective_tween.is_running():
 		perspective_tween.kill()
 	
 	perspective_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-	perspective_tween.tween_property(self,"perspective_vec",Vector2(0,0),0.5)
+	perspective_tween.tween_property(self,"perspective_vec",Vector2.ZERO,0.5)
 	
 	

@@ -123,9 +123,8 @@ func giveCard(card_id : String):
 
 func get_total_value():
 	var total_value = 0
-	var slot_list = %SlotGrid.get_children()
-	for slot in slot_list:
-		if slot.slot_type == Slot.SLOT_TYPE.PLAYER and slot.attached_card != null:
+	for slot in $SlotArea.get_player_slots():
+		if slot.attached_card != null:
 			total_value+=1
 	return total_value
 
@@ -133,7 +132,7 @@ func update_scale():
 	$GUI/HealthScale.text = str(health_scale)
 	
 func is_valid_slot_hovered():
-	for slot : Slot in %SlotGrid.get_children():
+	for slot : Slot in $SlotArea.get_all_slots():
 		if slot.is_hovered() and slot.allow_drop:
 			return true
 	return false
@@ -149,10 +148,17 @@ func _init():
 	
 func _ready():
 	var new_card: Card = cardScene.instantiate()
-	new_card.load_data("adder")
+	new_card.load_data("raven")
 	$CardLayer.add_child(new_card)
 	#new_card.attach_card($SlotsLayer/TestSlot)
 	new_card.attach_card($Hand)
+	
+	#new_card = cardScene.instantiate()
+	#new_card.load_data("squirrel")
+	#$CardLayer.add_child(new_card)
+	#new_card.attach_card($SlotArea.get_slot(SlotArea.OWNER.PLAYER,SlotArea.LANE.FRONT,0))
+	
+	
 
 	update_scale()
 	refresh_hand()
@@ -188,12 +194,12 @@ func refresh_hand():
 func on_card_play():
 	refresh_hand()
 	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
-		for slot : Slot in %SlotGrid.get_children():
-			if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached():
+		for slot : Slot in $SlotArea.get_player_slots():
+			if slot.is_attached() and slot.allow_sacrifice:
 				slot.attached_card.show_mark()
 
 func toggle_all_marks(visible:bool):
-	for slot : Slot in %SlotGrid.get_children():
+	for slot : Slot in $SlotArea.get_player_slots():
 		if(slot.is_attached()):
 			if visible:
 				slot.attached_card.show_mark()
@@ -202,7 +208,7 @@ func toggle_all_marks(visible:bool):
 				
 func activate_sacrifice():
 	if sacrificed_value == get_played_card().get_card_cost(CardData.COST_ENUM.BLOOD):
-		for slot : Slot in %SlotGrid.get_children():
-			if slot.allow_sacrifice and slot.is_player_slot() and slot.is_attached():
+		for slot : Slot in $SlotArea.get_player_slots():
+			if slot.is_attached() and slot.allow_sacrifice:
 				if slot.attached_card.is_sacrificed():
 					slot.attached_card.sacrifice()

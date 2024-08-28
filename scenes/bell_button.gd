@@ -56,7 +56,7 @@ func activate_button():
 	icon_color_tween.tween_property($Icon,"modulate",active_icon_color,0.2)
 	var slot_grid = gameRoot.get_node("SlotGrid")
 	for slot in slot_grid.get_children():
-		if slot.slot_type == Slot.SLOT_TYPE.PLAYER and slot.is_attached():
+		if slot.get_slot_owner() == SlotArea.OWNER.PLAYER and slot.is_attached():
 			slot.attached_card.attack(slot_grid.get_node("O"+slot.name.right(-1)).attached_card)
 			
 			

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=12 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://scenes/Game/Game.gd" id="1_q876c"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_cd4bh"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="3_k2b5r"]
-[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/Hand.tscn" id="4_0vwdi"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/hand.tscn" id="4_0vwdi"]
+[ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scenes/SlotArea/slot_area.tscn" id="5_ruyws"]
 [ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/Game/DebugLabel.tres" id="5_tvjb6"]
 [ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/BellButton.tscn" id="6_bfcxb"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_43mj7"]
@@ -38,67 +39,14 @@ offset_bottom = 652.0
 allow_drop = false
 allow_sacrifice = false
 
-[node name="SacrificeMarkLayer" type="Node" parent="."]
-
 [node name="Hand" parent="." instance=ExtResource("4_0vwdi")]
 position = Vector2(1270, 961)
 
-[node name="SlotGrid" type="GridContainer" parent="."]
-unique_name_in_owner = true
-anchors_preset = -1
-anchor_left = 0.251042
-anchor_top = 0.180556
-anchor_right = 0.741667
-anchor_bottom = 0.813889
-offset_left = 19.0
-offset_top = -2.99998
-offset_right = -295.0
-offset_bottom = -231.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-columns = 4
-metadata/_edit_use_anchors_ = true
-
-[node name="OSlot0" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-flip_v = true
-slot_type = 1
-allow_drop = false
-allow_sacrifice = false
-
-[node name="OSlot1" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-flip_v = true
-slot_type = 1
-allow_drop = false
-allow_sacrifice = false
-
-[node name="OSlot2" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-flip_v = true
-slot_type = 1
-allow_drop = false
-allow_sacrifice = false
-
-[node name="OSlot3" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-flip_v = true
-slot_type = 1
-allow_drop = false
-allow_sacrifice = false
-
-[node name="PSlot0" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-
-[node name="PSlot1" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-
-[node name="PSlot2" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
-
-[node name="PSlot3" parent="SlotGrid" instance=ExtResource("3_k2b5r")]
-layout_mode = 2
+[node name="SlotArea" parent="." instance=ExtResource("5_ruyws")]
+offset_left = 614.0
+offset_top = 95.0
+offset_right = -720.0
+offset_bottom = -106.0
 
 [node name="CardLayer" type="Node" parent="."]
 

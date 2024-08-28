@@ -1,0 +1,108 @@
+[gd_scene load_steps=3 format=3 uid="uid://b25bduh74s0yi"]
+
+[ext_resource type="Script" path="res://scenes/SlotArea/slot_area.gd" id="1_7t4c0"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="1_fsdbf"]
+
+[node name="SlotArea" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1327.0
+offset_bottom = -201.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7t4c0")
+
+[node name="ArrayContainers" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 628.0
+offset_bottom = 896.0
+
+[node name="AdverseSlots" type="GridContainer" parent="ArrayContainers"]
+layout_direction = 2
+layout_mode = 2
+theme_override_constants/h_separation = -6
+theme_override_constants/v_separation = -16
+columns = 4
+
+[node name="B0" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="B1" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="B2" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="B3" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="F0" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="F1" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="F2" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="F3" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+flip_v = true
+allow_pick = true
+
+[node name="PlayerSlots" type="GridContainer" parent="ArrayContainers"]
+layout_mode = 2
+theme_override_constants/h_separation = -6
+theme_override_constants/v_separation = -16
+columns = 4
+
+[node name="F0" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="F1" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="F2" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="F3" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="B0" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="B1" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="B2" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[node name="B3" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
+layout_mode = 2
+allow_pick = true
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

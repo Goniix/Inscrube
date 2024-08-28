@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="SigilData" load_steps=3 format=3 uid="uid://ddlk3b8dpw6ma"]
 
-[ext_resource type="Script" path="res://data/sigils/scripts/default.gd" id="1_x4gns"]
+[ext_resource type="Script" path="res://data/sigils/scripts/airborne.gd" id="1_203mb"]
 [ext_resource type="Script" path="res://data/SigilData.gd" id="2_s3vtt"]
 
 [resource]
 script = ExtResource("2_s3vtt")
 name_id = "AIRBORNE"
 description_id = "AIRBORNE_DES"
-methods = ExtResource("1_x4gns")
+methods = ExtResource("1_203mb")

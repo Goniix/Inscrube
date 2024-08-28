@@ -3,3 +3,5 @@ ADDER,Adder,Vipère
 ADDER_FAVOR,"Always lethal, the caustic adder",La vipère ne frappe jamais qu'une seule fois
 SQUIRREL,Squirrel,Écureuil
 SQUIRREL_FAVOR,"Small, frail, but ever so useful","Petit, faible, mais on ne saurait s'en passer"
+RAVEN,Raven,Corbeau
+RAVEN_FAVOR,"Horribly clever, this blight of a bird is","Terrible maligne, cette peste d'oiseau"
