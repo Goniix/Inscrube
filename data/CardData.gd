@@ -7,6 +7,7 @@ enum SUBCLASS_ENUM{ANT,AVIAN,INSECT,HOOVED,CANINE,REPTILE,VERMIN,FISH,AMPHIBIAN,
 enum COST_ENUM{BLOOD,BONE,ENERGY}
 enum ATTACK_ENUM{NORMAL}
 @export var name : String
+var favor_text : String = name + "_FAVOR"
 @export var sigils : Array[SigilData]
 @export var rarity : RARITY_ENUM
 @export var faction : FACTION_ENUM

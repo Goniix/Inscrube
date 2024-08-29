@@ -15,6 +15,10 @@
 material = ExtResource("1_ox723")
 layout_mode = 3
 anchors_preset = 0
+offset_left = -520.0
+offset_top = -740.0
+offset_right = -520.0
+offset_bottom = -740.0
 pivot_offset = Vector2(520, 740)
 script = ExtResource("1_hbqo0")
 
@@ -191,6 +195,8 @@ mouse_filter = 2
 texture = ExtResource("9_31j3g")
 script = ExtResource("10_epdbo")
 
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
 [connection signal="mouse_entered" from="Button" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Button" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="Button" to="." method="_on_card_clicked"]

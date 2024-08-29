@@ -103,7 +103,6 @@ func _on_pressed():
 		if Game.sacrificed_value >= played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD):
 			played_card_ref.attach_card(self)
 			played_card_ref.modulate = Color(1,1,1,1)
-			#played_card_ref.get_node("Button").mouse_filter = MOUSE_FILTER_IGNORE
 			played_card_ref.trigger_sigils(SigilData.SIGIL_EVENTS.ON_PLAY)
 			#$GUI/SacrificeToken.toggle_state()
 			gameRoot.refresh_hand()

@@ -36,7 +36,7 @@ func toggle_state():
 	else:
 		state = STATES.ACTIVATED
 		
-	Game.allow_card_drag = not is_activated()
+	#Game.allow_card_drag = not is_activated()
 	#gameRoot.get_node("Hand").refresh_cards_color()
 		
 	#for slot in gameRoot.get_node("SlotsLayer").get_children():

@@ -8,7 +8,11 @@ _data = {
 }
 point_count = 11
 
-[node name="Hand" type="Node2D"]
+[node name="Hand" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 603.0
+offset_bottom = 194.0
 script = ExtResource("1_jlg2y")
 
 [node name="HandPath" type="Path2D" parent="."]

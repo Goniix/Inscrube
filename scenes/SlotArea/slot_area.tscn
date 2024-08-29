@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b25bduh74s0yi"]
+[gd_scene load_steps=4 format=3 uid="uid://b25bduh74s0yi"]
 
 [ext_resource type="Script" path="res://scenes/SlotArea/slot_area.gd" id="1_7t4c0"]
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="1_fsdbf"]
+[ext_resource type="PackedScene" uid="uid://dsorkkm6ce0ue" path="res://scenes/Components/drag_target.tscn" id="2_3ccmb"]
 
 [node name="SlotArea" type="Control"]
 layout_mode = 3
@@ -13,6 +14,8 @@ offset_bottom = -201.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7t4c0")
+
+[node name="Drag target" parent="." instance=ExtResource("2_3ccmb")]
 
 [node name="ArrayContainers" type="VBoxContainer" parent="."]
 layout_mode = 0
@@ -29,42 +32,34 @@ columns = 4
 [node name="B0" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="B1" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="B2" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="B3" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="F0" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="F1" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="F2" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="F3" parent="ArrayContainers/AdverseSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
 flip_v = true
-allow_pick = true
 
 [node name="PlayerSlots" type="GridContainer" parent="ArrayContainers"]
 layout_mode = 2
@@ -74,35 +69,27 @@ columns = 4
 
 [node name="F0" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="F1" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="F2" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="F3" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="B0" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="B1" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="B2" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [node name="B3" parent="ArrayContainers/PlayerSlots" instance=ExtResource("1_fsdbf")]
 layout_mode = 2
-allow_pick = true
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
