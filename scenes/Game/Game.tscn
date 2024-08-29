@@ -40,7 +40,10 @@ allow_drop = false
 allow_sacrifice = false
 
 [node name="Hand" parent="." instance=ExtResource("4_0vwdi")]
-position = Vector2(1270, 961)
+offset_left = 1270.0
+offset_top = 961.0
+offset_right = 1873.0
+offset_bottom = 1155.0
 
 [node name="SlotArea" parent="." instance=ExtResource("5_ruyws")]
 offset_left = 614.0

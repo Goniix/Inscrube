@@ -1,5 +1,5 @@
 class_name Hand
-extends Node2D
+extends Control
 
 var allow_pick : bool = true
 var attached_cards: Array[Card] = []

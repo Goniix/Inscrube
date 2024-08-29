@@ -47,7 +47,6 @@ static var cost_icons: Array = [
 
 static var language = 0
 
-static var allow_card_drag : bool = true;
 static var played_card_index : int = -1
 static var sacrificed_value : int = 0
 
@@ -56,7 +55,11 @@ const PLAYER_HEALTH: int = 7
 
 static var player_turn: bool = true
 
-const COLOR_DEBUG = false;
+const DEBUG_MODE = true;
+
+static var drag_targets: Array[Node] = []
+
+var last_mouse_pos: Vector2
 
 static func loadAllCardsJSON(recursive:bool=true):
 	var cards_dir_list = ["res://data/cards/"]
@@ -143,61 +146,6 @@ func card_is_played() -> bool:
 func get_played_card() -> Card:
 	return %PlayedSlot.attached_card
 
-func _init():
-	Game.loadAllCards(true)
-	
-func _ready():
-	var new_card: Card = cardScene.instantiate()
-	new_card.load_data("raven")
-	$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotsLayer/TestSlot)
-	new_card.attach_card($Hand)
-	
-	#new_card = cardScene.instantiate()
-	#new_card.load_data("squirrel")
-	#$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotArea.get_slot(SlotArea.OWNER.PLAYER,SlotArea.LANE.FRONT,0))
-	
-	
-
-	update_scale()
-	refresh_hand()
-
-func _process(delta):
-	if(Input.is_action_just_pressed("Debug1")):
-		giveCard("squirrel")
-	if(Input.is_action_just_pressed("Debug2")):
-		giveCard("adder")
-	if(Input.is_action_just_pressed("Debug3")):
-		for i in range(85):
-			giveCard("squirrel")
-		
-	#if Input.is_action_just_pressed("leftClick"):
-		#if card_is_played():
-			##left click but a card is already played
-			#
-			##print(str(played_card_ref)+" already in play")
-			#if !is_valid_slot_hovered():
-				##no slot are hovered, slot is already filled or slot doesnt allows drop
-				#print("Sending "+str(get_played_card())+" back to hand")
-				#get_played_card().attach_card($Hand,played_card_index)
-				#refresh_hand()
-				#
-				#toggle_all_marks(false)
-
-				
-				
-func refresh_hand():
-	$Hand.refresh_cards_pos()
-	$Hand.refresh_cards_color()
-
-func on_card_play():
-	refresh_hand()
-	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
-		for slot : Slot in $SlotArea.get_player_slots():
-			if slot.is_attached() and slot.allow_sacrifice:
-				slot.attached_card.show_mark()
-
 func toggle_all_marks(visible:bool):
 	for slot : Slot in $SlotArea.get_player_slots():
 		if(slot.is_attached()):
@@ -212,3 +160,60 @@ func activate_sacrifice():
 			if slot.is_attached() and slot.allow_sacrifice:
 				if slot.attached_card.is_sacrificed():
 					slot.attached_card.sacrifice()
+
+func refresh_hand():
+	$Hand.refresh_cards_pos()
+	$Hand.refresh_cards_color()
+
+func on_card_play():
+	refresh_hand()
+	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
+		for slot : Slot in $SlotArea.get_player_slots():
+			if slot.is_attached() and slot.allow_sacrifice:
+				slot.attached_card.show_mark()
+
+func get_hovered_drag_target():
+	for target in drag_targets:
+		if target.get_node("Drag target").is_hovered():
+			return target
+	return null
+
+func _init():
+	Game.loadAllCards(true)
+	
+func _ready():
+	var new_card: Card = cardScene.instantiate()
+	new_card.load_data("raven")
+	$CardLayer.add_child(new_card)
+	#new_card.attach_card($SlotsLayer/TestSlot)
+	new_card.attach_card($Hand)
+	
+	#new_card = cardScene.instantiate()
+	#new_card.load_data("squirrel")
+	#$CardLayer.add_child(new_card)
+	#new_card.attach_card($SlotArea.get_slot(SlotArea.OWNER.PLAYER,SlotArea.LANE.FRONT,0))
+
+	update_scale()
+	refresh_hand()
+
+func _process(delta):
+	if(Input.is_action_just_pressed("Debug1")):
+		giveCard("squirrel")
+	if(Input.is_action_just_pressed("Debug2")):
+		giveCard("adder")
+	if(Input.is_action_just_pressed("Debug3")):
+		for i in range(85):
+			giveCard("squirrel")
+		
+	if Input.is_action_just_pressed("leftClick"):
+		if card_is_played():
+			#left click but a card is already played
+			
+			#print(str(played_card_ref)+" already in play")
+			if get_hovered_drag_target() == null:
+				#no slot are hovered, slot is already filled or slot doesnt allows drop
+				print("Sending "+str(get_played_card())+" back to hand")
+				get_played_card().attach_card($Hand,played_card_index)
+				refresh_hand()
+				
+				toggle_all_marks(false)

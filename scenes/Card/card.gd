@@ -2,32 +2,30 @@ class_name Card
 extends Control
 
 
-
+#CARD DATA
 var data : CardData
-
+var gameRoot: Game = null
 var card_id: String
-#var card_favor_text: String
-#var card_sigils: Array #Define type later, dont know how they will be implemented
 var card_cost: Dictionary
 
-var draggable = false
-#var hovered = false
-var is_in_dropable = false
+#ATTACHEMENT VALS
 var body_ref
-var offset: Vector2
 var attached_to = null
-var gameRoot: Game = null
-const perspective_amount: int = 4
-var perspective_vec: Vector2
 
+#TWEEN DEFINITION
 var rotation_tween : Tween = null
 var position_tween : Tween = null
 var scale_tween : Tween
 var color_tween : Tween
 var perspective_tween: Tween
 
+#SCALE CONSTS/VALS
 const default_scale: Vector2 = Vector2(.22,.22)
 var target_scale: Vector2 = default_scale
+
+#PERSPECTIVE SHADER CONSTS/VALS
+const perspective_amount: int = 4
+var perspective_vec: Vector2
 
 #FRAME CONSTS
 static var rarity_to_frame_id: Array = [0,0,1,2,2]
@@ -35,6 +33,13 @@ static var rarity_to_frame_id: Array = [0,0,1,2,2]
 #BG CONSTS
 static var rarity_to_bg_id: Array = [0,0,0,1,1]
 
+#GESTURE CONST/VARS
+const hold_treshold: float = 0.3
+var draggable:bool = false
+var dragged:bool = false
+var pressed:bool = false
+var pressed_timer:float = 0
+var press_origin_vector:Vector2 = Vector2.ZERO
 
 func load_data(id: String):
 	data = Game.cardData[id].duplicate()
@@ -157,12 +162,7 @@ func attach_card(new_slot_body,pos=0):
 			rotation_tween.kill()
 		rotation_tween = create_tween().set_ease(Tween.EASE_OUT)
 		rotation_tween.tween_property(self,"rotation", 0,0.1)
-		
-		target_scale = Vector2(.14,.14) * new_slot_body.get_slot_scale()
-		if scale_tween and scale_tween.is_running():
-			scale_tween.kill()
-		scale_tween = create_tween()
-		scale_tween.tween_property(self,"scale",target_scale,0.5)
+
 		
 	elif new_slot_body is Hand:
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
@@ -171,17 +171,29 @@ func attach_card(new_slot_body,pos=0):
 		new_slot_body.refresh_cards_pos()
 		
 	attached_to = new_slot_body
+	refresh_scale()
 
 func is_hovered():
 	return $Button.is_hovered()
 
-func refresh_draggable():
-	if is_hovered():
-		if Game.allow_card_drag:
-			if attached_to != null and attached_to.allow_pick:
-				draggable = true
-	else:
-		draggable = false
+func refresh_draggable(mouse_relative: Vector2) -> void:
+	#if !position_tween or !position_tween.is_running():
+	if attached_to != null and attached_to.allow_pick:
+		if is_affordable() and is_hovered() and mouse_relative != Vector2.ZERO:
+			draggable = true
+			return
+	draggable = false
+
+func refresh_scale():
+	if attached_to is Slot:
+		target_scale = Vector2(.14,.14) * attached_to.get_slot_scale()
+	elif attached_to is Hand:
+		target_scale = default_scale
+		
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+	scale_tween = create_tween()
+	scale_tween.tween_property(self,"scale",target_scale,0.5)
 
 func get_card_name() -> String:
 	return data.name
@@ -267,38 +279,18 @@ func hide_mark():
 func is_sacrificed():
 	return $SacrificeMark.is_active()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	scale = target_scale
-	gameRoot = get_tree().root.get_child(0)
 
-func _process(delta):
-	if Game.COLOR_DEBUG:
-			if draggable :
-				modulate = Color.DARK_GREEN
-			else:
-				modulate = Color.DARK_MAGENTA
-	
-	refresh_draggable()
-	if is_hovered() and is_affordable() and !$Button.disabled and !position_tween:
-		perspective_vec = Vector2(-perspective_amount,-perspective_amount) + perspective_amount*2*(get_local_mouse_position()/$Button.size)
-	
-	material.set("shader_parameter/x_rot",-perspective_vec.y)
-	material.set("shader_parameter/y_rot",perspective_vec.x)
-		
-func _to_string():
-	return "Card("+get_card_name()+")"
-
+#CARD CLICK METHOD SELECTION
 func play_card_method():
 	print(str(self)+" was pressed")
-	if draggable and is_affordable():
-		print("Sending "+str(self)+" to play")
-		Game.played_card_index = attached_to.attached_cards.find(self)
-		attach_card(gameRoot.get_node("PlayedSlot"))
-		_on_mouse_exited()
-		gameRoot.on_card_play()
-	else:
-		print("Cannot play "+str(self))
+	#if draggable:
+	print("Sending "+str(self)+" to play")
+	Game.played_card_index = attached_to.attached_cards.find(self)
+	attach_card(gameRoot.get_node("PlayedSlot"))
+	#_on_mouse_exited()
+	gameRoot.on_card_play()
+	#else:
+		#print("Cannot play "+str(self))
 
 
 func select_sacrifice_method():
@@ -315,17 +307,50 @@ func default_card_click_method():
 
 func get_click_method() -> Callable:
 	if gameRoot.card_is_played():
-		print("A card is in play")
+		#print("A card is in play")
 		return select_sacrifice_method
 	elif attached_to is Hand:
-		print("No card in play")
+		#print("No card in play")
 		return play_card_method
 	return default_card_click_method
-		
+
+
+#ENGINE METHODS
+func _ready():
+	scale = target_scale
+	gameRoot = get_tree().root.get_child(0)
+
+func _process(delta):
+	#print(waiting_mouse_move)
+	if draggable:
+		perspective_vec = Vector2(-perspective_amount,-perspective_amount) + perspective_amount*2*(get_local_mouse_position()/$Button.size)
+	
+	material.set("shader_parameter/x_rot",-perspective_vec.y)
+	material.set("shader_parameter/y_rot",perspective_vec.x)
+	
+	if dragged:
+		global_position = get_global_mouse_position()-Vector2(520,740)
+
+func _physics_process(delta: float) -> void:
+	if draggable and pressed and not dragged:
+		print("zob")
+		if get_global_mouse_position().distance_to(press_origin_vector)>15 or pressed_timer > hold_treshold:
+			dragged = true
+		else:
+			pressed_timer+=delta
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		refresh_draggable(event.relative)
+
+
+func _to_string():
+	return "Card("+get_card_name()+")"
+
 func _on_card_clicked():
+	return
 	get_click_method().call()
-
-
+	
 func _on_mouse_entered():
 	if scale_tween and scale_tween.is_running():
 		scale_tween.kill()
@@ -339,14 +364,36 @@ func _on_mouse_exited():
 	if scale_tween and scale_tween.is_running():
 		scale_tween.kill()
 		
-	if is_affordable() and !$Button.disabled:
-		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		scale_tween.tween_property(self,"scale",target_scale,0.5)
+	#if is_affordable():
+	scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	scale_tween.tween_property(self,"scale",target_scale,0.5)
 
 	if perspective_tween and perspective_tween.is_running():
 		perspective_tween.kill()
 	
 	perspective_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	perspective_tween.tween_property(self,"perspective_vec",Vector2.ZERO,0.5)
+	#perspective_vec = Vector2.ZERO
 	
-	
+	pressed_timer = 0
+
+
+func _on_button_button_down() -> void:
+	pressed = true
+	press_origin_vector = get_global_mouse_position()
+	#print("mouse:"+str(get_global_mouse_position()))
+	#print("card:"+str(global_position))
+
+
+func _on_button_button_up() -> void:
+	pressed = false
+	pressed_timer = 0
+	press_origin_vector = Vector2.ZERO
+	if dragged:
+		dragged = false
+		_on_mouse_exited()
+		if gameRoot.get_hovered_drag_target() != null:
+			get_click_method().call()
+		else:
+			gameRoot.refresh_hand()
+		

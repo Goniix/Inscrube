@@ -29,6 +29,8 @@ func get_slot(owner:OWNER, lane:LANE, row:int) -> Slot:
 func find_slot(slot:Slot):
 	return get_all_slots().find(slot)
 
+func is_hovered() -> bool:
+	return hovered
 
 func _on_mouse_entered():
 	hovered = true
