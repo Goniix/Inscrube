@@ -1,9 +1,9 @@
 class_name Game
 extends Node
 
-static var cardScene : PackedScene = preload("res://scenes/Card/Card.tscn")
-static var slotScene : PackedScene = preload("res://scenes/CardSlot/CardSlot.tscn")
-static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/SacrificeMark.tscn")
+static var cardScene : PackedScene = preload("res://scenes/Card/card.tscn")
+static var slotScene : PackedScene = preload("res://scenes/CardSlot/card_slot.tscn")
+static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/sacrifice_mark.tscn")
 
 static var cardData : Dictionary = {}
 #static var art_data: Dictionary = {

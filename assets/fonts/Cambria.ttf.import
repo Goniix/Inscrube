@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/Cambria.ttf-39adff449d2d217cc9aa18d0ed5769f7.
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48

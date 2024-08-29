@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b25bduh74s0yi"]
 
 [ext_resource type="Script" path="res://scenes/SlotArea/slot_area.gd" id="1_7t4c0"]
-[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/CardSlot.tscn" id="1_fsdbf"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/card_slot.tscn" id="1_fsdbf"]
 [ext_resource type="PackedScene" uid="uid://dsorkkm6ce0ue" path="res://scenes/Components/drag_target.tscn" id="2_3ccmb"]
 
 [node name="SlotArea" type="Control"]

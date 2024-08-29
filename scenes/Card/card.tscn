@@ -1,18 +1,18 @@
 [gd_scene load_steps=11 format=3 uid="uid://s5y0n8ui2te5"]
 
-[ext_resource type="Script" path="res://scenes/Card/Card.gd" id="1_hbqo0"]
-[ext_resource type="Material" uid="uid://cyger8qpkw1au" path="res://shaders/2D-Perspective.tres" id="1_ox723"]
-[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="2_qp58q"]
-[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="3_bbwjd"]
-[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="4_v5cwv"]
-[ext_resource type="Theme" uid="uid://dihx0jdpbk4bh" path="res://assets/themes/LargeLabel.tres" id="5_tubf5"]
-[ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="6_unk2p"]
-[ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="7_t437r"]
-[ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="9_31j3g"]
-[ext_resource type="Script" path="res://scenes/CardSlot/SacrificeMark/sacrifice_mark.gd" id="10_epdbo"]
+[ext_resource type="Material" uid="uid://cyger8qpkw1au" path="res://shaders/2D-Perspective.tres" id="1_75r43"]
+[ext_resource type="Script" path="res://scenes/Card/card.gd" id="2_0hxb8"]
+[ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="3_q2n2t"]
+[ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="4_qqmha"]
+[ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="5_hkx7t"]
+[ext_resource type="Theme" uid="uid://dihx0jdpbk4bh" path="res://assets/themes/LargeLabel.tres" id="6_rbuqh"]
+[ext_resource type="Theme" uid="uid://knjfd426kisc" path="res://assets/themes/SmallLabel.tres" id="7_eja23"]
+[ext_resource type="Theme" uid="uid://dgoirrem8tp3s" path="res://assets/themes/FactionTextBeast.tres" id="8_ukal3"]
+[ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="9_giyae"]
+[ext_resource type="Script" path="res://scenes/CardSlot/SacrificeMark/sacrifice_mark.gd" id="10_xydsl"]
 
 [node name="Card" type="Control"]
-material = ExtResource("1_ox723")
+material = ExtResource("1_75r43")
 layout_mode = 3
 anchors_preset = 0
 offset_left = -520.0
@@ -20,7 +20,7 @@ offset_top = -740.0
 offset_right = -520.0
 offset_bottom = -740.0
 pivot_offset = Vector2(520, 740)
-script = ExtResource("1_hbqo0")
+script = ExtResource("2_0hxb8")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 use_parent_material = true
@@ -50,7 +50,7 @@ offset_top = 230.0
 offset_right = 176.0
 offset_bottom = 289.0
 scale = Vector2(10, 10)
-texture = ExtResource("2_qp58q")
+texture = ExtResource("3_q2n2t")
 
 [node name="Frame" type="TextureRect" parent="SubViewportContainer/SubViewport/SubCard"]
 unique_name_in_owner = true
@@ -59,7 +59,7 @@ layout_mode = 0
 offset_right = 104.0
 offset_bottom = 148.0
 scale = Vector2(10, 10)
-texture = ExtResource("3_bbwjd")
+texture = ExtResource("4_qqmha")
 
 [node name="Art" type="TextureRect" parent="SubViewportContainer/SubViewport/SubCard"]
 unique_name_in_owner = true
@@ -70,7 +70,7 @@ offset_top = 230.0
 offset_right = 176.0
 offset_bottom = 289.0
 scale = Vector2(10, 10)
-texture = ExtResource("4_v5cwv")
+texture = ExtResource("5_hkx7t")
 
 [node name="CostContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/SubCard"]
 unique_name_in_owner = true
@@ -95,7 +95,7 @@ offset_top = 80.0
 offset_right = 716.0
 offset_bottom = 186.0
 grow_horizontal = 2
-theme = ExtResource("5_tubf5")
+theme = ExtResource("6_rbuqh")
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
 text = "Default
@@ -114,7 +114,7 @@ offset_top = 1320.0
 offset_right = 820.0
 offset_bottom = 1410.0
 grow_horizontal = 2
-theme = ExtResource("6_unk2p")
+theme = ExtResource("7_eja23")
 text = "Default
 "
 horizontal_alignment = 1
@@ -132,7 +132,7 @@ offset_top = 1240.0
 offset_right = 910.0
 offset_bottom = 1300.0
 grow_horizontal = 2
-theme = ExtResource("7_t437r")
+theme = ExtResource("8_ukal3")
 text = "Default
 "
 vertical_alignment = 2
@@ -150,7 +150,7 @@ offset_top = 1304.0
 offset_right = 906.0
 offset_bottom = 1446.0
 grow_horizontal = 2
-theme = ExtResource("5_tubf5")
+theme = ExtResource("6_rbuqh")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
@@ -170,7 +170,7 @@ offset_top = 1304.0
 offset_right = 146.0
 offset_bottom = 1446.0
 grow_horizontal = 2
-theme = ExtResource("5_tubf5")
+theme = ExtResource("6_rbuqh")
 theme_override_colors/font_color = Color(0.996078, 1, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
@@ -192,8 +192,8 @@ offset_right = 130.0
 offset_bottom = 126.0
 scale = Vector2(7, 7)
 mouse_filter = 2
-texture = ExtResource("9_31j3g")
-script = ExtResource("10_epdbo")
+texture = ExtResource("9_giyae")
+script = ExtResource("10_xydsl")
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
 [connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
