@@ -17,8 +17,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = -520.0
 offset_top = -740.0
-offset_right = -520.0
-offset_bottom = -740.0
+offset_right = 520.0
+offset_bottom = 740.0
 pivot_offset = Vector2(520, 740)
 script = ExtResource("2_0hxb8")
 
