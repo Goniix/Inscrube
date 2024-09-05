@@ -140,66 +140,19 @@ func is_slot(elem):
 func is_playable() -> bool:
 	return is_hovered() and is_affordable() and !$Button.disabled
 
-func attach_card(new_slot_body,pos=0):
-	if(new_slot_body == null):
-		assert(new_slot_body!=null,"Trying to attach card to null Slot!")
-		
-	if attached_to is Hand:# and not new_slot_body is Hand:
-		attached_to.remove_card(self)
-	
-	elif attached_to is Slot:
-		attached_to.attached_card = null
-	
-	if new_slot_body is Slot:
-		new_slot_body.attached_card = self
-		
-		if position_tween and position_tween.is_running():
-			position_tween.kill()
-		position_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
-		position_tween.tween_property(self,"position", new_slot_body.get_slot_postion()-pivot_offset,0.35)
-		
-		if rotation_tween and rotation_tween.is_running():
-			rotation_tween.kill()
-		rotation_tween = create_tween().set_ease(Tween.EASE_OUT)
-		rotation_tween.tween_property(self,"rotation", 0,0.1)
 
-		
-	elif new_slot_body is Hand:
-		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
-		if not new_slot_body.attached_cards.has(self):
-			new_slot_body.add_card(self,pos)
-		new_slot_body.refresh_cards_pos()
-		
-	attached_to = new_slot_body
-	refresh_scale()
 
 func is_hovered():
 	return $Button.is_hovered()
 
-func refresh_draggable(mouse_relative: Vector2) -> void:
-	#if !position_tween or !position_tween.is_running():
-	if attached_to != null and attached_to.allow_pick:
-		if is_affordable() and is_hovered() and mouse_relative != Vector2.ZERO:
-			draggable = true
-			return
-	draggable = false
-
-func refresh_scale():
-	if attached_to is Slot:
-		target_scale = Vector2(.14,.14) * attached_to.get_slot_scale()
-	elif attached_to is Hand:
-		target_scale = default_scale
-		
-	if scale_tween and scale_tween.is_running():
-		scale_tween.kill()
-	scale_tween = create_tween()
-	scale_tween.tween_property(self,"scale",target_scale,0.5)
-
 func get_card_name() -> String:
 	return data.name
 	
-func get_card_cost(cost_type : CardData.COST_ENUM):
-	return card_cost[cost_type]
+func get_card_cost(cost_type : CardData.COST_ENUM) -> int:
+	if card_cost.keys().has(cost_type):
+		return card_cost[cost_type]
+	else:
+		return 0
 
 func get_card_sigils() -> Array:
 	return data.sigils
@@ -235,6 +188,58 @@ func is_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
 	return get_card_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
+
+func refresh_draggable(mouse_relative: Vector2) -> void:
+	#if !position_tween or !position_tween.is_running():
+	if attached_to != null and attached_to.allow_pick:
+		if is_affordable() and is_hovered() and mouse_relative != Vector2.ZERO:
+			draggable = true
+			return
+	draggable = false
+
+func refresh_scale():
+	if attached_to is Slot:
+		target_scale = Vector2(.14,.14) * attached_to.get_slot_scale()
+	elif attached_to is Hand:
+		target_scale = default_scale
+		
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+	scale_tween = create_tween()
+	scale_tween.tween_property(self,"scale",target_scale,0.2)
+
+func attach_card(new_slot_body,pos=0):
+	if(new_slot_body == null):
+		assert(new_slot_body!=null,"Trying to attach card to null Slot!")
+		
+	if attached_to is Hand:# and not new_slot_body is Hand:
+		attached_to.remove_card(self)
+	
+	elif attached_to is Slot:
+		attached_to.attached_card = null
+	
+	if new_slot_body is Slot:
+		new_slot_body.attached_card = self
+		
+		if position_tween and position_tween.is_running():
+			position_tween.kill()
+		position_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+		position_tween.tween_property(self,"position", new_slot_body.get_slot_postion()-pivot_offset,0.35)
+		
+		if rotation_tween and rotation_tween.is_running():
+			rotation_tween.kill()
+		rotation_tween = create_tween().set_ease(Tween.EASE_OUT)
+		rotation_tween.tween_property(self,"rotation", 0,0.1)
+
+		
+	elif new_slot_body is Hand:
+		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
+		if not new_slot_body.attached_cards.has(self):
+			new_slot_body.add_card(self,pos)
+		new_slot_body.refresh_cards_pos()
+		
+	attached_to = new_slot_body
+	refresh_scale()
 
 func sacrifice():
 	if not attached_to is Slot:
@@ -333,7 +338,6 @@ func _process(delta):
 
 func _physics_process(delta: float) -> void:
 	if draggable and pressed and not dragged:
-		print("zob")
 		if get_global_mouse_position().distance_to(press_origin_vector)>15 or pressed_timer > hold_treshold:
 			dragged = true
 		else:

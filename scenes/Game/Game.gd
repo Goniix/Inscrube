@@ -1,9 +1,11 @@
 class_name Game
 extends Node
 
-static var cardScene : PackedScene = preload("res://scenes/Card/card.tscn")
-static var slotScene : PackedScene = preload("res://scenes/CardSlot/card_slot.tscn")
-static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/sacrifice_mark.tscn")
+@export var cardScene : PackedScene = preload("res://scenes/Card/card.tscn")
+@export var slotScene : PackedScene = preload("res://scenes/CardSlot/card_slot.tscn")
+#@export static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/sacrifice_mark.tscn")
+
+@export var card_ressources_path: String = "res://data/cards/"
 
 static var cardData : Dictionary = {}
 #static var art_data: Dictionary = {
@@ -101,20 +103,25 @@ static func loadAllCards(recursive:bool=false):
 				file_name = dir.get_next()
 		else:
 			print("An error occurred when trying to access the path.")
-	
-static func dir_contents(path):
+
+static func dir_contents(path, verbose:bool=false)-> Array[String]:
 	var dir = DirAccess.open(path)
+	var res:Array[String] = []
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
-				print("Found directory: " + file_name)
+				if verbose:
+					print("Found directory: " + file_name)
 			else:
-				print("Found file: " + file_name.replace(".json",""))
+				if verbose:
+					print("Found file: " + file_name)
+				res.append(file_name)
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
+	return res
 
 func giveCard(card_id : String):
 	var card = cardScene.instantiate()

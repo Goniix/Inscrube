@@ -6,5 +6,13 @@ func is_hovered():
 	
 	return Rect2(parent.position, parent.size * parent.scale).has_point(mouse)
 
+func show_highlight() -> void:
+	$ColorRect.visible = true
+
+func hide_highlight() -> void:
+	$ColorRect.visible = false
+
 func _ready():
 	Game.drag_targets.append(get_parent())
+	var parent: Control = get_parent()
+	$ColorRect.size = parent.size
