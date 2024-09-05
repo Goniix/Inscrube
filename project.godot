@@ -36,10 +36,6 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Inscrybe"
 
-[editor]
-
-export/convert_text_resources_to_binary=false
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_resource_groups/plugin.cfg", "res://addons/resources_spreadsheet_view/plugin.cfg")

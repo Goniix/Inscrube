@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_xfo8l")
-name = "ADDER"
+card_name = "ADDER"
 sigils = Array[ExtResource("3_q55fo")]([ExtResource("3_a6ide")])
 rarity = 1
 faction = 0

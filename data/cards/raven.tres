@@ -1,13 +1,14 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3 uid="uid://6yvdvdshcxxa"]
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://6yvdvdshcxxa"]
 
 [ext_resource type="Texture2D" uid="uid://dedsmicqu8ykj" path="res://assets/art/Raven.png" id="1_oj370"]
 [ext_resource type="Script" path="res://data/CardData.gd" id="2_618ht"]
 [ext_resource type="Resource" uid="uid://ddlk3b8dpw6ma" path="res://data/sigils/airborne.tres" id="3_6y5xv"]
+[ext_resource type="Script" path="res://data/SigilData.gd" id="3_r2dol"]
 
 [resource]
 script = ExtResource("2_618ht")
-name = "RAVEN"
-sigils = Array[Resource("res://data/SigilData.gd")]([ExtResource("3_6y5xv")])
+card_name = "RAVEN"
+sigils = Array[ExtResource("3_r2dol")]([ExtResource("3_6y5xv")])
 rarity = 1
 faction = 0
 subclass = Array[int]([1])

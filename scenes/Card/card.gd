@@ -42,6 +42,7 @@ var pressed_timer:float = 0
 var press_origin_vector:Vector2 = Vector2.ZERO
 
 func load_data(id: String):
+	id = id.to_upper()
 	data = Game.cardData[id].duplicate()
 	card_id = id
 	
@@ -146,7 +147,7 @@ func is_hovered():
 	return $Button.is_hovered()
 
 func get_card_name() -> String:
-	return data.name
+	return data.card_name
 	
 func get_card_cost(cost_type : CardData.COST_ENUM) -> int:
 	if card_cost.keys().has(cost_type):
