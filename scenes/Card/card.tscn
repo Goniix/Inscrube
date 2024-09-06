@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://s5y0n8ui2te5"]
 
 [ext_resource type="Material" uid="uid://cyger8qpkw1au" path="res://shaders/2D-Perspective.tres" id="1_75r43"]
-[ext_resource type="Script" path="res://scenes/Card/card.gd" id="2_0hxb8"]
+[ext_resource type="Script" path="res://scenes/Card/card.gd" id="2_uhtrs"]
 [ext_resource type="Texture2D" uid="uid://df7dc0pi8bykj" path="res://assets/bg/zerror.png" id="3_q2n2t"]
 [ext_resource type="Texture2D" uid="uid://cjlxye1ex3sdf" path="res://assets/frames/zerror.png" id="4_qqmha"]
 [ext_resource type="Texture2D" uid="uid://c8081ala5p6ew" path="res://assets/art/zerror.png" id="5_hkx7t"]
@@ -20,7 +20,7 @@ offset_top = -740.0
 offset_right = 520.0
 offset_bottom = 740.0
 pivot_offset = Vector2(520, 740)
-script = ExtResource("2_0hxb8")
+script = ExtResource("2_uhtrs")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 use_parent_material = true
