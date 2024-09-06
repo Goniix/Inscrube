@@ -38,10 +38,10 @@ func refresh_cards_pos():
 		if(card_elem.rotation_tween and card_elem.rotation_tween.is_running()):
 			card_elem.rotation_tween.kill()
 		
-		var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+		card_elem.position_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 		var path_data = get_card_position(card_elem)
-		tween.tween_property(card_elem,"position", path_data[0], 0.4)
-		tween.parallel().tween_property(card_elem,"rotation", path_data[1], 0.4)
+		card_elem.position_tween.tween_property(card_elem,"position", path_data[0], 0.4)
+		card_elem.position_tween.parallel().tween_property(card_elem,"rotation", path_data[1], 0.4)
 		card_elem.set_z_index(i)
 		i+=1
 

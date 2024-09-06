@@ -191,11 +191,11 @@ func is_affordable():
 	return get_card_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
 
 func refresh_draggable(mouse_relative: Vector2) -> void:
-	#if !position_tween or !position_tween.is_running():
 	if attached_to != null and attached_to.allow_pick:
-		if is_affordable() and is_hovered() and mouse_relative != Vector2.ZERO:
-			draggable = true
-			return
+		if !position_tween or !position_tween.is_running():
+			if is_affordable() and is_hovered() and mouse_relative != Vector2.ZERO:
+				draggable = true
+				return
 	draggable = false
 
 func refresh_scale():
@@ -333,6 +333,7 @@ func _process(delta):
 	
 	material.set("shader_parameter/x_rot",-perspective_vec.y)
 	material.set("shader_parameter/y_rot",perspective_vec.x)
+	
 	
 	if dragged:
 		global_position = get_global_mouse_position()-(size*scale)/2
