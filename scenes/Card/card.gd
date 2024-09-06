@@ -83,7 +83,6 @@ func update_rarity():
 	%Rarity.text = res
 	
 func update_cost():
-	print(card_cost)
 	for key in range(CardData.COST_ENUM.size()):
 		if (card_cost[key] > 0):
 			var sub_container = HBoxContainer.new()
