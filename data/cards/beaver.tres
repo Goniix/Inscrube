@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3 uid="uid://cfbfonl6akxhp"]
+
+[ext_resource type="Texture2D" uid="uid://117u4rt3mvbg" path="res://assets/art/Beaver.png" id="1_8k0vm"]
+[ext_resource type="Script" path="res://data/CardData.gd" id="2_i4dji"]
+[ext_resource type="Script" path="res://data/SigilData.gd" id="3_1ho1m"]
+
+[resource]
+script = ExtResource("2_i4dji")
+card_name = "BEAVER"
+sigils = Array[ExtResource("3_1ho1m")]([])
+rarity = 1
+faction = 0
+subclass = Array[int]([6])
+blood_cost = 2
+bone_cost = 0
+energy_cost = 0
+life = 4
+attack_type = 0
+strength = 1
+illustrator = "Pixel Profligate"
+scrybe = "Answearing Machine"
+art = ExtResource("1_8k0vm")
