@@ -39,19 +39,19 @@ offset_bottom = 652.0
 allow_drop = false
 allow_sacrifice = false
 
-[node name="Hand" parent="." instance=ExtResource("4_i0abk")]
-offset_left = 1270.0
-offset_top = 961.0
-offset_right = 1873.0
-offset_bottom = 1155.0
-
 [node name="SlotArea" parent="." instance=ExtResource("5_tmtfj")]
 offset_left = 614.0
-offset_top = 95.0
+offset_top = 60.0
 offset_right = -708.0
-offset_bottom = -106.0
+offset_bottom = -141.0
 
 [node name="CardLayer" type="Node" parent="."]
+
+[node name="Hand" parent="." instance=ExtResource("4_i0abk")]
+offset_left = 610.0
+offset_top = 903.0
+offset_right = 1210.0
+offset_bottom = 1103.0
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3

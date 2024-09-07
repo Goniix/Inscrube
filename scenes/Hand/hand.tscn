@@ -4,20 +4,27 @@
 
 [sub_resource type="Curve2D" id="Curve2D_uaus6"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 180, 0, 0, 0, 0, 20, 131, 0, 0, 0, 0, 50, 97, 0, 0, 0, 0, 93, 70, 0, 0, 0, 0, 142, 51, 0, 0, 0, 0, 206, 30, 0, 0, 0, 0, 272, 20, 0, 0, 0, 0, 339, 13, 0, 0, 0, 0, 422, 9, 0, 0, 0, 0, 507, 5, 0, 0, 0, 0, 600, 7)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 600, 0)
 }
-point_count = 11
+point_count = 2
 
 [node name="Hand" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 603.0
-offset_bottom = 194.0
+offset_bottom = 200.0
+mouse_filter = 2
 script = ExtResource("1_jlg2y")
 
 [node name="HandPath" type="Path2D" parent="."]
+position = Vector2(0, 200)
 curve = SubResource("Curve2D_uaus6")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="HandPath"]
-position = Vector2(0, 180)
-rotation = -1.18327
+
+[node name="HandPathOld" type="Path2D" parent="."]
+visible = false
+curve = SubResource("Curve2D_uaus6")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="HandPathOld"]
+visible = false

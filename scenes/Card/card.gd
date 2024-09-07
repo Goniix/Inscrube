@@ -38,7 +38,6 @@ const hold_treshold: float = 0.3
 var draggable:bool = false
 var dragged:bool = false
 var pressed:bool = false
-var pressed_timer:float = 0
 var press_origin_vector:Vector2 = Vector2.ZERO
 
 func load_data(id: String):
@@ -138,7 +137,7 @@ func is_slot(elem):
 	return elem.is_in_group("slot")
 
 func is_playable() -> bool:
-	return is_hovered() and is_affordable() and !$Button.disabled
+	return is_hovered() and is_affordable()
 
 
 
@@ -287,7 +286,6 @@ func is_sacrificed():
 
 #CARD CLICK METHOD SELECTION
 func play_card_method():
-	print(str(self)+" was pressed")
 	#if draggable:
 	print("Sending "+str(self)+" to play")
 	Game.played_card_index = attached_to.attached_cards.find(self)
@@ -339,10 +337,8 @@ func _process(delta):
 
 func _physics_process(delta: float) -> void:
 	if draggable and pressed and not dragged:
-		if get_global_mouse_position().distance_to(press_origin_vector)>15 or pressed_timer > hold_treshold:
+		if press_origin_vector.y - get_global_mouse_position().y>15:
 			dragged = true
-		else:
-			pressed_timer+=delta
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -357,21 +353,32 @@ func _on_card_clicked():
 	get_click_method().call()
 	
 func _on_mouse_entered():
-	if scale_tween and scale_tween.is_running():
-		scale_tween.kill()
-		
-	if is_affordable() and !$Button.disabled:
+	if attached_to is Hand:
+		attached_to.hovered = true
+		attached_to.refresh_cards_pos()
+
+		if scale_tween and scale_tween.is_running():
+			scale_tween.kill()
+			
+
 		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		scale_tween.tween_property(self,"scale",target_scale*1.1,0.5)
+		scale_tween.tween_property(self,"scale",target_scale*1.5,0.5)
+		#get_parent().move_child(self, -1)
+		move_to_front()
 
 
 func _on_mouse_exited():
-	if scale_tween and scale_tween.is_running():
-		scale_tween.kill()
-		
-	#if is_affordable():
-	scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	scale_tween.tween_property(self,"scale",target_scale,0.5)
+	if attached_to is Hand:
+		attached_to.hovered = false
+		attached_to.refresh_cards_pos()
+
+		if scale_tween and scale_tween.is_running():
+			scale_tween.kill()
+			
+		#if is_affordable():
+		scale_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		scale_tween.tween_property(self,"scale",target_scale,0.5)
+		attached_to.refresh_cards_order()
 
 	if perspective_tween and perspective_tween.is_running():
 		perspective_tween.kill()
@@ -380,7 +387,6 @@ func _on_mouse_exited():
 	perspective_tween.tween_property(self,"perspective_vec",Vector2.ZERO,0.5)
 	#perspective_vec = Vector2.ZERO
 	
-	pressed_timer = 0
 
 
 func _on_button_button_down() -> void:
@@ -392,7 +398,6 @@ func _on_button_button_down() -> void:
 
 func _on_button_button_up() -> void:
 	pressed = false
-	pressed_timer = 0
 	press_origin_vector = Vector2.ZERO
 	if dragged:
 		dragged = false
