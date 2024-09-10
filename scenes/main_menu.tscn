@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhbre43jx3la6"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_of8uv"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="1_tk1bu"]
+[ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scenes/styles/main_menu.tres" id="2_xjoam"]
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_of8uv")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_tk1bu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_left = 200.0
+offset_top = 232.0
+offset_right = 577.0
+offset_bottom = 888.0
+theme = ExtResource("2_xjoam")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_xjoam")
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_xjoam")
+text = "Play (Test Scene)"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit game"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
