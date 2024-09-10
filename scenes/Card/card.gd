@@ -331,14 +331,12 @@ func _process(delta):
 	material.set("shader_parameter/x_rot",-perspective_vec.y)
 	material.set("shader_parameter/y_rot",perspective_vec.x)
 	
+	if draggable and pressed and not dragged:
+		if press_origin_vector.y - get_global_mouse_position().y>2:
+			dragged = true
 	
 	if dragged:
 		global_position = get_global_mouse_position()-(size*scale)/2
-
-func _physics_process(delta: float) -> void:
-	if draggable and pressed and not dragged:
-		if press_origin_vector.y - get_global_mouse_position().y>15:
-			dragged = true
 
 func _input(event):
 	if event is InputEventMouseMotion:
