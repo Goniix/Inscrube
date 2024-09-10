@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bt4kdi4xf8ibg"]
 
-[ext_resource type="Script" path="res://scenes/CardSlot/card_slot.gd" id="1_wffnj"]
+[ext_resource type="Script" path="res://scripts/card_slot.gd" id="1_wffnj"]
 [ext_resource type="Texture2D" uid="uid://cr51mbyq1o6u1" path="res://assets/board/card_slot.png" id="2_jehyx"]
 
 [node name="CardSlot" type="TextureButton" groups=["slot"]]

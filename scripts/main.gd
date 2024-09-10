@@ -1,9 +1,8 @@
 class_name Game
 extends Node
 
-@export var cardScene : PackedScene = preload("res://scenes/Card/card.tscn")
-@export var slotScene : PackedScene = preload("res://scenes/CardSlot/card_slot.tscn")
-#@export static var sacrificeMarkScene : PackedScene = preload("res://scenes/CardSlot/SacrificeMark/sacrifice_mark.tscn")
+@export var cardScene : PackedScene# = preload("res://scenes/card.tscn")
+@export var slotScene : PackedScene# = preload("res://scenes/card_slot.tscn")
 
 @export var card_ressources_path: String = "res://data/cards/"
 

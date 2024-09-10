@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://dsorkkm6ce0ue"]
 
-[ext_resource type="Script" path="res://scenes/Components/drag_target.gd" id="1_htfp7"]
+[ext_resource type="Script" path="res://scripts/drag_target.gd" id="1_avyfc"]
 
 [node name="Drag target" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_htfp7")
+script = ExtResource("1_avyfc")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false

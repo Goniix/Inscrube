@@ -1,36 +1,39 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=13 format=3 uid="uid://dxa8iwdognc3s"]
 
-[ext_resource type="Script" path="res://scenes/Game/main.gd" id="1_j2d0d"]
-[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_gmkt5"]
-[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/CardSlot/card_slot.tscn" id="3_w3kh6"]
-[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/Hand/hand.tscn" id="4_i0abk"]
-[ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scenes/SlotArea/slot_area.tscn" id="5_tmtfj"]
-[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/Game/DebugLabel.tres" id="6_71kv0"]
-[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/bell_button.tscn" id="7_2rsxp"]
-[ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_km3n8"]
-[ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="9_6gsko"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_iynm3"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_5ijox"]
+[ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scenes/card.tscn" id="2_rgjke"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="3_a1rqx"]
+[ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scenes/slot_area.tscn" id="4_u43ui"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/hand.tscn" id="5_vux35"]
+[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/DebugLabel.tres" id="6_tsvdr"]
+[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/bell_button.tscn" id="7_bu5qr"]
+[ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_8n1q6"]
+[ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="9_ff3lv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nxjqi"]
-shader = ExtResource("8_km3n8")
+shader = ExtResource("8_8n1q6")
 shader_parameter/scanline_count = 50.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yhj8r"]
-shader = ExtResource("9_6gsko")
+shader = ExtResource("9_ff3lv")
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/multiplier = 0.4
 shader_parameter/softness = 0.8
 
 [node name="Main" type="Node"]
-script = ExtResource("1_j2d0d")
+script = ExtResource("1_iynm3")
+cardScene = ExtResource("2_rgjke")
+slotScene = ExtResource("3_a1rqx")
 
 [node name="BackGroundBoard" type="TextureRect" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("2_gmkt5")
+texture = ExtResource("2_5ijox")
 stretch_mode = 6
 metadata/_edit_lock_ = true
 
-[node name="PlayedSlot" parent="." instance=ExtResource("3_w3kh6")]
+[node name="PlayedSlot" parent="." instance=ExtResource("3_a1rqx")]
 unique_name_in_owner = true
 offset_left = 280.0
 offset_top = 426.0
@@ -39,7 +42,7 @@ offset_bottom = 652.0
 allow_drop = false
 allow_sacrifice = false
 
-[node name="SlotArea" parent="." instance=ExtResource("5_tmtfj")]
+[node name="SlotArea" parent="." instance=ExtResource("4_u43ui")]
 offset_left = 614.0
 offset_top = 60.0
 offset_right = -708.0
@@ -47,7 +50,7 @@ offset_bottom = -141.0
 
 [node name="CardLayer" type="Node" parent="."]
 
-[node name="Hand" parent="." instance=ExtResource("4_i0abk")]
+[node name="Hand" parent="." instance=ExtResource("5_vux35")]
 offset_left = 610.0
 offset_top = 903.0
 offset_right = 1210.0
@@ -66,9 +69,9 @@ offset_top = 778.0
 offset_right = 345.0
 offset_bottom = 861.0
 text = "7"
-label_settings = ExtResource("6_71kv0")
+label_settings = ExtResource("6_tsvdr")
 
-[node name="BellButton" parent="GUI" instance=ExtResource("7_2rsxp")]
+[node name="BellButton" parent="GUI" instance=ExtResource("7_bu5qr")]
 position = Vector2(100, 553)
 
 [node name="CRT" type="ColorRect" parent="."]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://buuoxwwe0mmdm"]
 
-[ext_resource type="Script" path="res://scenes/CardSlot/SacrificeMark/sacrifice_mark.gd" id="1_lk0n3"]
+[ext_resource type="Script" path="res://scripts/sacrifice_mark.gd" id="1_lk0n3"]
 [ext_resource type="Texture2D" uid="uid://dmuuyi8thmclw" path="res://assets/board/sacrifice_mark.png" id="2_34s4v"]
 
 [node name="SacrificeMark" type="TextureRect"]
