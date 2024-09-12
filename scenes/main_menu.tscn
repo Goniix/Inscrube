@@ -11,12 +11,13 @@ script = ExtResource("1_of8uv")
 offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("1_tk1bu")
+metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-offset_left = 200.0
-offset_top = 232.0
-offset_right = 577.0
-offset_bottom = 888.0
+offset_left = 112.0
+offset_top = 243.0
+offset_right = 735.0
+offset_bottom = 960.0
 theme = ExtResource("2_xjoam")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
@@ -38,4 +39,5 @@ layout_mode = 2
 text = "Quit game"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

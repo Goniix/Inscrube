@@ -170,7 +170,7 @@ func activate_sacrifice():
 					slot.attached_card.sacrifice()
 
 func refresh_hand():
-	$Hand.refresh_cards_pos()
+	$Hand.refresh_cards_pos(0.4)
 	$Hand.refresh_cards_color()
 
 func on_card_play():

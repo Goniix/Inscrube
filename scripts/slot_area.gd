@@ -16,12 +16,12 @@ func get_adverse_slots() -> Array[Node]:
 func get_all_slots() -> Array[Node]:
 	return get_player_slots() + get_adverse_slots()
 
-func get_slot(owner:OWNER, lane:LANE, row:int) -> Slot:
+func get_slot(slot_owner:OWNER, lane:LANE, row:int) -> Slot:
 	assert(0<=row and row<row_count, "Invalid row number. exepected: between 0 and "+str(4)+" got "+str(row))
 	var slot_id:String = ""
 	slot_id+="F" if (lane == LANE.FRONT) else "B"
 	slot_id+=str(row)
-	if(owner == OWNER.PLAYER):
+	if(slot_owner == OWNER.PLAYER):
 		return $ArrayContainers/PlayerSlots.get_node(slot_id)
 	else:
 		return $ArrayContainers/AdverseSlots.get_node(slot_id)

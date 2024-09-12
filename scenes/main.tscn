@@ -51,10 +51,10 @@ offset_bottom = -141.0
 [node name="CardLayer" type="Node" parent="."]
 
 [node name="Hand" parent="." instance=ExtResource("5_vux35")]
-offset_left = 610.0
-offset_top = 903.0
-offset_right = 1210.0
-offset_bottom = 1103.0
+offset_left = -62.0
+offset_top = 424.0
+offset_right = 938.0
+offset_bottom = 624.0
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3

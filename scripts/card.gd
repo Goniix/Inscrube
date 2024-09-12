@@ -38,7 +38,7 @@ const hold_treshold: float = 0.3
 var draggable:bool = false
 var dragged:bool = false
 var pressed:bool = false
-var press_origin_vector:Vector2 = Vector2.ZERO
+# var press_origin_vector:Vector2 = Vector2.ZERO
 
 func load_data(id: String):
 	id = id.to_upper()
@@ -235,7 +235,7 @@ func attach_card(new_slot_body,pos=0):
 		#var hand_ref = get_tree().root.get_child(0).get_node("Hand")
 		if not new_slot_body.attached_cards.has(self):
 			new_slot_body.add_card(self,pos)
-		new_slot_body.refresh_cards_pos()
+		new_slot_body.refresh_cards_pos(0.4)
 		
 	attached_to = new_slot_body
 	refresh_scale()
@@ -331,16 +331,17 @@ func _process(delta):
 	material.set("shader_parameter/x_rot",-perspective_vec.y)
 	material.set("shader_parameter/y_rot",perspective_vec.x)
 	
-	if draggable and pressed and not dragged:
-		if press_origin_vector.y - get_global_mouse_position().y>2:
-			dragged = true
-	
 	if dragged:
 		global_position = get_global_mouse_position()-(size*scale)/2
 
 func _input(event):
 	if event is InputEventMouseMotion:
+		
 		refresh_draggable(event.relative)
+
+		if draggable and pressed and not dragged:
+			if event.relative.y<-2:#press_origin_vector.y - get_global_mouse_position().y>2:
+				dragged = true
 
 
 func _to_string():
@@ -353,7 +354,7 @@ func _on_card_clicked():
 func _on_mouse_entered():
 	if attached_to is Hand:
 		attached_to.hovered = true
-		attached_to.refresh_cards_pos()
+		attached_to.refresh_cards_pos(0.1)
 
 		if scale_tween and scale_tween.is_running():
 			scale_tween.kill()
@@ -368,7 +369,7 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	if attached_to is Hand:
 		attached_to.hovered = false
-		attached_to.refresh_cards_pos()
+		attached_to.refresh_cards_pos(0.1)
 
 		if scale_tween and scale_tween.is_running():
 			scale_tween.kill()
@@ -389,14 +390,14 @@ func _on_mouse_exited():
 
 func _on_button_button_down() -> void:
 	pressed = true
-	press_origin_vector = get_global_mouse_position()
+	# press_origin_vector = get_global_mouse_position()
 	#print("mouse:"+str(get_global_mouse_position()))
 	#print("card:"+str(global_position))
 
 
 func _on_button_button_up() -> void:
 	pressed = false
-	press_origin_vector = Vector2.ZERO
+	# press_origin_vector = Vector2.ZERO
 	if dragged:
 		dragged = false
 		_on_mouse_exited()

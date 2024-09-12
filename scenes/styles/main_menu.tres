@@ -2,4 +2,5 @@
 
 [resource]
 Button/font_sizes/font_size = 46
+TabContainer/font_sizes/font_size = 46
 VBoxContainer/constants/separation = 50
