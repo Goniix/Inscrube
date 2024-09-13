@@ -11,16 +11,16 @@ point_count = 2
 [node name="Hand" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 603.0
-offset_bottom = 200.0
 mouse_filter = 2
 script = ExtResource("1_jlg2y")
 
 [node name="HandPath" type="Path2D" parent="."]
+visible = false
 position = Vector2(0, 200)
 curve = SubResource("Curve2D_uaus6")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="HandPath"]
+visible = false
 
 [node name="HandPathOld" type="Path2D" parent="."]
 visible = false
