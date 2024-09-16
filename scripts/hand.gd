@@ -44,6 +44,7 @@ func refresh_cards_pos(speed:float):
 func get_card_position(card: Card):
 	var card_index: int = attached_cards.find(card)
 	var card_width: int = card.size.x * card.default_scale.x
+	var space_between: float = clamp(1000/attached_cards.size(),0,card_width)
 	# $HandPath/PathFollow2D.progress_ratio = ((card_index+1) as float)/(len(attached_cards)+1)
 	# return [$HandPath/PathFollow2D.global_position-card.pivot_offset,$HandPath/PathFollow2D.rotation]
-	return Vector2(int(card_index*card_width),0)
+	return Vector2(int(space_between*card_index - ((attached_cards.size() * space_between) * 0.5)),0)

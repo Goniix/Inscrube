@@ -53,10 +53,10 @@ layout_mode = 3
 anchors_preset = 0
 
 [node name="Hand" parent="." instance=ExtResource("5_vux35")]
-offset_left = 892.0
-offset_top = 509.0
-offset_right = 892.0
-offset_bottom = 509.0
+offset_left = 910.0
+offset_top = 940.0
+offset_right = 910.0
+offset_bottom = 940.0
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
