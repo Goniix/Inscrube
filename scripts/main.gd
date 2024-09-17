@@ -60,7 +60,7 @@ const DEBUG_MODE = true;
 
 static var drag_targets: Array[Node] = []
 
-var last_mouse_pos: Vector2
+static var active_selection: Selector
 
 #static func loadAllCardsJSON(recursive:bool=true):
 	#var cards_dir_list = ["res://data/cards/"]

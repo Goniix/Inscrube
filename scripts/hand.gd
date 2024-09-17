@@ -36,15 +36,14 @@ func refresh_cards_pos(speed:float):
 		# 	card_elem.rotation_tween.kill()
 		
 		card_elem.position_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
-		var card_position: Vector2 = position + get_card_position(card_elem)# + ((Vector2(0,-200) if hovered else Vector2.ZERO))
+		var card_position: Vector2 = position + get_card_position(card_elem) + ((Vector2(0,-180) if hovered else Vector2.ZERO))
 
 		card_elem.position_tween.tween_property(card_elem,"position", card_position, speed)
 		# card_elem.position_tween.parallel().tween_property(card_elem,"rotation", path_data[1], speed)
 
 func get_card_position(card: Card):
 	var card_index: int = attached_cards.find(card)
-	var card_width: int = card.size.x * card.default_scale.x
-	var space_between: float = clamp(1000/attached_cards.size(),0,card_width)
-	# $HandPath/PathFollow2D.progress_ratio = ((card_index+1) as float)/(len(attached_cards)+1)
-	# return [$HandPath/PathFollow2D.global_position-card.pivot_offset,$HandPath/PathFollow2D.rotation]
-	return Vector2(int(space_between*card_index - ((attached_cards.size() * space_between) * 0.5)),0)
+	var card_width: int = floor(card.size.x * card.default_scale.x)
+	var space_between: float = floor(clamp(1000/attached_cards.size(),0,card_width))
+	
+	return Vector2(int(space_between*card_index - ((attached_cards.size() * space_between) * 0.5)),0)- card.pivot_offset+card.pivot_offset*card.default_scale
