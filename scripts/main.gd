@@ -105,24 +105,24 @@ static func loadAllCards(recursive:bool=false):
 		else:
 			print("An error occurred when trying to access the path.")
 
-static func dir_contents(path, verbose:bool=false)-> Array[String]:
-	var dir = DirAccess.open(path)
-	var res:Array[String] = []
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir():
-				if verbose:
-					print("Found directory: " + file_name)
-			else:
-				if verbose:
-					print("Found file: " + file_name)
-				res.append(file_name)
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-	return res
+#static func dir_contents(path, verbose:bool=false)-> Array[String]:
+	#var dir = DirAccess.open(path)
+	#var res:Array[String] = []
+	#if dir:
+		#dir.list_dir_begin()
+		#var file_name = dir.get_next()
+		#while file_name != "":
+			#if dir.current_is_dir():
+				#if verbose:
+					#print("Found directory: " + file_name)
+			#else:
+				#if verbose:
+					#print("Found file: " + file_name)
+				#res.append(file_name)
+			#file_name = dir.get_next()
+	#else:
+		#print("An error occurred when trying to access the path.")
+	#return res
 
 func giveCard(card_id : String):
 	var card = cardScene.instantiate()
