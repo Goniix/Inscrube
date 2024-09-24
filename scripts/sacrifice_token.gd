@@ -46,7 +46,7 @@ func toggle_state():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	gameRoot = get_tree().root.get_child(0)
+	gameRoot = get_tree().root.get_children().back()
 	$Token.modulate = Color.BLACK
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

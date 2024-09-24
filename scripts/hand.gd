@@ -6,7 +6,7 @@ var attached_cards: Array[Card] = []
 var hovered: bool = false
 
 func get_game_root():
-	return get_tree().root.get_child(0)
+	return get_tree().root.get_children().back()
 
 func add_card(card: Card, pos: int):
 	#attached_cards.append(card)

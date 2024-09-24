@@ -50,7 +50,7 @@ func slot_name():
 	return str(get_slot_owner())+":"+str(slot_index)
 
 func _ready():
-	gameRoot = get_tree().root.get_child(0)
+	gameRoot = get_tree().root.get_children().back()
 	#$SacrificeMark.visible = false
 	emit_signal("state_changed")
 	
@@ -72,11 +72,6 @@ func _process(delta):
 	else:
 		change_state(STATES.IDLE)
 
-#func show_mark():
-	#$SacrificeMark.change_state(ScarMark.STATES.IDLE)
-#
-#func hide_mark():
-	#$SacrificeMark.change_state(ScarMark.STATES.HIDDEN)
 
 func get_slot_scale():
 	if get_slot_owner()!=SlotArea.OWNER.FREE:
@@ -90,8 +85,7 @@ func get_slot_postion() -> Vector2:
 
 func _to_string():
 	var out = "Slot("+str(get_slot_owner())
-	#if slot_type == SLOT_TYPE.PLAYER:
-	out+=name#str(gameRoot.get_node("SlotArea").find_slot(self).name)
+	out+=name
 	return out+")"
 
 func _on_pressed():

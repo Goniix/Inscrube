@@ -25,6 +25,10 @@ run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://assets/icon.png"
 
+[autoload]
+
+Networker="*res://scripts/networker.gd"
+
 [display]
 
 window/size/viewport_width=1920

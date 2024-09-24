@@ -252,14 +252,22 @@ func kill():
 
 func attack(card : Card):
 	var attack_properties = trigger_sigils(SigilData.SIGIL_EVENTS.ATTACK_PROPERTY)
-	if attack_properties.find(SigilData.ATTACK_PROPERTY.FLYING) != -1 or card==null:
+	if attack_properties.has(SigilData.ATTACK_PROPERTY.FLYING) or card==null:
 		Game.health_scale += get_card_strength()
 		print("attacked scale for "+str(get_card_strength())+" power (scale value="+str(Game.health_scale)+")")
 		gameRoot.update_scale()
 	else:
 		card.damage(get_card_strength())
 		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")
-		
+
+func get_attack_target():
+	var slot_area : SlotArea = gameRoot.get_node("SlotArea")
+	if slot_area.get_slot(SlotArea.OWNER.ADVERSE,SlotArea.LANE.FRONT,0).attached_card != null:
+		return slot_area.get_slot(SlotArea.OWNER.ADVERSE,SlotArea.LANE.FRONT,0).attached_card
+	elif slot_area.get_slot(SlotArea.OWNER.ADVERSE,SlotArea.LANE.BACK,0).attached_card != null:
+		return slot_area.get_slot(SlotArea.OWNER.ADVERSE,SlotArea.LANE.BACK,0).attached_card
+	#else return scale
+
 
 func damage(amount: int):
 	data.life -= amount
@@ -312,16 +320,16 @@ func get_click_method() -> Callable:
 	if gameRoot.card_is_played():
 		#print("A card is in play")
 		return select_sacrifice_method
-	elif attached_to is Hand:
-		#print("No card in play")
-		return play_card_method
+	# elif attached_to is Hand:
+	# 	#print("No card in play")
+	# 	return play_card_method
 	return default_card_click_method
 
 
 #ENGINE METHODS
 func _ready():
 	scale = target_scale
-	gameRoot = get_tree().root.get_child(0)
+	gameRoot = get_tree().root.get_children().back()
 
 func _process(delta):
 	#print(waiting_mouse_move)
@@ -348,7 +356,6 @@ func _to_string():
 	return "Card("+get_card_name()+")"
 
 func _on_card_clicked():
-	return
 	get_click_method().call()
 	
 func _on_mouse_entered():
@@ -402,7 +409,7 @@ func _on_button_button_up() -> void:
 		dragged = false
 		_on_mouse_exited()
 		if gameRoot.get_hovered_drag_target() != null:
-			get_click_method().call()
+			play_card_method()
 		else:
 			gameRoot.refresh_hand()
 		
