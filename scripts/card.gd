@@ -40,10 +40,9 @@ var dragged:bool = false
 var pressed:bool = false
 # var press_origin_vector:Vector2 = Vector2.ZERO
 
-func load_data(id: String):
-	id = id.to_upper()
-	data = Game.cardData[id].duplicate()
-	card_id = id
+func load_data(data: CardData):
+	# id = id.to_upper()
+	self.data = data.duplicate()
 	
 	# card_cost = {
 	# 	CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
@@ -254,7 +253,6 @@ func attack(card : Card):
 	if attack_properties.has(SigilData.ATTACK_PROPERTY.FLYING) or card==null:
 		Game.health_scale += get_card_strength()
 		print("attacked scale for "+str(get_card_strength())+" power (scale value="+str(Game.health_scale)+")")
-		gameRoot.update_scale()
 	else:
 		card.damage(get_card_strength())
 		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")

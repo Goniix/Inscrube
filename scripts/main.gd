@@ -123,9 +123,9 @@ static func loadAllCards(recursive:bool=false):
 		#print("An error occurred when trying to access the path.")
 	#return res
 
-func giveCard(card_id : String):
+func giveCard(card_name: String):
 	var card = cardScene.instantiate()
-	card.load_data(card_id)
+	card.load_data(cardData[card_name])
 	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	card.attach_card($Hand,$Hand.attached_cards.size())
@@ -137,9 +137,6 @@ func get_total_value():
 		if slot.attached_card != null:
 			total_value+=1
 	return total_value
-
-func update_scale():
-	$GUI/HealthScale.text = str(health_scale)
 	
 func is_valid_slot_hovered():
 	for slot : Slot in $SlotArea.get_all_slots():
@@ -189,18 +186,8 @@ func _init():
 	Game.loadAllCards(true)
 	
 func _ready():
-	var new_card: Card = cardScene.instantiate()
-	new_card.load_data("RAVEN")
-	$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotsLayer/TestSlot)
-	new_card.attach_card($Hand)
-	
-	#new_card = cardScene.instantiate()
-	#new_card.load_data("squirrel")
-	#$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotArea.get_slot(SlotArea.OWNER.PLAYER,SlotArea.LANE.FRONT,0))
+	giveCard("RAVEN")
 
-	update_scale()
 	refresh_hand()
 
 func _process(delta):
