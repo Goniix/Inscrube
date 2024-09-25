@@ -94,7 +94,7 @@ func _on_pressed():
 		#slot is valid
 		var played_card_ref: Card = gameRoot.get_node("PlayedSlot").attached_card 
 		print("Playing "+str(played_card_ref)+"  to "+str(self))
-		if Game.sacrificed_value >= played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD):
+		if Game.sacrificed_value >= played_card_ref.data.get_cost("BLOOD"):
 			played_card_ref.attach_card(self)
 			played_card_ref.modulate = Color(1,1,1,1)
 			played_card_ref.trigger_sigils(SigilData.SIGIL_EVENTS.ON_PLAY)
@@ -103,7 +103,7 @@ func _on_pressed():
 			gameRoot.toggle_all_marks(false)
 			gameRoot.sacrificed_value = 0
 		else:
-			print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_card_cost(CardData.COST_ENUM.BLOOD))+")")
+			print("Cost is not full filled ("+str(Game.sacrificed_value)+"/"+str(played_card_ref.get_card_cost("BLOOD"))+")")
 
 
 func _on_state_changed():

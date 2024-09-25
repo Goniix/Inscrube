@@ -41,10 +41,10 @@ static var cost_data: Dictionary = {
 	],	
 }
 
-static var cost_icons: Array = [
-	preload("res://assets/cost/blood.png"),
-	preload("res://assets/cost/bone.png")
-]
+static var cost_icons: Dictionary = {
+	"BLOOD":preload("res://assets/cost/blood.png"),
+	"BONE":preload("res://assets/cost/bone.png")
+}
 
 static var language = 0
 
@@ -162,7 +162,7 @@ func toggle_all_marks(visible:bool):
 				slot.attached_card.hide_mark()
 				
 func activate_sacrifice():
-	if sacrificed_value == get_played_card().get_card_cost(CardData.COST_ENUM.BLOOD):
+	if sacrificed_value == get_played_card().data.get_cost("BLOOD"):
 		for slot : Slot in $SlotArea.get_player_slots():
 			if slot.is_attached() and slot.allow_sacrifice:
 				if slot.attached_card.is_sacrificed():
@@ -174,7 +174,7 @@ func refresh_hand():
 
 func on_card_play():
 	refresh_hand()
-	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
+	if get_played_card().data.get_cost("BLOOD")>0:
 		for slot : Slot in $SlotArea.get_player_slots():
 			if slot.is_attached() and slot.allow_sacrifice:
 				slot.attached_card.show_mark()
