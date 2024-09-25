@@ -26,7 +26,7 @@ func refresh_cards_color():
 	var total_value = game_root.get_total_value()
 	for card in attached_cards:
 		card.color_tween = create_tween()
-		var fct = (1.0 if (not game_root.card_is_played() and card.get_card_cost(CardData.COST_ENUM.BLOOD)<=total_value) else 0.5)
+		var fct = (1.0 if (not game_root.card_is_played() and card.data.get_cost("BLOOD")<=total_value) else 0.5)
 		card.color_tween.tween_property(card.get_node("SubViewportContainer/SubViewport/SubCard"),"modulate",Color(fct,fct,fct,1),0.1)
 
 func refresh_cards_pos(speed:float):

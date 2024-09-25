@@ -41,10 +41,10 @@ static var cost_data: Dictionary = {
 	],	
 }
 
-static var cost_icons: Array = [
-	preload("res://assets/cost/blood.png"),
-	preload("res://assets/cost/bone.png")
-]
+static var cost_icons: Dictionary = {
+	"BLOOD":preload("res://assets/cost/blood.png"),
+	"BONE":preload("res://assets/cost/bone.png")
+}
 
 static var language = 0
 
@@ -123,9 +123,9 @@ static func loadAllCards(recursive:bool=false):
 		#print("An error occurred when trying to access the path.")
 	#return res
 
-func giveCard(card_id : String):
+func giveCard(card_name: String):
 	var card = cardScene.instantiate()
-	card.load_data(card_id)
+	card.load_data(cardData[card_name])
 	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	card.attach_card($Hand,$Hand.attached_cards.size())
@@ -137,9 +137,6 @@ func get_total_value():
 		if slot.attached_card != null:
 			total_value+=1
 	return total_value
-
-func update_scale():
-	$GUI/HealthScale.text = str(health_scale)
 	
 func is_valid_slot_hovered():
 	for slot : Slot in $SlotArea.get_all_slots():
@@ -162,7 +159,7 @@ func toggle_all_marks(visible:bool):
 				slot.attached_card.hide_mark()
 				
 func activate_sacrifice():
-	if sacrificed_value == get_played_card().get_card_cost(CardData.COST_ENUM.BLOOD):
+	if sacrificed_value == get_played_card().data.get_cost("BLOOD"):
 		for slot : Slot in $SlotArea.get_player_slots():
 			if slot.is_attached() and slot.allow_sacrifice:
 				if slot.attached_card.is_sacrificed():
@@ -174,7 +171,7 @@ func refresh_hand():
 
 func on_card_play():
 	refresh_hand()
-	if get_played_card().card_cost[CardData.COST_ENUM.BLOOD]>0:
+	if get_played_card().data.get_cost("BLOOD")>0:
 		for slot : Slot in $SlotArea.get_player_slots():
 			if slot.is_attached() and slot.allow_sacrifice:
 				slot.attached_card.show_mark()
@@ -189,18 +186,8 @@ func _init():
 	Game.loadAllCards(true)
 	
 func _ready():
-	var new_card: Card = cardScene.instantiate()
-	new_card.load_data("RAVEN")
-	$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotsLayer/TestSlot)
-	new_card.attach_card($Hand)
-	
-	#new_card = cardScene.instantiate()
-	#new_card.load_data("squirrel")
-	#$CardLayer.add_child(new_card)
-	#new_card.attach_card($SlotArea.get_slot(SlotArea.OWNER.PLAYER,SlotArea.LANE.FRONT,0))
+	giveCard("RAVEN")
 
-	update_scale()
 	refresh_hand()
 
 func _process(delta):

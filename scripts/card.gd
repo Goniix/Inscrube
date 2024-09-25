@@ -6,7 +6,7 @@ extends Control
 var data : CardData
 var gameRoot: Game = null
 var card_id: String
-var card_cost: Dictionary
+# var card_cost: Dictionary
 
 #ATTACHEMENT VALS
 var body_ref
@@ -40,16 +40,18 @@ var dragged:bool = false
 var pressed:bool = false
 # var press_origin_vector:Vector2 = Vector2.ZERO
 
-func load_data(id: String):
-	id = id.to_upper()
-	data = Game.cardData[id].duplicate()
-	card_id = id
+func load_data(data: CardData):
+	# id = id.to_upper()
+	self.data = data.duplicate()
 	
-	card_cost = {
-		CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
-		CardData.COST_ENUM.BONE: Game.cardData[id].bone_cost,
-		CardData.COST_ENUM.ENERGY: Game.cardData[id].energy_cost
-	}
+	# card_cost = {
+	# 	CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
+	# 	CardData.COST_ENUM.BONE: Game.cardData[id].bone_cost,
+	# 	CardData.COST_ENUM.ENERGY: Game.cardData[id].energy_cost
+	# }
+	update_display_data()
+
+func update_display_data():
 	update_name()
 	update_rarity()
 	update_background()
@@ -78,19 +80,19 @@ func update_rarity():
 	var faction_string :String = CardData.FACTION_ENUM.keys()[get_card_faction()]
 	var res = tr("RARITY").format({"rarity":tr(rarity_string),"faction":tr(faction_string)})
 	for elem in get_card_sublass():
-		res+=tr(CardData.get_subclass(elem).to_upper())+" "
+		res+=tr(CardData.subclass_tostring(elem).to_upper())+" "
 	%Rarity.text = res
 	
 func update_cost():
-	for key in range(CardData.COST_ENUM.size()):
-		if (card_cost[key] > 0):
+	for key in CardData.COST_ENUM:
+		if (data.get_cost(key) > 0):
 			var sub_container = HBoxContainer.new()
 			sub_container.alignment = BoxContainer.ALIGNMENT_END
 			
-			if card_cost[key] > 4:
+			if data.get_cost(key) > 4:
 				sub_container.add_theme_constant_override("separation",10)
 				
-				var stringed_number = str(card_cost[key])
+				var stringed_number = str(data.get_cost(key))
 				for charElem in stringed_number:
 					var number_icon: TextureRect = TextureRect.new()
 					number_icon.texture = Game.cost_data["numbers"][int(charElem)]
@@ -109,7 +111,7 @@ func update_cost():
 			else:
 				sub_container.add_theme_constant_override("separation",-10)
 				
-				for icon in range(card_cost[key]):
+				for icon in range(data.get_cost(key)):
 					var cost_icon: TextureRect = TextureRect.new()
 					cost_icon.texture = Game.cost_icons[key]
 					cost_icon.custom_minimum_size= Vector2(50,80)
@@ -147,11 +149,7 @@ func is_hovered():
 func get_card_name() -> String:
 	return data.card_name
 	
-func get_card_cost(cost_type : CardData.COST_ENUM) -> int:
-	if card_cost.keys().has(cost_type):
-		return card_cost[cost_type]
-	else:
-		return 0
+
 
 func get_card_sigils() -> Array:
 	return data.sigils
@@ -186,7 +184,7 @@ func get_card_art() -> Texture:
 func is_affordable():
 	#print("Cost is: " + str(card_cost["blood"]))
 	#print("Total value is "+gameRoot.get_total_value())
-	return get_card_cost(CardData.COST_ENUM.BLOOD)<=gameRoot.get_total_value()
+	return data.get_cost("BLOOD")<=gameRoot.get_total_value()
 
 func refresh_draggable(mouse_relative: Vector2) -> void:
 	if attached_to != null and attached_to.allow_pick:
@@ -255,7 +253,6 @@ func attack(card : Card):
 	if attack_properties.has(SigilData.ATTACK_PROPERTY.FLYING) or card==null:
 		Game.health_scale += get_card_strength()
 		print("attacked scale for "+str(get_card_strength())+" power (scale value="+str(Game.health_scale)+")")
-		gameRoot.update_scale()
 	else:
 		card.damage(get_card_strength())
 		print("attacked "+str(card)+" for "+str(get_card_strength())+" power")

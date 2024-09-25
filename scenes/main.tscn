@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxa8iwdognc3s"]
+[gd_scene load_steps=12 format=3 uid="uid://dxa8iwdognc3s"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_iynm3"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_5ijox"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="3_a1rqx"]
 [ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scenes/slot_area.tscn" id="4_u43ui"]
 [ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/hand.tscn" id="5_vux35"]
-[ext_resource type="LabelSettings" uid="uid://cghp14nr0jpow" path="res://scenes/styles/DebugLabel.tres" id="6_tsvdr"]
 [ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/bell_button.tscn" id="7_bu5qr"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_8n1q6"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="9_ff3lv"]
@@ -63,15 +62,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="HealthScale" type="Label" parent="GUI"]
-layout_mode = 0
-offset_left = 227.0
-offset_top = 778.0
-offset_right = 345.0
-offset_bottom = 861.0
-text = "7"
-label_settings = ExtResource("6_tsvdr")
 
 [node name="BellButton" parent="GUI" instance=ExtResource("7_bu5qr")]
 position = Vector2(100, 553)

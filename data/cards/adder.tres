@@ -12,9 +12,11 @@ sigils = Array[ExtResource("3_q55fo")]([ExtResource("3_a6ide")])
 rarity = 1
 faction = 0
 subclass = Array[int]([5])
-blood_cost = 2
-bone_cost = 0
-energy_cost = 0
+cost = {
+"BLOOD": 2,
+"BONE": 0,
+"ENERGY": 0
+}
 life = 2
 attack_type = 0
 strength = 2
