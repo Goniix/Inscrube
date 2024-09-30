@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cd2bodcu66gkc"]
 
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="1_6088c"]
-[ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_afifj"]
+[ext_resource type="Script" path="res://scripts/menu/settings_menu.gd" id="1_afifj"]
 [ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scenes/styles/main_menu.tres" id="2_wfa3t"]
 
 [node name="SettingsMenu" type="Node"]
