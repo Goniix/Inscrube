@@ -4,7 +4,7 @@ extends Control
 
 #CARD DATA
 var data : CardData
-var gameRoot: Game = null
+var gameRoot = null
 var card_id: String
 # var card_cost: Dictionary
 
@@ -105,7 +105,7 @@ func update_cost():
 				sub_container.add_child(x_icon)
 				
 				var cost_icon: TextureRect = TextureRect.new()
-				cost_icon.texture = Game.cost_data[key]
+				cost_icon.texture = Game.cost_icons[key]
 				cost_icon.custom_minimum_size= Vector2(50,80)
 				sub_container.add_child(cost_icon)
 			else:

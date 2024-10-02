@@ -6,7 +6,7 @@ extends Node
 
 @export var card_ressources_path: String = "res://data/cards/"
 
-static var cardData : Dictionary = {}
+# static var cardData : Dictionary = {}
 #static var art_data: Dictionary = {
 	#"adder": preload("res://assets/art/Adder.png"),
 	#"squirrel": preload("res://assets/art/Squirrel.png")
@@ -83,26 +83,26 @@ static var drag_targets: Array[Node] = []
 		#else:
 			#print("An error occurred when trying to access the path.")
 			
-static func loadAllCards(recursive:bool=false):
-	var cards_dir_list = ["res://data/cards/"]
-	for elem in cards_dir_list:
-		var dir = DirAccess.open(elem)
-		if dir:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				var file_path = dir.get_current_dir()+"/"+file_name
-				if !dir.current_is_dir():
-					if '.tres.remap' in file_path:
-						file_path = file_path.trim_suffix('.remap')
-					var ressource: CardData = load(file_path)
-					cardData[ressource.card_name] = ressource
-					print_rich("loaded card [b]"+ressource.card_name+"[/b] : [color=YELLOW]"+file_path)
-				elif recursive:
-					cards_dir_list.append(file_path)
-				file_name = dir.get_next()
-		else:
-			print("An error occurred when trying to access the path.")
+# static func loadAllCards(recursive:bool=false):
+# 	var cards_dir_list = ["res://data/cards/"]
+# 	for elem in cards_dir_list:
+# 		var dir = DirAccess.open(elem)
+# 		if dir:
+# 			dir.list_dir_begin()
+# 			var file_name = dir.get_next()
+# 			while file_name != "":
+# 				var file_path = dir.get_current_dir()+"/"+file_name
+# 				if !dir.current_is_dir():
+# 					if '.tres.remap' in file_path:
+# 						file_path = file_path.trim_suffix('.remap')
+# 					var ressource: CardData = load(file_path)
+# 					RessourceManager.cardData[ressource.card_name] = ressource
+# 					print_rich("loaded card [b]"+ressource.card_name+"[/b] : [color=YELLOW]"+file_path)
+# 				elif recursive:
+# 					cards_dir_list.append(file_path)
+# 				file_name = dir.get_next()
+# 		else:
+# 			print("An error occurred when trying to access the path.")
 
 #static func dir_contents(path, verbose:bool=false)-> Array[String]:
 	#var dir = DirAccess.open(path)
@@ -124,8 +124,9 @@ static func loadAllCards(recursive:bool=false):
 	#return res
 
 func giveCard(card_name: String):
+	assert(RessourceManager.cardData.keys().has(card_name),card_name + " card_name not found in "+str(RessourceManager.cardData.keys()))
 	var card = cardScene.instantiate()
-	card.load_data(cardData[card_name])
+	card.load_data(RessourceManager.cardData[card_name])
 	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	card.attach_card($Hand,$Hand.attached_cards.size())
@@ -183,10 +184,11 @@ func get_hovered_drag_target():
 	return null
 
 func _init():
-	Game.loadAllCards(true)
+	RessourceManager.loadAllCards(true)
 	
 func _ready():
 	giveCard("RAVEN")
+	giveCard("MAGGOT")
 
 	refresh_hand()
 

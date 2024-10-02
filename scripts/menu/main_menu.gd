@@ -1,6 +1,7 @@
 extends Node
 
 @export var settingsPath: NodePath = "res://scenes/menu/settings_menu.tscn"
+@export var collectionPath: NodePath = "res://scenes/menu/collection_menu.tscn"
 @export var mainPath: NodePath = "res://scenes/main.tscn"
 
 # Called when the node enters the scene tree for the first time.
@@ -23,3 +24,8 @@ func _on_play_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	get_tree().change_scene_to_file(settingsPath)
+
+
+func _on_collection_button_pressed() -> void:
+		get_tree().change_scene_to_file(collectionPath)
+

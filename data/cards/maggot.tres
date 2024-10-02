@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("2_piln6")
-card_name = "MAGGOTS"
+card_name = "MAGGOT"
 sigils = Array[ExtResource("3_0duja")]([])
 rarity = 1
 faction = 0

@@ -1,3 +1,4 @@
+class_name Networker
 extends Node
 
 # enum CLIENT_STATES {WAITING,RUNNING}
