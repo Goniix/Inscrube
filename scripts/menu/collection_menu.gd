@@ -6,7 +6,7 @@ var card_scene : PackedScene = preload("res://scenes/card.tscn")
 var deck_list : Dictionary = {}
 var selected_deck : DeckListButton = null
 
-func get_card_texture(card_name:String):
+func get_card_texture(card_name:String, file_cache: bool = false):
 	var card:Card = card_scene.instantiate()
 	card.load_data(RessourceManager.get_card(card_name))
 	add_child(card)
@@ -20,8 +20,15 @@ func get_card_texture(card_name:String):
 	cardList.add_icon_item(card_texture)
 
 	# card_textures.append(card_texture)
-	# if file_cache:
-	# 	card_texture.get_image().save_png("res://cache/"+card_name.to_lower()+".png")
+	if file_cache:
+		var dir = DirAccess.open("user://")
+		if dir.dir_exists("cache"):
+			for file in DirAccess.get_files_at("user://cache/"):  
+				DirAccess.remove_absolute(file)
+			dir.remove("cache")
+		dir.make_dir("cache")
+		
+		card_texture.get_image().save_png("user://cache/"+card_name.to_lower()+".png")
 	remove_child(card)
 	card.queue_free()
 
@@ -60,8 +67,7 @@ func _init():
 func _ready() -> void:
 	RessourceManager.loadAllCards()	
 	for card_name in RessourceManager.cardData.keys():
-		for i in range(50):
-			await get_card_texture(card_name)
+		await get_card_texture(card_name,true)
 	
 	add_deck(DeckData.new())
 	
