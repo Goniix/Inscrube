@@ -5,5 +5,7 @@ Button/font_sizes/font_size = 46
 ItemList/constants/h_separation = 16
 ItemList/constants/line_separation = 0
 ItemList/constants/v_separation = 16
+LineEdit/constants/caret_width = 2
+LineEdit/font_sizes/font_size = 34
 TabContainer/font_sizes/font_size = 46
 VBoxContainer/constants/separation = 50
