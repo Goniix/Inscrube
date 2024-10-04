@@ -1,8 +1,8 @@
 extends Node
 
-@export var settingsPath: NodePath = "res://scenes/menu/settings_menu.tscn"
-@export var collectionPath: NodePath = "res://scenes/menu/collection_menu.tscn"
-@export var mainPath: NodePath = "res://scenes/main.tscn"
+@export var settingsPath: String
+@export var collectionPath: String
+@export var mainPath: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

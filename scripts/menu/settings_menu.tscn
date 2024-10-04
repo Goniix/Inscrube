@@ -1,16 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://cd2bodcu66gkc"]
 
-[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="1_6088c"]
-[ext_resource type="Script" path="res://scripts/menu/settings_menu.gd" id="1_afifj"]
-[ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scenes/styles/main_menu.tres" id="2_wfa3t"]
+[ext_resource type="Script" path="res://scripts/menu/settings_menu.gd" id="1_iswgt"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_nrmuq"]
+[ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scripts/styles/main_menu.tres" id="3_6hen4"]
 
 [node name="SettingsMenu" type="Node"]
-script = ExtResource("1_afifj")
+script = ExtResource("1_iswgt")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("1_6088c")
+texture = ExtResource("2_nrmuq")
 metadata/_edit_lock_ = true
 
 [node name="TabContainer" type="TabContainer" parent="."]
@@ -18,7 +18,7 @@ offset_left = 248.0
 offset_top = 124.0
 offset_right = 1635.0
 offset_bottom = 979.0
-theme = ExtResource("2_wfa3t")
+theme = ExtResource("3_6hen4")
 current_tab = 0
 
 [node name="General" type="MarginContainer" parent="TabContainer"]
@@ -45,7 +45,7 @@ offset_left = 70.0
 offset_top = 57.0
 offset_right = 184.0
 offset_bottom = 129.0
-theme = ExtResource("2_wfa3t")
+theme = ExtResource("3_6hen4")
 text = " Back "
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

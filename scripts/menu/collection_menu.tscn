@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://uo5m3utkvbp1"]
+[gd_scene load_steps=10 format=3 uid="uid://uo5m3utkvbp1"]
 
-[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="1_8g7vx"]
-[ext_resource type="Script" path="res://scripts/menu/collection_menu.gd" id="1_rp14k"]
-[ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scenes/styles/main_menu.tres" id="3_wd3d8"]
-[ext_resource type="Script" path="res://scripts/menu/collection/deck_list.gd" id="4_05imp"]
+[ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scripts/styles/main_menu.tres" id="1_ixiit"]
+[ext_resource type="Script" path="res://scripts/menu/collection_menu.gd" id="2_l3kxh"]
+[ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="3_fwa2n"]
+[ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scripts/card.tscn" id="3_mncui"]
+[ext_resource type="Script" path="res://scripts/menu/collection/deck_list.gd" id="4_6e3ln"]
+[ext_resource type="Script" path="res://scripts/menu/collection/deck_summary.gd" id="5_c01pw"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xs6pl"]
 
@@ -23,15 +25,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_wd3d8")
-script = ExtResource("1_rp14k")
+theme = ExtResource("1_ixiit")
+script = ExtResource("2_l3kxh")
+card_scene = ExtResource("3_mncui")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("1_8g7vx")
+texture = ExtResource("3_fwa2n")
 
 [node name="CardList" type="ItemList" parent="."]
 layout_mode = 1
@@ -67,7 +70,7 @@ offset_left = 68.0
 offset_top = 200.0
 offset_right = 344.0
 offset_bottom = 1043.0
-script = ExtResource("4_05imp")
+script = ExtResource("4_6e3ln")
 deckNameInputField = NodePath("../DeckSummary/DeckNameInput")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DeckList"]
@@ -87,6 +90,7 @@ offset_top = 58.0
 offset_right = 1893.0
 offset_bottom = 1058.0
 theme_override_constants/separation = 16
+script = ExtResource("5_c01pw")
 
 [node name="CardSummary" type="PanelContainer" parent="DeckSummary"]
 layout_mode = 2

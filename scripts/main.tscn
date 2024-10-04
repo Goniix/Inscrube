@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_iynm3"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="2_5ijox"]
-[ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scenes/card.tscn" id="2_rgjke"]
-[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scenes/card_slot.tscn" id="3_a1rqx"]
-[ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scenes/slot_area.tscn" id="4_u43ui"]
-[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scenes/hand.tscn" id="5_vux35"]
-[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scenes/bell_button.tscn" id="7_bu5qr"]
+[ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scripts/card.tscn" id="2_rgjke"]
+[ext_resource type="PackedScene" uid="uid://bt4kdi4xf8ibg" path="res://scripts/card_slot.tscn" id="3_a1rqx"]
+[ext_resource type="PackedScene" uid="uid://b25bduh74s0yi" path="res://scripts/slot_area.tscn" id="4_u43ui"]
+[ext_resource type="PackedScene" uid="uid://boi5nq67jymdy" path="res://scripts/hand.tscn" id="5_vux35"]
+[ext_resource type="PackedScene" uid="uid://cd6d1rdel2vgx" path="res://scripts/bell_button.tscn" id="7_bu5qr"]
 [ext_resource type="Shader" path="res://assets/shaders/CRTBis.gdshader" id="8_8n1q6"]
 [ext_resource type="Shader" path="res://assets/shaders/Vignette.gdshader" id="9_ff3lv"]
 

@@ -3,7 +3,7 @@ extends Control
 
 # signal FinishedThreadCardCache(card_texture:Texture2D)
 
-var card_scene : PackedScene = preload("res://scenes/card.tscn")
+@export var card_scene : PackedScene
 # var selected_deck : DeckListButton = null
 static var edit_deck_list: DeckData = DeckData.new()
 
@@ -78,7 +78,7 @@ func _process(_delta: float) -> void:
 		$CardList.queue_free()
 
 func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")
+	get_tree().change_scene_to_file("res://scripts/menu/main_menu.tscn")
 
 
 func _on_save_button_pressed() -> void:
