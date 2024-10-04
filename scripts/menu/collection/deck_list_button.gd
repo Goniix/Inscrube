@@ -5,4 +5,4 @@ var deck_data:DeckData
 
 func _init(_data:DeckData):
     self.deck_data = _data
-    self.text = _data.name
+    self.text = _data.deck_name

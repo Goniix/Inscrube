@@ -1,11 +1,11 @@
+class_name CollectionMenu
 extends Control
 
-signal FinishedThreadCardCache(card_texture:Texture2D)
+# signal FinishedThreadCardCache(card_texture:Texture2D)
 
 var card_scene : PackedScene = preload("res://scenes/card.tscn")
-var deck_list : Dictionary = {}
 # var selected_deck : DeckListButton = null
-var edit_deck_list: Array[CardData] = []
+static var edit_deck_list: DeckData = DeckData.new()
 
 func get_card_texture(card_name:String, file_cache: bool = false):
 	var card:Card = card_scene.instantiate()
@@ -35,33 +35,25 @@ func get_card_texture(card_name:String, file_cache: bool = false):
 	remove_child(card)
 	card.queue_free()
 
-func add_deck(_deck_data:DeckData):
-	# var new_deck:DeckData = DeckData.new(_name)
-	var deck_button:DeckListButton = DeckListButton.new(_deck_data)
-	deck_button.pressed.connect(_on_deck_button_pressed.bind(deck_button))
-	$DeckList/VBoxContainer.add_child(deck_button)
-	deck_list[deck_button] = _deck_data
 
 func save_deck(_deck_data:DeckData):
 	var dir = DirAccess.open("user://")
 	if !dir.dir_exists("decks"):
 		dir.make_dir("decks")
 	var save_data = JSON.stringify(_deck_data.toJSON())
-	var file = FileAccess.open("user://decks/"+_deck_data.name+".adck",FileAccess.WRITE)
+	var file = FileAccess.open("user://decks/"+_deck_data.deck_name+".adck",FileAccess.WRITE)
 	file.store_line(save_data)
 	file.close()
 
-	# var error = ResourceSaver.save(_deck_data, "user://decks/"+_deck_data.name+".adck")
+	# var error = ResourceSaver.save(_deck_data, "user://decks/"+_deck_data.deck_name+".adck")
 	# if error != OK:
 	# 	print(error)
 
-func load_deck(_path:String):
-	var file: FileAccess = FileAccess.open(_path,FileAccess.READ)
-	var json_data: Dictionary = JSON.parse_string(file.get_line())
-	file.close()
-	add_deck(DeckData.fromJSON(json_data))
+
 
 func is_deck_name_valid(deck_name:String):
+	if deck_name.is_empty():
+		return false
 	if FileAccess.file_exists("user://decks/"+deck_name+".adck"):
 		return false
 	return true
@@ -74,22 +66,14 @@ func _init():
 func _ready() -> void:
 	RessourceManager.loadAllCards()	
 	for card_name in RessourceManager.cardData.keys():
-		await get_card_texture(card_name)
+		get_card_texture(card_name)
 	
 	# add_deck(DeckData.new("Test"))
-	reload_deck_list()
+	%DeckList.reload_deck_list()
 
-func reload_deck_list():
-	for child in $DeckList/VBoxContainer.get_children():
-		$DeckList/VBoxContainer.remove_child(child)
-		child.queue_free()
-		
-	deck_list.clear()
-	for file in DirAccess.get_files_at("user://decks/"):
-		load_deck("user://decks/"+file)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Debug1"):
 		$CardList.queue_free()
 
@@ -97,17 +81,14 @@ func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")
 
 
-func _on_deck_button_pressed(button:DeckListButton):
-	var data = button.deck_data
-	edit_deck_list = data.card_list.duplicate()
-
-
 func _on_save_button_pressed() -> void:
-	var deck: DeckData = DeckData.new(%DeckNameInput.text)
-	deck.card_list = edit_deck_list
-	save_deck(deck)
-	print("Saved deck! "+str(deck))
-	reload_deck_list()
+	save_deck(edit_deck_list)
+	print("Saved deck! "+str(edit_deck_list))
+	%DeckList.reload_deck_list()
 
 func _on_deck_name_input_text_changed(new_text:String) -> void:
-	%SaveDeckButton.disabled = !is_deck_name_valid(new_text)
+	# if is_deck_name_valid(new_text):
+		# %SaveDeckButton.disabled = false
+	edit_deck_list.deck_name = new_text
+	# else:
+		# %SaveDeckButton.disabled = true

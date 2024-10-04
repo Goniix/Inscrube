@@ -1,8 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://uo5m3utkvbp1"]
+[gd_scene load_steps=8 format=3 uid="uid://uo5m3utkvbp1"]
 
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="1_8g7vx"]
 [ext_resource type="Script" path="res://scripts/menu/collection_menu.gd" id="1_rp14k"]
 [ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scenes/styles/main_menu.tres" id="3_wd3d8"]
+[ext_resource type="Script" path="res://scripts/menu/collection/deck_list.gd" id="4_05imp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xs6pl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4rjmr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_my57j"]
+bg_color = Color(0.270222, 0.270222, 0.270222, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [node name="CollectionMenu" type="Control"]
 layout_mode = 3
@@ -34,6 +46,8 @@ offset_right = 580.0
 offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/selected = SubResource("StyleBoxEmpty_xs6pl")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_4rjmr")
 max_columns = 3
 same_column_width = true
 icon_scale = 0.35
@@ -46,15 +60,25 @@ offset_right = 198.0
 offset_bottom = 143.0
 text = "Back"
 
-[node name="DeckList" type="PanelContainer" parent="."]
+[node name="DeckList" type="PanelContainer" parent="." node_paths=PackedStringArray("deckNameInputField")]
+unique_name_in_owner = true
 layout_mode = 2
 offset_left = 68.0
 offset_top = 200.0
 offset_right = 344.0
 offset_bottom = 1043.0
+script = ExtResource("4_05imp")
+deckNameInputField = NodePath("../DeckSummary/DeckNameInput")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DeckList"]
 layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NewDeckButton" type="Button" parent="DeckList/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_my57j")
+text = "New
+"
 
 [node name="DeckSummary" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -76,6 +100,7 @@ unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Deck name"
 max_length = 20
+editable = false
 context_menu_enabled = false
 middle_mouse_paste_enabled = false
 caret_blink = true
@@ -83,9 +108,9 @@ caret_blink = true
 [node name="SaveDeckButton" type="Button" parent="DeckSummary"]
 unique_name_in_owner = true
 layout_mode = 2
-disabled = true
 text = "Save"
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="DeckList/VBoxContainer/NewDeckButton" to="DeckList" method="_on_new_deck_button_pressed"]
 [connection signal="text_changed" from="DeckSummary/DeckNameInput" to="." method="_on_deck_name_input_text_changed"]
 [connection signal="pressed" from="DeckSummary/SaveDeckButton" to="." method="_on_save_button_pressed"]
