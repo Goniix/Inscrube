@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://uo5m3utkvbp1"]
+[gd_scene load_steps=8 format=3 uid="uid://uo5m3utkvbp1"]
 
 [ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scripts/styles/main_menu.tres" id="1_ixiit"]
 [ext_resource type="Script" path="res://scripts/menu/collection_menu.gd" id="2_l3kxh"]
@@ -6,10 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scripts/card.tscn" id="3_mncui"]
 [ext_resource type="Script" path="res://scripts/menu/collection/deck_list.gd" id="4_6e3ln"]
 [ext_resource type="Script" path="res://scripts/menu/collection/deck_summary.gd" id="5_c01pw"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xs6pl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4rjmr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_my57j"]
 bg_color = Color(0.270222, 0.270222, 0.270222, 1)
@@ -49,8 +45,6 @@ offset_right = 580.0
 offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/selected = SubResource("StyleBoxEmpty_xs6pl")
-theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_4rjmr")
 max_columns = 3
 same_column_width = true
 icon_scale = 0.35
@@ -114,6 +108,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Save"
 
+[connection signal="item_selected" from="CardList" to="." method="_on_card_list_item_selected"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="DeckList/VBoxContainer/NewDeckButton" to="DeckList" method="_on_new_deck_button_pressed"]
 [connection signal="text_changed" from="DeckSummary/DeckNameInput" to="." method="_on_deck_name_input_text_changed"]

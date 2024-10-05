@@ -91,3 +91,6 @@ func _on_deck_name_input_text_changed(new_text:String) -> void:
 	edit_deck_list.deck_name = new_text
 	# else:
 		# %SaveDeckButton.disabled = true
+	
+func _on_card_list_item_selected(index:int) -> void:
+	$CardList.deselect_all()

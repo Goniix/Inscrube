@@ -52,7 +52,7 @@ static func loadAllCards(recursive:bool=false):
 		else:
 			print("An error occurred when trying to access the path.")
 
-static func get_card(card_name:String):
+func get_card(card_name:String):
 	return cardData[card_name]
 
 
