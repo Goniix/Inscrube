@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8ul00hvcwkxd"
-path="res://.godot/imported/frame_rare_tech.png-194abdfc418b22a9acc88861111f1a48.ctex"
+uid="uid://chc4lepj24gos"
+path="res://.godot/imported/rare_tech.png-7932e14fc77024c91ae0a1ff2a1da2ae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/frames/frame_rare_tech.png"
-dest_files=["res://.godot/imported/frame_rare_tech.png-194abdfc418b22a9acc88861111f1a48.ctex"]
+source_file="res://assets/frames/rare_tech.png"
+dest_files=["res://.godot/imported/rare_tech.png-7932e14fc77024c91ae0a1ff2a1da2ae.ctex"]
 
 [params]
 

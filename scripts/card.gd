@@ -27,12 +27,6 @@ var target_scale: Vector2 = default_scale
 const perspective_amount: int = 4
 var perspective_vec: Vector2
 
-#FRAME CONSTS
-static var rarity_to_frame_id: Array = [0,0,1,2,2]
-
-#BG CONSTS
-static var rarity_to_bg_id: Array = [0,0,0,1,1]
-
 #GESTURE CONST/VARS
 const hold_treshold: float = 0.3
 var draggable:bool = false
@@ -40,15 +34,8 @@ var dragged:bool = false
 var pressed:bool = false
 # var press_origin_vector:Vector2 = Vector2.ZERO
 
-func load_data(data: CardData):
-	# id = id.to_upper()
-	self.data = data.duplicate()
-	
-	# card_cost = {
-	# 	CardData.COST_ENUM.BLOOD: Game.cardData[id].blood_cost,
-	# 	CardData.COST_ENUM.BONE: Game.cardData[id].bone_cost,
-	# 	CardData.COST_ENUM.ENERGY: Game.cardData[id].energy_cost
-	# }
+func load_data(_data: CardData):
+	self.data = _data.duplicate()
 	update_display_data()
 
 func update_display_data():
@@ -65,12 +52,12 @@ func update_name():
 	%Name.text = get_card_name()
 
 func update_frame():
-	%Frame.texture = Game.frames_data[get_card_faction()][rarity_to_frame_id[get_card_rarity()]]
+	var frame_index = data.rarity_to_string()+"_"+data.faction_to_string()
+	%Frame.texture = Global.card_assets["frames"][frame_index]
 	
 func update_background():
-	#print(card_faction)
-	#print(get_card_rarity())
-	%Background.texture = Game.bg_data[get_card_faction()][rarity_to_bg_id[get_card_rarity()]]
+	var frame_index = data.rarity_to_string()+"_"+data.faction_to_string()
+	%Background.texture = Global.card_assets["bg"][frame_index]
 	
 func update_art():
 	%Art.texture = get_card_art()
@@ -95,17 +82,17 @@ func update_cost():
 				var stringed_number = str(data.get_cost(key))
 				for charElem in stringed_number:
 					var number_icon: TextureRect = TextureRect.new()
-					number_icon.texture = Game.cost_data["numbers"][int(charElem)]
+					number_icon.texture = Global.card_assets["cost"][charElem]
 					number_icon.custom_minimum_size= Vector2(50,80)
 					sub_container.add_child(number_icon)
 				
 				var x_icon: TextureRect = TextureRect.new()
-				x_icon.texture = Game.cost_data["x"]
+				x_icon.texture = Global.card_assets["cost"]["x"]
 				x_icon.custom_minimum_size= Vector2(50,80)
 				sub_container.add_child(x_icon)
 				
 				var cost_icon: TextureRect = TextureRect.new()
-				cost_icon.texture = Game.cost_icons[key]
+				cost_icon.texture = Global.card_assets["cost"][key.to_lower()]
 				cost_icon.custom_minimum_size= Vector2(50,80)
 				sub_container.add_child(cost_icon)
 			else:
@@ -113,7 +100,7 @@ func update_cost():
 				
 				for icon in range(data.get_cost(key)):
 					var cost_icon: TextureRect = TextureRect.new()
-					cost_icon.texture = Game.cost_icons[key]
+					cost_icon.texture = Global.card_assets["cost"][key.to_lower()]
 					cost_icon.custom_minimum_size= Vector2(50,80)
 					sub_container.add_child(cost_icon)
 					

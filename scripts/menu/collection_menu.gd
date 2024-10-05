@@ -9,7 +9,7 @@ static var edit_deck_list: DeckData = DeckData.new()
 
 func get_card_texture(card_name:String, file_cache: bool = false):
 	var card:Card = card_scene.instantiate()
-	card.load_data(RessourceManager.get_card(card_name))
+	card.load_data(Global.get_card(card_name))
 	add_child(card)
 	card.position = Vector2(2000,2000)
 	var card_viewport: SubViewport = card.get_node("SubViewportContainer/SubViewport")
@@ -64,8 +64,7 @@ func _init():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	RessourceManager.loadAllCards()	
-	for card_name in RessourceManager.cardData.keys():
+	for card_name in Global.cardData.keys():
 		get_card_texture(card_name)
 	
 	# add_deck(DeckData.new("Test"))

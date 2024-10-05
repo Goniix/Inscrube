@@ -4,47 +4,6 @@ extends Node
 @export var cardScene : PackedScene# = preload("res://scenes/card.tscn")
 @export var slotScene : PackedScene# = preload("res://scenes/card_slot.tscn")
 
-@export var card_ressources_path: String = "res://data/cards/"
-
-# static var cardData : Dictionary = {}
-#static var art_data: Dictionary = {
-	#"adder": preload("res://assets/art/Adder.png"),
-	#"squirrel": preload("res://assets/art/Squirrel.png")
-#}
-static var frames_data:Array = [
-	[
-		 preload("res://assets/frames/frame_common_beast.png"),
-		 preload("res://assets/frames/frame_uncommon_beast.png"),
-		 preload("res://assets/frames/frame_rare_beast.png")
-	]
-]
-
-static var bg_data:Array = [
-	[
-		 preload("res://assets/bg/bg_common_beast.png"),
-		 preload("res://assets/bg/bg_rare_beast.png")
-	]
-]
-static var cost_data: Dictionary = {
-	"x": preload("res://assets/cost/x.png"),
-	"numbers" : [
-		preload("res://assets/cost/0.png"),
-		preload("res://assets/cost/1.png"),
-		preload("res://assets/cost/2.png"),
-		preload("res://assets/cost/3.png"),
-		preload("res://assets/cost/4.png"),
-		preload("res://assets/cost/5.png"),
-		preload("res://assets/cost/6.png"),
-		preload("res://assets/cost/7.png"),
-		preload("res://assets/cost/8.png"),
-		preload("res://assets/cost/9.png")
-	],	
-}
-
-static var cost_icons: Dictionary = {
-	"BLOOD":preload("res://assets/cost/blood.png"),
-	"BONE":preload("res://assets/cost/bone.png")
-}
 
 static var language = 0
 
@@ -96,7 +55,7 @@ static var drag_targets: Array[Node] = []
 # 					if '.tres.remap' in file_path:
 # 						file_path = file_path.trim_suffix('.remap')
 # 					var ressource: CardData = load(file_path)
-# 					RessourceManager.cardData[ressource.card_name] = ressource
+# 					Global.cardData[ressource.card_name] = ressource
 # 					print_rich("loaded card [b]"+ressource.card_name+"[/b] : [color=YELLOW]"+file_path)
 # 				elif recursive:
 # 					cards_dir_list.append(file_path)
@@ -124,9 +83,9 @@ static var drag_targets: Array[Node] = []
 	#return res
 
 func giveCard(card_name: String):
-	assert(RessourceManager.cardData.keys().has(card_name),card_name + " card_name not found in "+str(RessourceManager.cardData.keys()))
+	assert(Global.cardData.keys().has(card_name),card_name + " card_name not found in "+str(Global.cardData.keys()))
 	var card = cardScene.instantiate()
-	card.load_data(RessourceManager.cardData[card_name])
+	card.load_data(Global.cardData[card_name])
 	$CardLayer.add_child(card)
 	#squi.attach_card($SlotsLayer/TestSlot2)
 	card.attach_card($Hand,$Hand.attached_cards.size())
@@ -184,8 +143,8 @@ func get_hovered_drag_target():
 	return null
 
 func _init():
-	RessourceManager.loadAllCards(true)
-	
+	pass
+		
 func _ready():
 	giveCard("RAVEN")
 	giveCard("MAGGOT")

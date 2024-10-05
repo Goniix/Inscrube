@@ -115,3 +115,11 @@ func get_art()-> Texture:
 
 # func get_()->:
 # 	return 
+
+func rarity_to_string()->String:
+	const rarities : Array[String] = ["common","common","uncommon","rare","rare"]
+	return  rarities[get_rarity()]
+
+func faction_to_string()->String:
+	const factions : Array[String] = ["beast","tech","undead","magick"]
+	return  factions[get_faction()]

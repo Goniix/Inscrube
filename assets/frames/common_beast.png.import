@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dokkqdmmr5lxd"
-path="res://.godot/imported/frame_uncommon_beast.png-d7e2c2e227cd3dd53042efe4c8e062ff.ctex"
+uid="uid://cv3amfqnhoudk"
+path="res://.godot/imported/common_beast.png-7f1fad0c1adb3d22cfeda92d764dbac3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/frames/frame_uncommon_beast.png"
-dest_files=["res://.godot/imported/frame_uncommon_beast.png-d7e2c2e227cd3dd53042efe4c8e062ff.ctex"]
+source_file="res://assets/frames/common_beast.png"
+dest_files=["res://.godot/imported/common_beast.png-7f1fad0c1adb3d22cfeda92d764dbac3.ctex"]
 
 [params]
 
