@@ -1,2 +1,2 @@
-static func attack_property(source:Card):
+static func attack_property(_source:Card):
 	return SigilData.ATTACK_PROPERTY.FLYING

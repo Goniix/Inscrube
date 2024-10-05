@@ -44,6 +44,6 @@ func refresh_cards_pos(speed:float):
 func get_card_position(card: Card):
 	var card_index: int = attached_cards.find(card)
 	var card_width: int = floor(card.size.x * card.default_scale.x)
-	var space_between: float = floor(clamp(1000/attached_cards.size(),0,card_width))
+	var space_between: float = floor(clamp(1000.0/attached_cards.size(),0,card_width))
 	
 	return Vector2(int(space_between*card_index - ((attached_cards.size() * space_between) * 0.5)),0)- card.pivot_offset+card.pivot_offset*card.default_scale

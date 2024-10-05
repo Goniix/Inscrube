@@ -1,8 +1,8 @@
 class_name Game
 extends Node
 
-@export var cardScene : PackedScene# = preload("res://scenes/card.tscn")
-@export var slotScene : PackedScene# = preload("res://scenes/card_slot.tscn")
+@export var cardScene : PackedScene
+@export var slotScene : PackedScene
 
 
 static var language = 0
@@ -19,68 +19,6 @@ const DEBUG_MODE = true;
 
 static var drag_targets: Array[Node] = []
 
-
-#static func loadAllCardsJSON(recursive:bool=true):
-	#var cards_dir_list = ["res://data/cards/"]
-	#for elem in cards_dir_list:
-		#var dir = DirAccess.open(elem)
-		#if dir:
-			#dir.list_dir_begin()
-			#var file_name = dir.get_next()
-			#while file_name != "":
-				#var file_path = dir.get_current_dir()+"/"+file_name
-				#if !dir.current_is_dir():
-					#var jsonFile = FileAccess.open(file_path,FileAccess.READ)
-					#print(jsonFile.get_as_text())
-					#var json_parsed:Dictionary = JSON.parse_string(jsonFile.get_as_text())
-					#var card_name:String = file_name.replace(".json","")
-					#cardData[card_name] = json_parsed
-					#print_rich("loaded card [b]"+card_name+"[/b] : [color=YELLOW]"+file_path)
-				#elif recursive :
-					#cards_dir_list.append(file_path)
-				#file_name = dir.get_next()
-		#else:
-			#print("An error occurred when trying to access the path.")
-			
-# static func loadAllCards(recursive:bool=false):
-# 	var cards_dir_list = ["res://data/cards/"]
-# 	for elem in cards_dir_list:
-# 		var dir = DirAccess.open(elem)
-# 		if dir:
-# 			dir.list_dir_begin()
-# 			var file_name = dir.get_next()
-# 			while file_name != "":
-# 				var file_path = dir.get_current_dir()+"/"+file_name
-# 				if !dir.current_is_dir():
-# 					if '.tres.remap' in file_path:
-# 						file_path = file_path.trim_suffix('.remap')
-# 					var ressource: CardData = load(file_path)
-# 					Global.cardData[ressource.card_name] = ressource
-# 					print_rich("loaded card [b]"+ressource.card_name+"[/b] : [color=YELLOW]"+file_path)
-# 				elif recursive:
-# 					cards_dir_list.append(file_path)
-# 				file_name = dir.get_next()
-# 		else:
-# 			print("An error occurred when trying to access the path.")
-
-#static func dir_contents(path, verbose:bool=false)-> Array[String]:
-	#var dir = DirAccess.open(path)
-	#var res:Array[String] = []
-	#if dir:
-		#dir.list_dir_begin()
-		#var file_name = dir.get_next()
-		#while file_name != "":
-			#if dir.current_is_dir():
-				#if verbose:
-					#print("Found directory: " + file_name)
-			#else:
-				#if verbose:
-					#print("Found file: " + file_name)
-				#res.append(file_name)
-			#file_name = dir.get_next()
-	#else:
-		#print("An error occurred when trying to access the path.")
-	#return res
 
 func giveCard(card_name: String):
 	assert(Global.cardData.keys().has(card_name),card_name + " card_name not found in "+str(Global.cardData.keys()))
@@ -151,7 +89,7 @@ func _ready():
 
 	refresh_hand()
 
-func _process(delta):
+func _process(_delta):
 	if(Input.is_action_just_pressed("Debug1")):
 		giveCard("SQUIRREL")
 	if(Input.is_action_just_pressed("Debug2")):

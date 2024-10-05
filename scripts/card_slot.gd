@@ -64,7 +64,10 @@ func get_slot_owner() -> SlotArea.OWNER:
 	else:
 		return SlotArea.OWNER.FREE
 
-func _process(delta):
+func _init():
+	state_changed.connect(_on_state_changed)
+
+func _process(_delta):
 	if is_attached():
 		change_state(STATES.ATTACHED)
 	elif is_hovered():

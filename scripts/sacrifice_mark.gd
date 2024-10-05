@@ -32,7 +32,7 @@ func is_active()->bool:
 	return state == STATES.ACTIVE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if color_tween == null or !color_tween.is_running():
 		if modulate != get_state_color():
 			#print("switching to"+str(get_state_color()))

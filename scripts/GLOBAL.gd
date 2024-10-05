@@ -7,6 +7,28 @@ static var card_assets : Dictionary
 static func slog(msg: String)->void:
 	print_rich("[[b][color=PURPLE]GLOBAL[/color][/b]]: "+msg)
 
+# static func loadAllCardsJSON(recursive:bool=true):
+# 	var cards_dir_list = ["res://data/cards/"]
+# 	for elem in cards_dir_list:
+# 		var dir = DirAccess.open(elem)
+# 		if dir:
+# 			dir.list_dir_begin()
+# 			var file_name = dir.get_next()
+# 			while file_name != "":
+# 				var file_path = dir.get_current_dir()+"/"+file_name
+# 				if !dir.current_is_dir():
+# 					var jsonFile = FileAccess.open(file_path,FileAccess.READ)
+# 					print(jsonFile.get_as_text())
+# 					var json_parsed:Dictionary = JSON.parse_string(jsonFile.get_as_text())
+# 					var card_name:String = file_name.replace(".json","")
+# 					cardData[card_name] = json_parsed
+# 					print_rich("loaded card [b]"+card_name+"[/b] : [color=YELLOW]"+file_path)
+# 				elif recursive :
+# 					cards_dir_list.append(file_path)
+# 				file_name = dir.get_next()
+# 		else:
+# 			print("An error occurred when trying to access the path.")
+
 static func loadAllCards(recursive:bool=false):
 	slog("Started loading card files...")
 	cardData = {}

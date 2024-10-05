@@ -315,7 +315,7 @@ func _ready():
 	scale = target_scale
 	gameRoot = get_tree().root.get_children().back()
 
-func _process(delta):
+func _process(_delta):
 	#print(waiting_mouse_move)
 	if draggable:
 		perspective_vec = Vector2(-perspective_amount,-perspective_amount) + perspective_amount*2*(get_local_mouse_position()/$Button.size)
