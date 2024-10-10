@@ -23,7 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ixiit")
 script = ExtResource("2_l3kxh")
-card_scene = ExtResource("3_mncui")
+CardScene = ExtResource("3_mncui")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
