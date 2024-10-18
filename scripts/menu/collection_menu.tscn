@@ -1,11 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://uo5m3utkvbp1"]
+[gd_scene load_steps=6 format=3 uid="uid://uo5m3utkvbp1"]
 
 [ext_resource type="Theme" uid="uid://b6vsi06ylv2at" path="res://scripts/styles/main_menu.tres" id="1_ixiit"]
 [ext_resource type="Script" path="res://scripts/menu/collection_menu.gd" id="2_l3kxh"]
 [ext_resource type="Texture2D" uid="uid://b2gyy6j7gnec" path="res://assets/board/wood-1700562_1920.png" id="3_fwa2n"]
 [ext_resource type="PackedScene" uid="uid://s5y0n8ui2te5" path="res://scripts/card.tscn" id="3_mncui"]
-[ext_resource type="Script" path="res://scripts/menu/collection/deck_list.gd" id="4_6e3ln"]
-[ext_resource type="Script" path="res://scripts/menu/collection/deck_summary.gd" id="5_c01pw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_my57j"]
 bg_color = Color(0.270222, 0.270222, 0.270222, 1)
@@ -57,15 +55,13 @@ offset_right = 198.0
 offset_bottom = 143.0
 text = "Back"
 
-[node name="DeckList" type="PanelContainer" parent="." node_paths=PackedStringArray("deckNameInputField")]
+[node name="DeckList" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 68.0
 offset_top = 200.0
 offset_right = 344.0
 offset_bottom = 1043.0
-script = ExtResource("4_6e3ln")
-deckNameInputField = NodePath("../DeckSummary/DeckNameInput")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DeckList"]
 layout_mode = 2
@@ -84,7 +80,6 @@ offset_top = 58.0
 offset_right = 1893.0
 offset_bottom = 1058.0
 theme_override_constants/separation = 16
-script = ExtResource("5_c01pw")
 
 [node name="CardSummary" type="PanelContainer" parent="DeckSummary"]
 layout_mode = 2
@@ -110,6 +105,5 @@ text = "Save"
 
 [connection signal="item_selected" from="CardList" to="." method="_on_card_list_item_selected"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="DeckList/VBoxContainer/NewDeckButton" to="DeckList" method="_on_new_deck_button_pressed"]
 [connection signal="text_changed" from="DeckSummary/DeckNameInput" to="." method="_on_deck_name_input_text_changed"]
 [connection signal="pressed" from="DeckSummary/SaveDeckButton" to="." method="_on_save_button_pressed"]

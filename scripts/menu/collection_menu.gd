@@ -6,8 +6,80 @@ extends Control
 signal card_added_to_deck(card:CardData)
 
 @export var CardScene : PackedScene
-# var selected_deck : DeckListButton = null
-static var opened_deck: DeckData = DeckData.new()
+var current_deck: DeckData = DeckData.new()
+var deck_list : Dictionary = {}
+var button_list: Dictionary = {} 
+
+func _init():
+	pass
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	card_added_to_deck.connect(_on_card_added)
+	$DeckList/VBoxContainer/NewDeckButton.connect("pressed", _on_new_deck_button_pressed)
+
+	for card_name in Global.cardData.keys():
+		get_card_texture(card_name)
+	
+	# add_deck(DeckData.new("Test"))
+	reload_deck_list()
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Debug1"):
+		$CardList.queue_free()
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scripts/menu/main_menu.tscn")
+
+
+func _on_save_button_pressed() -> void:
+	save_deck(current_deck)
+	print("Saved deck! "+str(current_deck))
+	reload_deck_list()
+
+func _on_deck_name_input_text_changed(new_text:String) -> void:
+	# if is_deck_name_valid(new_text):
+		# %SaveDeckButton.disabled = false
+	current_deck.deck_name = new_text
+	# else:
+		# %SaveDeckButton.disabled = true
+	
+func _on_card_list_item_selected(index:int) -> void:
+	$CardList.deselect_all()
+	var added_card: CardData = Global.get_card(Global.cardData.keys()[index])
+	add_card_to_deck(added_card)
+	card_added_to_deck.emit(added_card)
+
+
+func _on_new_deck_button_pressed() -> void:
+	current_deck = DeckData.new()
+	%DeckNameInput.text = ""
+	%DeckNameInput.editable = true
+	print("New deck!")
+	refresh_summary(current_deck)
+	
+func _on_deck_button_pressed(button:DeckButton):
+	var data = button.deck_data
+	current_deck = data
+	%DeckNameInput.text = data.deck_name
+	%DeckNameInput.editable = false
+	refresh_summary(current_deck)
+
+func _on_card_added(card:CardData):
+	var button : CardSummaryButton
+
+	if button_list.keys().has(card.get_card_name()):
+		button = button_list[card.get_card_name()]
+	else:
+		button = CardSummaryButton.new()
+		button.card_name = card.get_card_name()
+		button_list[card.get_card_name()] = button
+		$DeckSummary/CardSummary/VBoxContainer.add_child(button)
+
+	button.card_count+=1
+	button.refresh_text()
 
 func get_card_texture(card_name:String, file_cache: bool = false):
 	var card:Card = CardScene.instantiate()
@@ -62,54 +134,69 @@ func is_deck_name_valid(deck_name:String):
 	return true
 
 func add_card_to_deck(card:CardData):
-	if !opened_deck.card_list.keys().has(card.card_name):
-		opened_deck.card_list[card.card_name] = 1
+	if !current_deck.card_list.keys().has(card.card_name):
+		current_deck.card_list[card.card_name] = 1
 	else:
-		opened_deck.card_list[card.card_name] = opened_deck.card_list[card.card_name] + 1
+		current_deck.card_list[card.card_name] = current_deck.card_list[card.card_name] + 1
 	
-	print("Added "+str(card)+" to deck ("+str(opened_deck.card_list)+")")
-
-	
+	print("Added "+str(card)+" to deck ("+str(current_deck.card_list)+")")
 
 
-func _init():
-	pass
+func add_deck(_deck_data:DeckData):
+	# var new_deck:DeckData = DeckData.new(_name)
+	var deck_button:DeckButton = DeckButton.new(_deck_data)
+	deck_button.pressed.connect(_on_deck_button_pressed.bind(deck_button))
+	$DeckList/VBoxContainer.add_child(deck_button)
+	deck_list[deck_button] = _deck_data
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	card_added_to_deck.connect($DeckSummary._on_card_added)
+func load_deck(_path:String):
+	var file: FileAccess = FileAccess.open(_path,FileAccess.READ)
+	var json_data: Dictionary = JSON.parse_string(file.get_line())
+	file.close()
+	add_deck(DeckData.fromJSON(json_data))
 
-	for card_name in Global.cardData.keys():
-		get_card_texture(card_name)
-	
-	# add_deck(DeckData.new("Test"))
-	%DeckList.reload_deck_list()
+func reload_deck_list():
+	for child in $DeckList/VBoxContainer.get_children():
+		if child is DeckButton:
+			$DeckList/VBoxContainer.remove_child(child)
+			child.queue_free()
+
+	deck_list.clear()
+	for file in DirAccess.get_files_at("user://decks/"):
+		load_deck("user://decks/"+file)	
+
+func refresh_summary(data: DeckData):
+	print("Refreshing summary")
+	print(data.card_list)
+	print($DeckSummary/CardSummary/VBoxContainer.get_children())
+	for child in $DeckSummary/CardSummary/VBoxContainer.get_children():
+		if child is CardSummaryButton:
+			$DeckSummary/CardSummary/VBoxContainer.remove_child(child)
+			child.queue_free()
+
+	for key in data.card_list.keys():
+		var button = CardSummaryButton.new()
+		button.card_name = key
+		button.card_count = data.card_list[key]
+		button_list[key] = button
+		button.refresh_text()
+		$DeckSummary/CardSummary/VBoxContainer.add_child(button)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Debug1"):
-		$CardList.queue_free()
+class DeckButton:
+	extends Button
 
-func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scripts/menu/main_menu.tscn")
+	var deck_data:DeckData
+
+	func _init(_data:DeckData):
+		self.deck_data = _data
+		self.text = _data.deck_name
 
 
-func _on_save_button_pressed() -> void:
-	save_deck(opened_deck)
-	print("Saved deck! "+str(opened_deck))
-	%DeckList.reload_deck_list()
+class CardSummaryButton:
+	extends Button
+	var card_name = "NAMELESS"
+	var card_count = 0
 
-func _on_deck_name_input_text_changed(new_text:String) -> void:
-	# if is_deck_name_valid(new_text):
-		# %SaveDeckButton.disabled = false
-	opened_deck.deck_name = new_text
-	# else:
-		# %SaveDeckButton.disabled = true
-	
-func _on_card_list_item_selected(index:int) -> void:
-	$CardList.deselect_all()
-	var added_card: CardData = Global.get_card(Global.cardData.keys()[index])
-	add_card_to_deck(added_card)
-	card_added_to_deck.emit(added_card)
-
+	func refresh_text():
+		text = card_name+": "+str(card_count)
